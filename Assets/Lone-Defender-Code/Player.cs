@@ -25,7 +25,7 @@ public class Player : Pawn
         }
         else
         {
-            Console.Error.WriteLine("current_location was unknown type");
+            Debug.LogError("current_location was unknown type");
             return null;
         }    
     }
