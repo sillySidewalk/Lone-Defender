@@ -10,14 +10,22 @@ public class Manager : MonoBehaviour
     [SerializeField] public List<Forest> forests;
     System.Random rnd = new System.Random();
     int dice_value = 10; // The type of dice
-    int min_atk_val { get; } = 7; // What value is considered a hit, base d10 dice
+    int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
 
     /*
-     * Roll the dice
+     * Roll the dice n times
      */
-    public int d_roll()
+    public List<int> d_roll(int n)
     {
-        return rnd.Next(1, dice_value+1); // Max is exclusive, so plus 1
+        List<int> return_dice = new List<int>();
+
+        for(int i = 0; i < n; i++)
+        {
+            return_dice.Add(rnd.Next(1, dice_value + 1)); // Max is exclusive, so plus 1
+        }
+        
+        return return_dice;
+
     }
 
 
@@ -40,8 +48,6 @@ public class Manager : MonoBehaviour
             }
         }
 
-        Debug.Log("hits: " + hits);
-
         deal_player_hits(hits, cl);
     }
 
@@ -56,7 +62,6 @@ public class Manager : MonoBehaviour
             // For each hit, remove an enemy pawn, stop if we run out of hits or run out of Enemy Pawns
             for (; hits > 0 && e.Count > 0; hits--)
             {
-                Debug.Log("e.Count = " + e.Count + " hits = " + hits);
                 p = e[0];
                 e.RemoveAt(0);
                 Destroy(p.gameObject);
@@ -70,14 +75,6 @@ public class Manager : MonoBehaviour
         
     }
 
-    private void Update()
-    {
-        List<int> atk_list = new List<int>() { 7, 10 };
-
-        if(Input.GetKeyDown("1"))
-        {
-            player_pawn_attack(atk_list, clearings[0]);
-        }
-    }
+    
 
 }
