@@ -33,6 +33,13 @@ public class Player : Pawn
         }    
     }
 
+    // Add the player pawns to the Location player pawn list, then do the default
+    public override void move(Location new_loc)
+    {
+        new_loc.player_pawns.Add(this);
+        move_position(new_loc);
+    }
+
     public int get_atk_sum()
     {
         int sum = 0;
