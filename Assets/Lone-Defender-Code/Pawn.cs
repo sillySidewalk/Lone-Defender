@@ -22,10 +22,17 @@ public abstract class Pawn : MonoBehaviour
      */
     public abstract List<Location> possible_moves();
 
-    public void move(Location new_loc)
+    /*
+     * When implemented by subclasses, will add their pawn type to the respective list of the Location to the respective List (enemies to enemy_pawns, player to player_pawns, etc) and then call move_position()
+     */
+    public abstract void move(Location new_loc);
+
+    // Because enemy pawns and player pawns need to be added to separate lists, must be implemented differently
+    public void move_position(Location new_loc)
     {
+        Debug.Log("Pawn move_position()");
         current_location = new_loc;
-        transform.position = new_loc.transform.position;
+        transform.position = new_loc.enemy_position.transform.position;
     }
 
     /*

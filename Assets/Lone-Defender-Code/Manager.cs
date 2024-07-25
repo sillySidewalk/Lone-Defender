@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
@@ -76,5 +77,40 @@ public class Manager : MonoBehaviour
     }
 
     
+    /*
+     * Move the enemy pawns. They can only move from one clearing to adjacent clearing     
+     */
+    public void move_enemies(Clearing start_cl, Clearing end_cl, int num)
+    {
+        List<Pawn> e_pawns = start_cl.enemy_pawns;
+
+        // Check if there's enough enemy pawns
+        if( e_pawns.Count < num )
+        {
+            Debug.LogError("Not enough enemies in start clearing");
+            return;
+        }
+
+        // Since all enemies are the sane, just move the first num enemies
+        List<Pawn> moving_pawns = e_pawns.Take(num).ToList();
+        
+        e_pawns.RemoveRange(0, num);
+
+        foreach(Pawn p in moving_pawns)
+        {
+            Debug.Log("calling p.move");
+            p.move(end_cl);
+        }
+
+        end_cl.enemy_count_txt.text = num.ToString();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown("1"))
+        {
+            
+        }
+    }
 
 }
