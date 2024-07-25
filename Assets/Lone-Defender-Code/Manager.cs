@@ -98,7 +98,6 @@ public class Manager : MonoBehaviour
 
         foreach(Pawn p in moving_pawns)
         {
-            Debug.Log("calling p.move");
             p.move(end_cl);
         }
 

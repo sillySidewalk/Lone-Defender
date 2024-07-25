@@ -30,7 +30,6 @@ public abstract class Pawn : MonoBehaviour
     // Because enemy pawns and player pawns need to be added to separate lists, must be implemented differently
     public void move_position(Location new_loc)
     {
-        Debug.Log("Pawn move_position()");
         current_location = new_loc;
         transform.position = new_loc.enemy_position.transform.position;
     }
