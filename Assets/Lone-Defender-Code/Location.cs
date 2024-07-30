@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
  */
 public class Location : MonoBehaviour
 {
-    [SerializeField] public int id { get; protected set; }
+    [SerializeField] protected int id;
     [SerializeField] protected int max_buildings;
     [SerializeField] public Transform enemy_position; // The position in the location where enemies are put
     [SerializeField] public TextMeshProUGUI enemy_count_txt; // A counter to show how many enemies are in the enemy_position
@@ -20,6 +20,17 @@ public class Location : MonoBehaviour
     [SerializeField] public List<Pawn> player_pawns = new List<Pawn>(); // Pawns are not limited (Probably)
     [SerializeField] public List<Location> adjacent_locations = new List<Location>(); // Clearings and Forests
     [SerializeField] public List<Road> adjacent_roads = new List<Road>(); // slightly different context between forest and clearing, but I think it'll be ok
+    public GameObject possible_move_indicator;
+
+    public int get_it()
+    {
+        return id;
+    }
+
+    protected void OnMouseDown()
+    {
+        Debug.Log("clicked location: " + id);
+    }
 
 
 }
