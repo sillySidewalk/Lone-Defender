@@ -6,12 +6,29 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
-    [SerializeField] public List<Clearing> clearings;
-    [SerializeField] public List<Road> roads;
-    [SerializeField] public List<Forest> forests;
+    public List<Clearing> clearings;
+    public List<Road> roads;
+    public List<Forest> forests;
+    public Dictionary<string, game_state> game_states;
+    public Dictionary<string, sub_state> game_sub_states;
+    public game_state current_sub_state;
+    public Player player;
     System.Random rnd = new System.Random();
     int dice_value = 10; // The type of dice
     int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
+
+    public enum Gamestate
+    {
+        player_turn,
+    }
+
+    public enum substate
+    {
+        player_defaut,
+        player_move,
+    }
+
+
 
     /*
      * Roll the dice n times

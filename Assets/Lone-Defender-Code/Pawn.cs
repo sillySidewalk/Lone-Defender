@@ -16,9 +16,19 @@ public abstract class Pawn : MonoBehaviour
     [SerializeField] protected int stealth;
     [SerializeField] protected int max_ap;// Action points
     [SerializeField] protected int ap;
+    protected move_type m_type;
+    
+
+    public enum move_type
+    {
+        clearings,
+        forests,
+        clear_for
+    }
 
     /*
      * Return a list of valid locations (clearings or forests)
+     * TODO: Since there are only 2 types of moves (forests, clearings, forests & clearings), this could be replaced with a simple selector
      */
     public abstract List<Location> possible_moves();
 
