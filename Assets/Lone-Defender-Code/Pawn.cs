@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -16,7 +17,7 @@ public abstract class Pawn : MonoBehaviour
     [SerializeField] protected int stealth;
     [SerializeField] protected int max_ap;// Action points
     [SerializeField] protected int ap;
-    protected move_type m_type;
+    abstract public move_type m_type { get; }
     public abstract Location.move_position move_pos { get; } // where in the clearing we want to be
     
 
@@ -24,16 +25,31 @@ public abstract class Pawn : MonoBehaviour
     {
         clearings,
         forests,
-        clear_for
+        clear_for // Clearings and Forests
     }
 
-    
+
 
     /*
      * Return a list of valid locations (clearings or forests)
      * TODO: Since there are only 3 types of moves (forests, clearings, forests & clearings), this could be replaced with a simple selector
      */
-    public abstract List<Location> possible_moves();
+    public List<Location> possible_moves()
+    { 
+        if(m_type == move_type.clearings)
+        {
+            return current_location.adjacent_locations.OfType<Clearing>().Cast<Location>().ToList();
+        }
+        else if(m_type == move_type.forests)
+        {
+            return current_location.adjacent_locations.OfType<Forest>().Cast<Location>().ToList();
+        }
+        else // m_type == move_type.clear_for
+        {
+            return current_location.adjacent_locations;
+        }
+
+    }
 
     /*
      * When implemented by subclasses, will add their pawn type to the respective list of the Location to the respective List (enemies to enemy_pawns, player to player_pawns, etc) and then call move_position()
