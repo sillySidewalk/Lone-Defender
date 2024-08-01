@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.9811321, g: 0.7344085, b: 0.19807759, a: 1}
+  m_Color: {r: 0.7264151, g: 0.4964445, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -102,10 +102,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d211b9cffe24c14fa3a1d1b799b0a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
+  man: {fileID: 0}
   max_buildings: 0
-  enemy_position: {fileID: 4478040379119911550}
+  positions:
+  - {fileID: 4478040379119911550}
+  - {fileID: 5904704447787547258}
   enemy_count_txt: {fileID: 7517623353925533279}
-  player_position: {fileID: 5904704447787547258}
   buildings: []
   tokens: []
   enemy_pawns: []
@@ -529,7 +532,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4442034276614795669
 Transform:
   m_ObjectHideFlags: 0
@@ -587,7 +590,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.12727022, a: 1}
+  m_Color: {r: 1, g: 0.9825202, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
