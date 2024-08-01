@@ -9,31 +9,9 @@ public class Player : Pawn
 {
     public int atk_value = 10; // How many dice you roll while attacking
     public List<int> atk_mod = new List<int>();  // List of modifiers to player's attack dice, applies to all dice
+    public override move_type m_type { get; } = move_type.clear_for;
 
     public override Location.move_position move_pos { get; } = Location.move_position.player;
-
-    /*
-     * List valid locations to move to.  
-     */
-    public override List<Location> possible_moves()
-    {
-        
-        if (current_location.GetType() == typeof(Clearing))
-        {
-            // If player is in a clearing, they can move to an ajacent Clearing or Forest
-            return current_location.adjacent_locations;
-        }
-        else if(current_location.GetType() == typeof(Forest))
-        {
-            //If player is in Forest, they can move to adjacent Clearing.
-            return current_location.adjacent_locations.OfType<Clearing>().Cast<Location>().ToList();
-        }
-        else
-        {
-            Debug.LogError("current_location was unknown type");
-            return null;
-        }    
-    }
 
     // Add the player pawns to the Location player pawn list, then do the default
     public override void move(Location new_loc)
