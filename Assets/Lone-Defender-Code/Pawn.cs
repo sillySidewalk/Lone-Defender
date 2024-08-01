@@ -17,6 +17,7 @@ public abstract class Pawn : MonoBehaviour
     [SerializeField] protected int max_ap;// Action points
     [SerializeField] protected int ap;
     protected move_type m_type;
+    public abstract Location.move_position move_pos { get; } // where in the clearing we want to be
     
 
     public enum move_type
@@ -26,9 +27,11 @@ public abstract class Pawn : MonoBehaviour
         clear_for
     }
 
+    
+
     /*
      * Return a list of valid locations (clearings or forests)
-     * TODO: Since there are only 2 types of moves (forests, clearings, forests & clearings), this could be replaced with a simple selector
+     * TODO: Since there are only 3 types of moves (forests, clearings, forests & clearings), this could be replaced with a simple selector
      */
     public abstract List<Location> possible_moves();
 
@@ -37,11 +40,11 @@ public abstract class Pawn : MonoBehaviour
      */
     public abstract void move(Location new_loc);
 
-    // Because enemy pawns and player pawns need to be added to separate lists, must be implemented differently
-    public void move_position(Location new_loc)
+    // Because enemy pawns and player pawns need to be added to separate lists, must be implemented differently. Call in move to set Pawns values
+    protected void move_position(Location new_loc)
     {
         current_location = new_loc;
-        transform.position = new_loc.enemy_position.transform.position;
+        new_loc.add_pawn(this);
     }
 
     /*

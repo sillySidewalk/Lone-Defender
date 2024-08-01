@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Move_btn : MonoBehaviour
 {
+    [SerializeField] Manager man;
+
     public void OnButtonPress()
     {
-        Debug.Log("clicked Move btn");
+        man.change_sub_state("player_move");
     }
 }

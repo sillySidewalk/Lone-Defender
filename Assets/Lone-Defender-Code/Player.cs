@@ -10,6 +10,8 @@ public class Player : Pawn
     public int atk_value = 10; // How many dice you roll while attacking
     public List<int> atk_mod = new List<int>();  // List of modifiers to player's attack dice, applies to all dice
 
+    public override Location.move_position move_pos { get; } = Location.move_position.player;
+
     /*
      * List valid locations to move to.  
      */
@@ -36,7 +38,7 @@ public class Player : Pawn
     // Add the player pawns to the Location player pawn list, then do the default
     public override void move(Location new_loc)
     {
-        new_loc.player_pawns.Add(this);
+        current_location.player_pawns.Remove(this);
         move_position(new_loc);
     }
 
