@@ -22,7 +22,7 @@ public class Location : MonoBehaviour
     [SerializeField] public List<Pawn> player_pawns = new List<Pawn>(); // Pawns are not limited (Probably)
     [SerializeField] public List<Location> adjacent_locations = new List<Location>(); // Clearings and Forests
     [SerializeField] public List<Road> adjacent_roads = new List<Road>(); // slightly different context between forest and clearing, but I think it'll be ok
-    public GameObject possible_move_indicator;
+    public GameObject location_highlighter;
 
     public enum move_position // Which of the move positions to be in, like player or enemy
     {
@@ -30,7 +30,7 @@ public class Location : MonoBehaviour
         player,
     }
 
-    public int get_it()
+    public int get_id()
     {
         return id;
     }
