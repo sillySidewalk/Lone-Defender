@@ -158,7 +158,7 @@ public class Manager : MonoBehaviour
         }
 
         // set choose_sub_state as initial state and call it's start
-        current_sub_state = sub_states["choose_sub_state"];
+        current_sub_state = sub_states["player_choose"];
         current_sub_state.start_state();
     }
 
@@ -187,11 +187,172 @@ public class Manager : MonoBehaviour
         }
     }
 
+
+    /*
+     * If not in the sub_state, change into the sub_state. If in the sub_state already, pass the message onto the substate
+     */
+    public void call_sub_state(String sub_state_name)
+    {
+        if (current_sub_state.sub_state_name != sub_state_name)
+        {
+            change_sub_state(sub_state_name);
+        }
+        else
+        {
+            current_sub_state.call();
+        }
+
+    }
+
+    /*
+     * End the previous sub_state and start the new one
+     */
     public void change_sub_state(String sub_state_name)
     {
         current_sub_state.end_state();
         current_sub_state = sub_states[sub_state_name];
         current_sub_state.start_state();
+    }
+
+    /*
+     * Given a start and end, find the shortest path. Since the graph is so small, I'll just use breadth first instea of A*
+     */
+    public List<Location> find_path(Location start_loc, Location end_loc, Pawn.move_type m_type)
+    {
+        List<Location> visited = new();
+        Queue<Location> to_visit = new();
+        Dictionary<Location, Location> from_loc = new(); // How a given Location was reached, the key is a given Location and the value was how that Location was reached
+
+        to_visit.Enqueue(start_loc);
+        Location current_loc = null;
+        List<Location> adj_loc = new();
+
+        while(to_visit.Count > 0)
+        {
+            current_loc = to_visit.Dequeue();
+
+            adj_loc = adjacent_by_type(current_loc, m_type);
+
+            foreach(Location loc in adj_loc)
+            {
+                if(!visited.Contains(loc))
+                {
+                    visited.Add(loc);
+                    to_visit.Enqueue(loc);
+                    from_loc.Add(loc, current_loc);
+                }
+            }
+        }
+
+        // Backtrack through from_loc to find the path
+        List<Location> path = new();
+        path.Add(end_loc);
+        Location cur_loc = end_loc;
+        Location next_loc = null;
+
+        while (cur_loc != start_loc)
+        {
+            next_loc = from_loc[cur_loc];
+            path.Add(next_loc);
+            cur_loc = next_loc;
+        }
+
+        path.Reverse(); // Flipping it so that start_loc is first
+
+        return path;
+    }
+
+    /*
+     * Get all the adjacent Locations by the type of movement
+     */
+    public List<Location> adjacent_by_type(Location loc, Pawn.move_type m_type)
+    {
+        if (m_type == Pawn.move_type.clearings)
+        {
+            return loc.adjacent_locations.OfType<Clearing>().Cast<Location>().ToList();
+        }
+        else if(m_type == Pawn.move_type.forests)
+        {
+            return loc.adjacent_locations.OfType<Forest>().Cast<Location>().ToList();
+        }
+        else // m_type == Pawn.move_type.clear_for
+        {
+            return loc.adjacent_locations;
+        }
+    }
+
+    /*
+     * For finding all the Locations that are some distance away. Using breadth first.
+     * Returns Locations that are between start_distance and end_distance distance, inclusive
+     * Right now all my use cases involve clearings, so it only counts clearings
+     */
+    public List<Location> Location_by_distance(Location start_loc, int start_distance, int end_distance)
+    {
+        // the outer List is the distance, the inner list is the locations at that distance
+        List<List<Location>> distance_list = new();
+        List<Location> visited = new();
+        Queue<(Location, int)> to_visit = new(); // int is for distance from start_loc
+
+        to_visit.Enqueue((start_loc, 0));
+        Location current_loc = null;
+        int current_dist = 0;
+        List<Location> adj_loc = new();
+
+        // setup the start of distance_list
+        distance_list.Add(new List<Location>());
+        distance_list[0].Add(start_loc);
+        
+
+        while (to_visit.Count > 0)
+        {
+            (Location, int) current_tuple = to_visit.Dequeue();
+            current_loc = current_tuple.Item1;
+            current_dist = current_tuple.Item2;
+
+            adj_loc = adjacent_by_type(current_loc, Pawn.move_type.clearings);
+
+            foreach (Location loc in adj_loc)
+            {
+                if (!visited.Contains(loc))
+                {
+                    visited.Add(loc);
+                    to_visit.Enqueue((loc, current_dist+1));
+                    
+                    if(distance_list.Count - 1 < current_dist) // Check if we need to add the next layer of distance_list
+                    {
+                        distance_list.Add(new List<Location>());
+                    }
+                    distance_list[current_dist].Add(loc);
+                }
+            }
+        }
+
+        debug_print_distance_list(distance_list);
+
+        // Merge all the distances that was asked for
+        List<Location> final_list = new();
+        // This way, if someone asks for a greater distance than exists, they won't go out of bounds for distance_list. Because the distances relate to the index, not the count, we need Count - 1
+        end_distance = Mathf.Clamp(end_distance, end_distance, distance_list.Count-1);
+        for(int i = start_distance; i <= end_distance; i++)
+        {
+            final_list.AddRange(distance_list[i]);
+        }
+
+        return final_list;
+    }
+
+    // For debugging Location_by_distance, printing out the distance list
+    public void debug_print_distance_list(List<List<Location>> dist_list)
+    {
+        int level = 0;
+        foreach(List<Location> loc_list in dist_list)
+        {
+            List<int> ids = loc_list.Select(l => l.get_id()).ToList();
+
+            Debug.Log("Level " + level + ": " + String.Join(",", ids));
+            level++;
+        }
+
     }
 
     private void Update()
@@ -209,6 +370,19 @@ public class Manager : MonoBehaviour
             {
                 Debug.Log(entry.Key + " = " + entry.Value);
             }
+        }
+
+        if(Input.GetKeyDown("1"))
+        {
+            List<Location> locs = Location_by_distance(clearings[0], 1, 4); 
+            List<int> output = locs.Select(l => l.get_id()).ToList();
+
+            Debug.Log(String.Join(",", output));
+        }
+
+        if(Input.GetKeyDown("2"))
+        {
+
         }
     }
 
