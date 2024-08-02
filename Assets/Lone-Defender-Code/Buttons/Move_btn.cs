@@ -8,6 +8,6 @@ public class Move_btn : MonoBehaviour
 
     public void OnButtonPress()
     {
-        man.change_sub_state("player_move");
+        man.call_sub_state("player_move");
     }
 }
