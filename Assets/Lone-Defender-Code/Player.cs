@@ -22,14 +22,7 @@ public class Player : Pawn
 
     public int get_atk_sum()
     {
-        int sum = 0;
-
-        foreach(int mod in atk_mod)
-        {
-            sum += mod;
-        }
-
-        return sum;
+        return atk_mod.Sum();
     }
 
     

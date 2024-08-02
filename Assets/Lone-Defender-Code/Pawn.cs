@@ -69,14 +69,7 @@ public abstract class Pawn : MonoBehaviour
     public void adjust_health(int value)
     {
         hp += value;
-        if(hp > max_hp)
-        {
-            hp = max_hp;
-        }
-        else if(hp < 0)
-        {
-            hp = 0;
-        }
+        Mathf.Clamp(hp, 0, max_hp);
     }
 
     /*
@@ -85,14 +78,7 @@ public abstract class Pawn : MonoBehaviour
     public void adjust_stealth(int value)
     {
         stealth += value;
-        if (stealth > max_stealth)
-        {
-            stealth = max_stealth;
-        }
-        else if (stealth < 0)
-        {
-            stealth = 0;
-        }
+        Mathf.Clamp(stealth, 0, max_stealth);
     }
 
     /*
@@ -101,14 +87,7 @@ public abstract class Pawn : MonoBehaviour
     public void adjust_ap(int value)
     {
         ap += value;
-        if (ap > max_ap)
-        {
-            ap = max_ap;
-        }
-        else if (ap < 0)
-        {
-            ap = 0;
-        }
+        Mathf.Clamp(ap, 0, max_ap);
     }
 
 

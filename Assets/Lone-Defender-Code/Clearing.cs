@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
@@ -16,25 +17,11 @@ public class Clearing : Location
      */
     public int get_en_def_sum()
     {
-        int sum = 0;
-
-        foreach(int i in en_def_mods)
-        {
-            sum += i;
-        }
-
-        return sum;
+        return en_def_mods.Sum();
     }
 
     public int get_p_atk_sum()
     {
-        int sum = 0;
-
-        foreach (int i in p_atk_mods)
-        {
-            sum += i;
-        }
-
-        return sum;
+        return p_atk_mods.Sum();
     }
 }
