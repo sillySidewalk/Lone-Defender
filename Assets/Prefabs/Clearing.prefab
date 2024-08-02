@@ -115,7 +115,7 @@ MonoBehaviour:
   player_pawns: []
   adjacent_locations: []
   adjacent_roads: []
-  possible_move_indicator: {fileID: 5000338674259812518}
+  location_highlighter: {fileID: 5000338674259812518}
   en_def_mods: 
   p_atk_mods: 
 --- !u!61 &7687597934928105305
@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 4442034276614795669}
   - component: {fileID: 2454502131404280347}
   m_Layer: 0
-  m_Name: Possible_move_location_indicator
+  m_Name: Location_highlighter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
