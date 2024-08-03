@@ -464,6 +464,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 36097064743430706, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1284147262}
     - target: {fileID: 36097064743430707, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: m_RootOrder
       value: 1
