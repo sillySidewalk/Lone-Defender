@@ -8,6 +8,7 @@ using UnityEngine;
 public class Player : Pawn
 {
     public int atk_value = 10; // How many dice you roll while attacking
+    public int atk_distance = 1; // How far away they can attack
     public List<int> atk_mod = new List<int>();  // List of modifiers to player's attack dice, applies to all dice
     public override move_type m_type { get; } = move_type.clear_for;
 

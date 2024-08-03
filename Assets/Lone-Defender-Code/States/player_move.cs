@@ -10,7 +10,6 @@ public class player_move : sub_state
 {
     public override string next_state { get; } = "player_choose";
     public override string sub_state_name { get; } = "player_move";
-    player_turn p_turn;
     Pawn selected_pawn;
     List<Location> possible_moves;
     [SerializeField] protected TextMeshProUGUI move_btn_text;
@@ -27,7 +26,7 @@ public class player_move : sub_state
     public override void end_state()
     {
         move_btn_text.text = button_texts[0];
-        remove_highlights();
+        man.remove_all_highlights();
     }
 
     /*
@@ -52,43 +51,15 @@ public class player_move : sub_state
     }
 
     /*
-     * Show the Possible_move_location_indicator
-     */
-    void hightlight_loc()
-    {
-        foreach (Location loc in possible_moves)
-        {
-            
-            loc.location_highlighter.SetActive(true);
-        }
-    }
-
-    /*
-     * Remove all of the highlights
-     */
-    void remove_highlights()
-    {
-        foreach (Location loc in man.clearings)
-        {
-            loc.location_highlighter.SetActive(false);
-        }
-
-        foreach(Location loc in man.forests)
-        {
-            loc.location_highlighter.SetActive(false);
-        }
-    }
-
-    /*
      * Update the current pawn and possible_moves
      * 
      * Used either after a move to update the new move locations or when the selected_pawn is changed
      */
     void update_pawn_moves()
     {
-        remove_highlights();
+        man.remove_all_highlights();
         selected_pawn = p_turn.selected_pawn;
         possible_moves = selected_pawn.possible_moves();
-        hightlight_loc();
+        man.hightlight_loc(possible_moves);
     }
 }
