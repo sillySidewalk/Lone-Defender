@@ -10,7 +10,7 @@ using UnityEngine;
 public abstract class Pawn : MonoBehaviour
 {
     [SerializeField] protected Manager man;
-    [SerializeField] protected Location current_location;
+    [SerializeField] public Location current_location;
     [SerializeField] protected int max_hp;
     [SerializeField] protected int hp;
     [SerializeField] protected int max_stealth;

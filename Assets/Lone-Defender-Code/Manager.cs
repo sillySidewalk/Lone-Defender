@@ -149,6 +149,7 @@ public class Manager : MonoBehaviour
         foreach(sub_state sstate in sstates)
         {
             sub_states.Add(sstate.sub_state_name, sstate);
+            
 
             // If they want a location click event
             if(sstate.loc_click_sub)
@@ -224,6 +225,7 @@ public class Manager : MonoBehaviour
         Dictionary<Location, Location> from_loc = new(); // How a given Location was reached, the key is a given Location and the value was how that Location was reached
 
         to_visit.Enqueue(start_loc);
+        visited.Add(start_loc);
         Location current_loc = null;
         List<Location> adj_loc = new();
 
@@ -286,7 +288,7 @@ public class Manager : MonoBehaviour
      * Returns Locations that are between start_distance and end_distance distance, inclusive
      * Right now all my use cases involve clearings, so it only counts clearings
      */
-    public List<Location> Location_by_distance(Location start_loc, int start_distance, int end_distance)
+    public List<Location> location_by_distance(Location start_loc, int start_distance, int end_distance)
     {
         // the outer List is the distance, the inner list is the locations at that distance
         List<List<Location>> distance_list = new();
@@ -294,6 +296,7 @@ public class Manager : MonoBehaviour
         Queue<(Location, int)> to_visit = new(); // int is for distance from start_loc
 
         to_visit.Enqueue((start_loc, 0));
+        visited.Add(start_loc);
         Location current_loc = null;
         int current_dist = 0;
         List<Location> adj_loc = new();
@@ -315,15 +318,19 @@ public class Manager : MonoBehaviour
             {
                 if (!visited.Contains(loc))
                 {
+                    // The distance of the currenct node
+                    int this_dist = current_dist + 1;
                     visited.Add(loc);
-                    to_visit.Enqueue((loc, current_dist+1));
+                    to_visit.Enqueue((loc, this_dist));
                     
-                    if(distance_list.Count - 1 < current_dist) // Check if we need to add the next layer of distance_list
+                    if(distance_list.Count - 1 < this_dist) // Check if we need to add the next layer of distance_list
                     {
                         distance_list.Add(new List<Location>());
                     }
-                    distance_list[current_dist].Add(loc);
+                    distance_list[this_dist].Add(loc);
                 }
+
+                //Debug.Log("to_visit: " + to_visit.ToArray());
             }
         }
 
@@ -355,6 +362,34 @@ public class Manager : MonoBehaviour
 
     }
 
+    /*
+     * Activate the highlighter
+     */
+    public void hightlight_loc(List<Location> locs)
+    {
+        foreach (Location loc in locs)
+        {
+
+            loc.location_highlighter.SetActive(true);
+        }
+    }
+
+    /*
+     * Remove all of the highlights
+     */
+    public void remove_all_highlights()
+    {
+        foreach (Location loc in clearings)
+        {
+            loc.location_highlighter.SetActive(false);
+        }
+
+        foreach (Location loc in forests)
+        {
+            loc.location_highlighter.SetActive(false);
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown("d"))
@@ -372,18 +407,33 @@ public class Manager : MonoBehaviour
             }
         }
 
+        /* testing location_by_distance
         if(Input.GetKeyDown("1"))
         {
-            List<Location> locs = Location_by_distance(clearings[0], 1, 4); 
+            remove_all_highlights();
+            List<Location> locs = Location_by_distance(clearings[6], 0, 2); 
             List<int> output = locs.Select(l => l.get_id()).ToList();
 
             Debug.Log(String.Join(",", output));
+            hightlight_loc(locs);
         }
+        //*/
 
+        /* Testing path
         if(Input.GetKeyDown("2"))
         {
+            remove_all_highlights();
+            int start = rnd.Next(0, 12);
+            int end = rnd.Next(0, 12);
 
+            List<Location> path = find_path(clearings[start], clearings[end], Pawn.move_type.clearings);
+            hightlight_loc(path);
+
+            List<int> output = path.Select(l => l.get_id()).ToList();
+            Debug.Log("start: " + start + " end: " +  end);
+            Debug.Log(String.Join(",", output));
         }
+        //*/
     }
 
 }
