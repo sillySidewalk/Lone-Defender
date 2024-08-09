@@ -91,6 +91,7 @@ GameObject:
   m_Component:
   - component: {fileID: 36097064743430707}
   - component: {fileID: 36097064743430706}
+  - component: {fileID: 4829743802842845746}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -176,6 +177,22 @@ MonoBehaviour:
   current_sub_state: {fileID: 0}
   current_game_state: {fileID: 0}
   player: {fileID: 0}
+  ran_man: {fileID: 4829743802842845746}
+  en_man: {fileID: 0}
+  dice_value: 10
+--- !u!114 &4829743802842845746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36097064743430704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79bd83d5ce841c4094fc348ec78b99d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 36097064743430706}
 --- !u!1 &36097064770256719
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,6 +254,7 @@ GameObject:
   - component: {fileID: 2034638411180597377}
   - component: {fileID: 7150153044890944238}
   - component: {fileID: 266517552366023510}
+  - component: {fileID: 7185416775519593140}
   m_Layer: 0
   m_Name: Sub_state_object
   m_TagString: Untagged
@@ -272,6 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
+  e_man: {fileID: 0}
   p_turn: {fileID: 2180528563032423778}
   move_btn_text: {fileID: 7283358677923714340}
 --- !u!114 &7150153044890944238
@@ -287,6 +306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
+  e_man: {fileID: 0}
   p_turn: {fileID: 2180528563032423778}
 --- !u!114 &266517552366023510
 MonoBehaviour:
@@ -301,8 +321,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
+  e_man: {fileID: 0}
   p_turn: {fileID: 2180528563032423778}
   btn_text: {fileID: 7790895906796292061}
+--- !u!114 &7185416775519593140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654189267449253632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54f7a8f6f596d6e4da7baf814dbf168d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 36097064743430706}
+  e_man: {fileID: 0}
+  p_turn: {fileID: 0}
 --- !u!1 &5025024221956382221
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,6 +349,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2141879959047786864}
   - component: {fileID: 2180528563032423778}
+  - component: {fileID: 8880579504080324812}
   m_Layer: 0
   m_Name: Game_state_object
   m_TagString: Untagged
@@ -349,6 +386,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
   selected_pawn: {fileID: 0}
+--- !u!114 &8880579504080324812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025024221956382221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1dacbb585142834bbb566b163d89781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 36097064743430706}
+  enemy_buildings: []
 --- !u!1 &6267099372590595351
 GameObject:
   m_ObjectHideFlags: 0
