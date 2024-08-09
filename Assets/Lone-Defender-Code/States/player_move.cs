@@ -16,6 +16,11 @@ public class player_move : sub_state
     List<string> button_texts = new() { "Move", "End Move"};
     public override bool loc_click_sub { get; } = true;
 
+    public override void init()
+    {
+        Debug.LogError("player_move init() needs to be implemented");
+    }
+
     public override void start_state()
     {
         move_btn_text.text = button_texts[1];

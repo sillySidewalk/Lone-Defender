@@ -21,4 +21,6 @@ public abstract class  sub_state : MonoBehaviour
     public abstract void call();
 
     public abstract void loc_click(Location loc);
+
+    public abstract void init();
 }

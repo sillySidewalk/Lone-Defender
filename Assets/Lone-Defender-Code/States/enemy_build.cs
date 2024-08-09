@@ -24,6 +24,11 @@ public class enemy_build : sub_state
         Debug.LogError("This state shouldn't be called");
     }
 
+    public override void init()
+    {
+        Debug.LogError("enemy_build init() needs to be implemented");
+    }
+
     public override void start_state()
     {
         remove_enemy_buildings();
@@ -47,11 +52,13 @@ public class enemy_build : sub_state
         foreach(Building b in e_man.enemy_spawns)
         {
             b_ids.Add(b.id);
+            b.loc = null;
         }
 
         foreach(Building b in e_man.enemy_factory)
         {
             b_ids.Add(b.id);
+            b.loc = null;
         }
 
         // Since enemy buildings are only in clearings
@@ -59,6 +66,25 @@ public class enemy_build : sub_state
         {
             c.buildings.RemoveAll(bd => b_ids.Contains(bd.id));
         }
+    }
+
+    void place_spawns()
+    {
+        // get a random list of clearings to assign spawns to, prevents doubling up. Make a queue for 
+        Queue<Clearing> random_clearing = new Queue<Clearing>(man.ran_man.randomize_list(man.clearings));
+
+        foreach(spawn s in e_man.enemy_spawns)
+        {
+
+        }
+    }
+
+    /*
+     * Placing the factory buildings. If any of the spawns have a null location, they aren't on the map and return early
+     */
+    void place_factories()
+    {
+
     }
 
     

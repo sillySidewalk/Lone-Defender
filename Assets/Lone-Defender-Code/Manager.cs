@@ -125,8 +125,9 @@ public class Manager : MonoBehaviour
         foreach(sub_state sstate in sstates)
         {
             sub_states.Add(sstate.sub_state_name, sstate);
+            sstate.init();
             
-
+            // TODO: move this to the init of each sub_state
             // If they want a location click event
             if(sstate.loc_click_sub)
             {
