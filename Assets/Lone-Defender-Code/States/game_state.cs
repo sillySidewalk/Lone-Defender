@@ -10,4 +10,6 @@ public abstract class game_state : MonoBehaviour
     public abstract void start_state();
 
     public abstract void end_state();
+
+    public abstract void init();
 }

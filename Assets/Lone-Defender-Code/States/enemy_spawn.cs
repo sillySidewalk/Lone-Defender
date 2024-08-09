@@ -15,6 +15,11 @@ public class enemy_spawn : sub_state
         Debug.LogError("This state shouldn't be called");
     }
 
+    public override void start_state()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void end_state()
     {
         throw new System.NotImplementedException();
@@ -25,8 +30,5 @@ public class enemy_spawn : sub_state
         throw new System.NotImplementedException();
     }
 
-    public override void start_state()
-    {
-        throw new System.NotImplementedException();
-    }
+
 }
