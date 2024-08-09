@@ -34,7 +34,7 @@ public class Player : Pawn
      */
     public void attack_clearing(Clearing cl)
     {
-        List<int> atk_rolls = man.d_roll(atk_value);
+        List<int> atk_rolls = man.ran_man.d_roll(atk_value);
 
         int cl_mod = cl.get_p_atk_sum();
 
