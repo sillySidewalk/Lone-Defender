@@ -15,6 +15,11 @@ public class enemy_spawn : sub_state
         Debug.LogError("This state shouldn't be called");
     }
 
+    public override void init()
+    {
+        Debug.LogError("enemy_spawn init() needs to be implemented");
+    }
+
     public override void start_state()
     {
         throw new System.NotImplementedException();

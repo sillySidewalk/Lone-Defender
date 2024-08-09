@@ -16,6 +16,11 @@ public class player_attack : sub_state
 
     public override bool loc_click_sub { get; } = true;
 
+    public override void init()
+    {
+        Debug.LogError("player_attack init() needs to be implemented");
+    }
+
     public override void start_state()
     {
         btn_text.text = button_texts[1];
