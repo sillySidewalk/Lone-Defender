@@ -19,20 +19,11 @@ public class Manager : MonoBehaviour
     public game_state current_game_state;
     protected List<sub_state> loc_clk_sstage_subscription = new List<sub_state>(); // which substates want to be told about a Location click
     public Player player;
-    System.Random rnd = new System.Random();
-    int dice_value = 10; // The type of dice
+    public Random_manager ran_man;
+    public Enemy_mananger en_man;
+    public int dice_value = 10; // The type of dice
     int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
-
-    public enum Gamestate
-    {
-        player_turn,
-    }
-
-    public enum substate
-    {
-        player_defaut,
-        player_move,
-    }
+    int item_id = 0; // The id handed out to other objects that request it
 
     private void Awake()
     {
@@ -44,23 +35,6 @@ public class Manager : MonoBehaviour
     {
         init_sub_states();
         init_game_states();
-    }
-
-
-    /*
-     * Roll the dice n times
-     */
-    public List<int> d_roll(int n)
-    {
-        List<int> return_dice = new List<int>();
-
-        for(int i = 0; i < n; i++)
-        {
-            return_dice.Add(rnd.Next(1, dice_value + 1)); // Max is exclusive, so plus 1
-        }
-        
-        return return_dice;
-
     }
 
 
@@ -86,7 +60,9 @@ public class Manager : MonoBehaviour
         deal_player_hits(hits, cl);
     }
 
-
+    /*
+     * Recieve the player's hits and remove pawns
+     */
     public void deal_player_hits(int hits, Clearing cl)
     {
         List<Pawn> e = cl.enemy_pawns;
@@ -334,7 +310,7 @@ public class Manager : MonoBehaviour
             }
         }
 
-        debug_print_distance_list(distance_list);
+        //debug_print_distance_list(distance_list);
 
         // Merge all the distances that was asked for
         List<Location> final_list = new();
@@ -390,6 +366,13 @@ public class Manager : MonoBehaviour
         }
     }
 
+    public int request_id()
+    {
+        int ret_val = item_id;
+        item_id++;
+        return ret_val;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown("d"))
@@ -411,7 +394,7 @@ public class Manager : MonoBehaviour
         if(Input.GetKeyDown("1"))
         {
             remove_all_highlights();
-            List<Location> locs = Location_by_distance(clearings[6], 0, 2); 
+            List<Location> locs = location_by_distance(forests[5], 0, 2); 
             List<int> output = locs.Select(l => l.get_id()).ToList();
 
             Debug.Log(String.Join(",", output));
