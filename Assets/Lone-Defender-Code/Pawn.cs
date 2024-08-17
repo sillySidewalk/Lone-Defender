@@ -9,6 +9,8 @@ using UnityEngine;
 */
 public abstract class Pawn : MonoBehaviour
 {
+    [SerializeField] protected int _id;
+    public int id { get { return _id; } }
     [SerializeField] protected Manager man;
     [SerializeField] public Location current_location;
     [SerializeField] protected int max_hp;
@@ -28,6 +30,11 @@ public abstract class Pawn : MonoBehaviour
         clear_for // Clearings and Forests
     }
 
+    public virtual void init(int given_id, Location _loc)
+    {
+        _id = given_id;
+        move(_loc);
+    }
 
 
     /*
@@ -54,14 +61,23 @@ public abstract class Pawn : MonoBehaviour
     /*
      * When implemented by subclasses, will add their pawn type to the respective list of the Location to the respective List (enemies to enemy_pawns, player to player_pawns, etc) and then call move_position()
      */
-    public abstract void move(Location new_loc);
-
-    // Because enemy pawns and player pawns need to be added to separate lists, must be implemented differently. Call in move to set Pawns values
-    protected void move_position(Location new_loc)
+    public virtual void move(Location new_loc)
     {
+        if(current_location != null)
+        {
+            current_location.remove_pawn(this);
+        }
         current_location = new_loc;
         new_loc.add_pawn(this);
     }
+
+    // Because enemy pawns and player pawns need to be added to separate lists, must be implemented differently. Call in move to set Pawns values
+    /*
+    protected void move_position(Location new_loc)
+    {
+        
+    }
+    //*/
 
     /*
      * Relative change to health, adding or subtracting

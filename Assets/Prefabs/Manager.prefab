@@ -178,8 +178,16 @@ MonoBehaviour:
   current_game_state: {fileID: 0}
   player: {fileID: 0}
   ran_man: {fileID: 4829743802842845746}
-  en_man: {fileID: 0}
-  dice_value: 10
+  prefab_dict_keys:
+  - spawn
+  - factory
+  - Enemy
+  prefab_dict_values:
+  - {fileID: 2938100198735253364, guid: 5fdc6c701cb16034e81c8cef09fef873, type: 3}
+  - {fileID: 4552081270695166633, guid: 82358be970d2de04b9ad6158c9585a04, type: 3}
+  - {fileID: 3391600186259031413, guid: 1b9599326bbdd5b439d367b35d5fd874, type: 3}
+  sub_state_name_debug: []
+  game_state_name_debug: []
 --- !u!114 &4829743802842845746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +263,7 @@ GameObject:
   - component: {fileID: 7150153044890944238}
   - component: {fileID: 266517552366023510}
   - component: {fileID: 7185416775519593140}
+  - component: {fileID: 8800437702749974864}
   m_Layer: 0
   m_Name: Sub_state_object
   m_TagString: Untagged
@@ -339,6 +348,21 @@ MonoBehaviour:
   man: {fileID: 36097064743430706}
   e_man: {fileID: 0}
   p_turn: {fileID: 0}
+--- !u!114 &8800437702749974864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654189267449253632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e158df115b568f47aedeadc6f3a3d6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 36097064743430706}
+  e_man: {fileID: 0}
+  p_turn: {fileID: 0}
 --- !u!1 &5025024221956382221
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,7 +373,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2141879959047786864}
   - component: {fileID: 2180528563032423778}
-  - component: {fileID: 8880579504080324812}
+  - component: {fileID: 8999572322248301682}
   m_Layer: 0
   m_Name: Game_state_object
   m_TagString: Untagged
@@ -386,7 +410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
   selected_pawn: {fileID: 0}
---- !u!114 &8880579504080324812
+--- !u!114 &8999572322248301682
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -395,11 +419,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5025024221956382221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1dacbb585142834bbb566b163d89781, type: 3}
+  m_Script: {fileID: 11500000, guid: b4d19f10c0fd6934598c4198dac8ebce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
-  enemy_buildings: []
+  enemies: []
+  enemy_spawns: []
+  enemy_factories: []
 --- !u!1 &6267099372590595351
 GameObject:
   m_ObjectHideFlags: 0
@@ -3969,7 +3995,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 924272810390239144, guid: 556492b785498b341aa0adb1c8c74352, type: 3}
       propertyPath: enemy_pawns.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 924272810390239144, guid: 556492b785498b341aa0adb1c8c74352, type: 3}
       propertyPath: player_pawns.Array.size

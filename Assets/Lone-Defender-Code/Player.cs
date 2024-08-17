@@ -18,7 +18,7 @@ public class Player : Pawn
     public override void move(Location new_loc)
     {
         current_location.player_pawns.Remove(this);
-        move_position(new_loc);
+        base.move(new_loc);
     }
 
     public int get_atk_sum()
@@ -34,7 +34,7 @@ public class Player : Pawn
      */
     public void attack_clearing(Clearing cl)
     {
-        List<int> atk_rolls = man.ran_man.d_roll(atk_value);
+        List<int> atk_rolls = man.ran_man.d10(atk_value);
 
         int cl_mod = cl.get_p_atk_sum();
 

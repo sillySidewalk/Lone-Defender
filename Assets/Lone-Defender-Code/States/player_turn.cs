@@ -19,6 +19,6 @@ public class player_turn : game_state
 
     public override void init()
     {
-        Debug.Log("Enemy_manager init() needs to be implemented");
+        Debug.LogError("player_turn init() needs to be implemented");
     }
 }
