@@ -20,10 +20,20 @@ public class Manager : MonoBehaviour
     protected List<sub_state> loc_clk_sstage_subscription = new List<sub_state>(); // which substates want to be told about a Location click
     public Player player;
     public Random_manager ran_man;
-    public Enemy_mananger en_man;
-    public int dice_value = 10; // The type of dice
+    // public Enemy_manager e_man; // Can be access from game_states
+    //public int dice_value = 10; // The type of dice
     int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
     int item_id = 0; // The id handed out to other objects that request it
+
+    // To initialize the prefabs dictionary, have 2 list that will become keys and values
+    public Dictionary<string, GameObject> prefabs = new();
+    public List<string> prefab_dict_keys;
+    public List<GameObject> prefab_dict_values;
+
+
+    [SerializeField] protected List<string> sub_state_name_debug;
+    [SerializeField] protected List<string> game_state_name_debug;
+
 
     private void Awake()
     {
@@ -33,8 +43,9 @@ public class Manager : MonoBehaviour
 
     public void init()
     {
-        init_sub_states();
+        init_prefab_dict();
         init_game_states();
+        init_sub_states();
     }
 
 
@@ -87,9 +98,11 @@ public class Manager : MonoBehaviour
     }
 
     
-    /*
+    /* Shouldn't be used
+     * 
      * Move the enemy pawns. They can only move from one clearing to adjacent clearing     
      */
+    /*
     public void move_enemies(Clearing start_cl, Clearing end_cl, int num)
     {
         List<Pawn> e_pawns = start_cl.enemy_pawns;
@@ -113,6 +126,7 @@ public class Manager : MonoBehaviour
 
         end_cl.enemy_count_txt.text = num.ToString();
     }
+    */
 
 
     /*
@@ -147,11 +161,43 @@ public class Manager : MonoBehaviour
         foreach(game_state gstate in gstates)
         {
             game_states.Add(gstate.game_state_name, gstate);
+            gstate.init();
         }
 
         current_game_state = game_states["player_turn"];
         current_game_state.start_state();
     }
+
+    protected void init_prefab_dict()
+    {
+        if(prefab_dict_keys.Count != prefab_dict_values.Count)
+        {
+            Debug.LogError("prefab_dict_keys.Count != prefab_dict_values.Count, which shouldn't happen");
+            return;
+        }
+
+        for(int i = 0; i < prefab_dict_keys.Count; i++)
+        {
+            prefabs.Add(prefab_dict_keys[i], prefab_dict_values[i]);
+        }
+    }
+
+    /*
+     * Finding the maximum number of max buildings in all the clearings
+     */
+    /*
+    protected int find_max_max_buildings()
+    {
+        int max_max = 0;
+
+        foreach(Clearing cl in clearings)
+        {
+            max_max = Mathf.Max(max_max, cl.max_buildings);
+        }
+        
+        return max_max;
+    }
+    //*/
 
 
     /*
@@ -190,6 +236,13 @@ public class Manager : MonoBehaviour
         current_sub_state.end_state();
         current_sub_state = sub_states[sub_state_name];
         current_sub_state.start_state();
+    }
+
+    public void change_game_state(String game_state_name)
+    {
+        current_game_state.end_state();
+        current_game_state = game_states[game_state_name];
+        current_game_state.start_state();
     }
 
     /*
@@ -378,17 +431,38 @@ public class Manager : MonoBehaviour
     {
         if (Input.GetKeyDown("d"))
         {
-            Debug.Log("sub_states");
-            foreach(KeyValuePair<string, sub_state> entry in sub_states)
-            {
-                Debug.Log(entry.Key + " = " + entry.Value);
-            }
+            // so they appear in the inspector
+            sub_state_name_debug = new List<string>(sub_states.Values.ToList().Select(v => v.sub_state_name));
+            //Debug.Log("sub_states: " + String.Join(",", dictionary_keys));
 
-            Debug.Log("game_states");
-            foreach (KeyValuePair<string, game_state> entry in game_states)
+            // so they appear in the inspector
+            game_state_name_debug = new List<string>(game_states.Values.ToList().Select(v => v.game_state_name));
+            //Debug.Log("game_states: " + string.Join(",", dictionary_values));
+
+            //* Printing the prefabs dictionary
+            foreach(KeyValuePair<string, GameObject> entry in prefabs)
             {
-                Debug.Log(entry.Key + " = " + entry.Value);
+                Debug.Log("prefab " +  entry.Key + ": " + entry.Value);
             }
+            //*/
+            
+        }
+
+        if(Input.GetKeyDown("e"))
+        {
+            change_game_state("Enemy_manager");
+            change_sub_state("enemy_build");
+        }
+
+        if(Input.GetKeyDown("r"))
+        {
+            change_sub_state("enemy_spawn");
+        }
+
+        if( Input.GetKeyDown("s"))
+        {
+            Enemy_manager em = (Enemy_manager)game_states["Enemy_manager"];
+            em.enemies[0].march();
         }
 
         /* testing location_by_distance

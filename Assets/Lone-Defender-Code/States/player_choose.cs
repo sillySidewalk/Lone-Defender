@@ -13,17 +13,17 @@ public class player_choose : sub_state
 
     public override void init()
     {
-        Debug.LogError("player_choose init() needs to be implemented");
+        
     }
 
     public override void end_state()
     {
-        Debug.LogError("player_choose end_state() needs to be implemented");
+       
     }
 
     public override void start_state()
     {
-        Debug.LogError("player_choose start_state() needs to be implemented");
+        
     }
 
     public override void call()
