@@ -15,18 +15,32 @@ public class Random_manager : MonoBehaviour
     /*
      * Roll the dice n times
      */
-    public List<int> d_roll(int n)
+    public List<int> d10(int n)
     {
         List<int> return_dice = new List<int>();
 
         for (int i = 0; i < n; i++)
         {
-            return_dice.Add(rnd.Next(1, man.dice_value + 1)); // Max is exclusive, so plus 1
+            return_dice.Add(rnd.Next(1, 10 + 1)); // Max is exclusive, so plus 1
         }
 
         return return_dice;
 
     }
+
+    public List<int> d4(int n)
+    {
+        List<int> return_dice = new List<int>();
+
+        for (int i = 0; i < n; i++)
+        {
+            return_dice.Add(rnd.Next(1, 4 + 1)); // Max is exclusive, so plus 1
+        }
+
+        return return_dice;
+
+    }
+
 
     /*
      * https://code-maze.com/csharp-randomize-list/
