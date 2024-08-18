@@ -30,7 +30,9 @@ public class Manager : MonoBehaviour
     public List<string> prefab_dict_keys;
     public List<GameObject> prefab_dict_values;
 
+    public float enemy_march_anim_time { get; } = .5f; // How long, in seconds, to wait between enemy march animation
 
+    // Debug items
     [SerializeField] protected List<string> sub_state_name_debug;
     [SerializeField] protected List<string> game_state_name_debug;
 
@@ -46,6 +48,7 @@ public class Manager : MonoBehaviour
         init_prefab_dict();
         init_game_states();
         init_sub_states();
+        init_clearings();
     }
 
 
@@ -76,7 +79,7 @@ public class Manager : MonoBehaviour
      */
     public void deal_player_hits(int hits, Clearing cl)
     {
-        List<Pawn> e = cl.enemy_pawns;
+        List<Enemy> e = cl.enemy_pawns;
         Pawn p;
 
         if(e.Count > 0)
@@ -179,6 +182,14 @@ public class Manager : MonoBehaviour
         for(int i = 0; i < prefab_dict_keys.Count; i++)
         {
             prefabs.Add(prefab_dict_keys[i], prefab_dict_values[i]);
+        }
+    }
+
+    protected void init_clearings()
+    {
+        foreach(Clearing c in clearings)
+        {
+            c.init();
         }
     }
 

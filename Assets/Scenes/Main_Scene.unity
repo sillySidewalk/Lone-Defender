@@ -320,10 +320,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1317336111}
     - target: {fileID: 36097064360062611, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
-      propertyPath: enemy_pawns.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 36097064360062611, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: player_pawns.Array.data[0]
       value: 
       objectReference: {fileID: 1284147262}

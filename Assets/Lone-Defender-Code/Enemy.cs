@@ -34,16 +34,21 @@ public class Enemy : Pawn
     /*
      * Move the enemy one clearing closer to their factory
      */
-    public void march()
+    public Clearing march()
     {
+        //Debug.Log("start march");
         // If we're already at the factory, do nothing
-        if(fact.loc == current_location)
+        if (fact.loc == current_location)
         {
-            return;
+            return null;
         }
         List<Location> path = man.find_path(current_location, fact.loc, m_type);
+        Location next_loc = path[1]; // Since the 0 element is the start location, get 1 element
+        //Debug.Log("march() next loc: " + next_loc.get_id());
 
-        // Since the 0 element is the start location, get 1 element
-        move(path[1]);
+        
+        move(next_loc);
+
+        return (Clearing)next_loc;
     }
 }

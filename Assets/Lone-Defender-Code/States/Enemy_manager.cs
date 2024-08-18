@@ -21,7 +21,7 @@ public class Enemy_manager : game_state
     protected int spawn_factory_amount = 3; // There should be 1 factory per 1 spawn
 
 
-    public int spawn_const_amount { get; } = 2; // When spawning, the amount of enemies is based on spawn_const_amount + (spawn_dice_amount)d4
+    public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is based on spawn_const_amount + (spawn_dice_amount)d4
     public int spawn_dice_amount { get; } = 1;
 
     public override string game_state_name { get; } = "Enemy_manager";
