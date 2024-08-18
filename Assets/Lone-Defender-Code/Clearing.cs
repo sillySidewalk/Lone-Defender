@@ -11,7 +11,18 @@ public class Clearing : Location
 
     [SerializeField] List<int> en_def_mods; // List of the Enemies Defense Modifiers, applies to each attack from player
     [SerializeField] List<int> p_atk_mods; // List of Player attack Modifiers for this location, applies to each attack from player
-    
+    protected Dictionary<int, GameObject> id_to_arrow = new();
+    [SerializeField] List<GameObject> arrow = new(); // For setting up id_to_arrow
+    [SerializeField] List<int> arrow_to = new(); // For setting up id_to_arrow, the clearing id the arrow points to
+
+
+    public void init()
+    {
+        for(int i = 0; i < arrow_to.Count; i++)
+        {
+            id_to_arrow.Add(arrow_to[i], arrow[i]);
+        }
+    }
 
     /*
      * Return the sum of the Enemies Defense Modifiers
@@ -55,5 +66,22 @@ public class Clearing : Location
         base.remove_pawn(p);
 
         update_enemy_cnt_text(p);
+    }
+
+    public void activate_arrow(bool to_activate, List<Clearing> destination_clearings)
+    {
+        /*
+        Debug.Log("start activate_arrow");
+        Debug.Log("destination_clearings: " + string.Join(", ", destination_clearings.Select(c => c.get_id())));
+
+        
+        Debug.Log("id_to_arrow keys: " + string.Join(", ", id_to_arrow.Keys.ToArray()));
+        Debug.Log("id_to_arrow values: " + string.Join(", ", id_to_arrow.Values.ToList()));
+        //*/
+
+        foreach (Clearing c in destination_clearings)
+        {
+            id_to_arrow[c.get_id()].SetActive(to_activate);
+        }
     }
 }

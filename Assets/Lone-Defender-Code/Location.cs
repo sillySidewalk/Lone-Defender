@@ -19,7 +19,7 @@ public abstract class Location : MonoBehaviour
     [SerializeField] public List<Building> buildings = new List<Building>(); // Number of buildings is limited
     [SerializeField] protected List<Transform> building_locs = new List<Transform>(); // Where the buildings will go
     [SerializeField] public List<LD_Token> tokens = new List<LD_Token>(); // Number of tokens is not limited
-    [SerializeField] public List<Pawn> enemy_pawns = new List<Pawn>(); // Pawns are not limited (Probably)
+    [SerializeField] public List<Enemy> enemy_pawns = new (); // Pawns are not limited (Probably)
     [SerializeField] public List<Pawn> player_pawns = new List<Pawn>(); // Pawns are not limited (Probably)
     [SerializeField] public List<Location> adjacent_locations = new List<Location>(); // Clearings and Forests
     [SerializeField] public List<Road> adjacent_roads = new List<Road>(); // slightly different context between forest and clearing, but I think it'll be ok
@@ -45,7 +45,7 @@ public abstract class Location : MonoBehaviour
     {
         if (p.move_pos == move_position.enemy)
         {
-            enemy_pawns.Add(p);
+            enemy_pawns.Add((Enemy)p);
         }
         else if (p.move_pos == move_position.player)
         {
@@ -59,7 +59,7 @@ public abstract class Location : MonoBehaviour
     {
         if(p.move_pos == move_position.enemy)
         {
-            enemy_pawns.Remove(p);
+            enemy_pawns.Remove((Enemy)p);
         }
         else if(p.move_pos == move_position.player)
         {
