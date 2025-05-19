@@ -10,6 +10,17 @@ public class Enemy : Pawn
     public override move_type m_type { get; } = move_type.clearings;
     public factory fact; // The factory they're moving towards
 
+    public override Dictionary<string, List<int>> display_position
+    {
+        get
+        {
+            return new Dictionary<string, List<int>>
+            {
+                { "Clearing", new List<int>(){ 0 } }
+            };
+        }
+    }
+
     public override void init(int given_id, Location _loc)
     {
         Debug.LogError("Enemy should not use this init");
@@ -36,7 +47,6 @@ public class Enemy : Pawn
      */
     public Clearing march()
     {
-        //Debug.Log("start march");
         // If we're already at the factory, do nothing
         if (fact.loc == current_location)
         {
@@ -44,8 +54,6 @@ public class Enemy : Pawn
         }
         List<Location> path = man.find_path(current_location, fact.loc, m_type);
         Location next_loc = path[1]; // Since the 0 element is the start location, get 1 element
-        //Debug.Log("march() next loc: " + next_loc.get_id());
-
         
         move(next_loc);
 

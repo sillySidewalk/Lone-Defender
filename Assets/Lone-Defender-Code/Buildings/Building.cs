@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using TMPro.Examples;
 using UnityEngine;
 
-public class Building : MonoBehaviour
+public abstract class Building : Game_piece
 {
     [SerializeField] protected int _id;
     public int id { get { return _id; } }
     public Location loc; // The location of the buildings
-    [SerializeField] protected Manager man;
+    //[SerializeField] protected Manager man;
     protected Enemy_manager e_man;
+
+
 
     public void init(int init_id, Manager init_man, Enemy_manager init_e_man)
     {
