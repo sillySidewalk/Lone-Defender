@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,8 +14,8 @@ public class Manager : MonoBehaviour
     public List<Forest> forests;
     [SerializeField] protected GameObject game_state_obj;
     [SerializeField] protected GameObject sub_state_obj;
-    public Dictionary<string, game_state> game_states = new();
-    public Dictionary<string, sub_state> sub_states = new();
+    public SerializedDictionary<string, game_state> game_states = new();
+    public SerializedDictionary<string, sub_state> sub_states = new();
     public sub_state current_sub_state;
     public game_state current_game_state;
     protected List<sub_state> loc_clk_sstage_subscription = new List<sub_state>(); // which substates want to be told about a Location click
@@ -25,12 +26,17 @@ public class Manager : MonoBehaviour
     int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
     int item_id = 0; // The id handed out to other objects that request it
 
+
+    //[SerializeField] public dh_gameobject dh_prefabs;
+    [SerializeField] public SerializedDictionary<String, GameObject> prefabs;
     // To initialize the prefabs dictionary, have 2 list that will become keys and values
-    public Dictionary<string, GameObject> prefabs = new();
-    public List<string> prefab_dict_keys;
-    public List<GameObject> prefab_dict_values;
+    //public Dictionary<string, GameObject> prefabs = new();
+    //public List<string> prefab_dict_keys;
+    //public List<GameObject> prefab_dict_values;
 
     public float enemy_march_anim_time { get; } = .5f; // How long, in seconds, to wait between enemy march animation
+
+    [SerializeField] protected List<IDisplay_location_helper> display_setup_list; // A list of all classes that need a display location
 
     // Debug items
     [SerializeField] protected List<string> sub_state_name_debug;
@@ -45,10 +51,10 @@ public class Manager : MonoBehaviour
 
     public void init()
     {
-        init_prefab_dict();
         init_game_states();
         init_sub_states();
         init_clearings();
+        init_player();
     }
 
 
@@ -79,7 +85,7 @@ public class Manager : MonoBehaviour
      */
     public void deal_player_hits(int hits, Clearing cl)
     {
-        List<Enemy> e = cl.enemy_pawns;
+        List<Enemy> e = cl.pawns["enemy"].ConvertAll(x => (Enemy)x);
         Pawn p;
 
         if(e.Count > 0)
@@ -171,6 +177,7 @@ public class Manager : MonoBehaviour
         current_game_state.start_state();
     }
 
+    /* OLD
     protected void init_prefab_dict()
     {
         if(prefab_dict_keys.Count != prefab_dict_values.Count)
@@ -184,6 +191,7 @@ public class Manager : MonoBehaviour
             prefabs.Add(prefab_dict_keys[i], prefab_dict_values[i]);
         }
     }
+    */
 
     protected void init_clearings()
     {
@@ -191,6 +199,11 @@ public class Manager : MonoBehaviour
         {
             c.init();
         }
+    }
+
+    protected void init_player()
+    {
+        player.init(request_id(), clearings[0]);
     }
 
     /*
@@ -450,8 +463,8 @@ public class Manager : MonoBehaviour
             game_state_name_debug = new List<string>(game_states.Values.ToList().Select(v => v.game_state_name));
             //Debug.Log("game_states: " + string.Join(",", dictionary_values));
 
-            //* Printing the prefabs dictionary
-            foreach(KeyValuePair<string, GameObject> entry in prefabs)
+            /* Printing the prefabs dictionary
+            foreach (KeyValuePair<string, GameObject> entry in prefabs1.get_dict())
             {
                 Debug.Log("prefab " +  entry.Key + ": " + entry.Value);
             }
@@ -474,6 +487,11 @@ public class Manager : MonoBehaviour
         {
             Enemy_manager em = (Enemy_manager)game_states["Enemy_manager"];
             em.enemies[0].march();
+        }
+
+        if(Input.GetKeyDown("t"))
+        {
+            clearings[0].print_pawns();
         }
 
         /* testing location_by_distance

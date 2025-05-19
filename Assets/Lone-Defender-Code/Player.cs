@@ -14,10 +14,22 @@ public class Player : Pawn
 
     public override Location.move_position move_pos { get; } = Location.move_position.player;
 
+    public override Dictionary<string, List<int>> display_position 
+    { 
+        get 
+        { 
+            return new Dictionary<string, List<int>>
+            {
+                { "Clearing", new List<int>(){ 0 } },
+                { "Forest", new List<int>(){ 0 } }
+            }; 
+        } 
+    }
+
     // Add the player pawns to the Location player pawn list, then do the default
     public override void move(Location new_loc)
     {
-        current_location.player_pawns.Remove(this);
+        //current_location.player_pawns.Remove(this);
         base.move(new_loc);
     }
 

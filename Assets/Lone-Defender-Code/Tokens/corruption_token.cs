@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class factory : Building
+public class corruption_token : LD_token
 {
+    public override string token_name { get; } = "corruption token";
+
     public override Dictionary<string, List<int>> display_position
     {
         get
@@ -13,12 +15,5 @@ public class factory : Building
                 { "Clearing", new List<int>(){ 0 } },
             };
         }
-    }
-
-    public override Location_display get_location_display(string location_type)
-    {
-        Debug.LogError("Factory needs to implement get_location_display");
-
-        return null;
     }
 }

@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 15034305019663971}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.61, y: 1, z: 1}
+  m_LocalScale: {x: 0.19386484, y: 0.30517763, z: 0.448}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1118111972899969104}
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.5566038, g: 0.5482022, b: 0.5482022, a: 1}
+  m_Color: {r: 0.15886436, g: 0.3962264, b: 0.23198485, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -109,8 +109,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3391600186259031413}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.53574127, y: -0.2518512, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5394731247117151407}
@@ -131,6 +131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 0}
+  ld_name: 
+  _id: 0
   current_location: {fileID: 0}
   max_hp: 0
   hp: 0
@@ -164,8 +166,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8608070067379487848}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0.67, z: -0.001}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.168, z: -0.001}
+  m_LocalScale: {x: 0.31781122, y: 0.30517763, z: 0.448}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1118111972899969104}

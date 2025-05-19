@@ -123,7 +123,7 @@ public class enemy_build : sub_state
             // Look through each location 2 or 3 away to see if there's already a factory, if not add it and break
             foreach(Location l in possible_loc)
             { 
-                if (l.buildings.OfType<factory>().ToList().Count == 0)
+                if (l.get_buildings().OfType<factory>().ToList().Count == 0)
                 {
                     was_added = l.add_building(cur_fact);
                     if(was_added)

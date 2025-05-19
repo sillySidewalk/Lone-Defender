@@ -5,7 +5,25 @@ using UnityEngine;
 public class spawn : Building
 {
     public factory fact; // The factory these units will move towards
-    
+
+    public override Dictionary<string, List<int>> display_position
+    {
+        get
+        {
+            return new Dictionary<string, List<int>>
+            {
+                { "Clearing", new List<int>(){ 0 } },
+            };
+        }
+    }
+
+    public override Location_display get_location_display(string location_type)
+    {
+        Debug.LogError("Spawn needs to implement get_location_display");
+
+        return null;
+    }
+
 
     public void spawn_enemies(int amount)
     {

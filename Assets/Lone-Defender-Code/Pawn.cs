@@ -7,11 +7,11 @@ using UnityEngine;
 /*
     Any kind of moving piece, like the player, player minions, enemy warriors
 */
-public abstract class Pawn : MonoBehaviour
+public abstract class Pawn : Game_piece
 {
     [SerializeField] protected int _id;
     public int id { get { return _id; } }
-    [SerializeField] protected Manager man;
+    //[SerializeField] protected Manager man;
     [SerializeField] public Location current_location;
     [SerializeField] protected int max_hp;
     [SerializeField] protected int hp;
@@ -21,7 +21,8 @@ public abstract class Pawn : MonoBehaviour
     [SerializeField] protected int ap;
     abstract public move_type m_type { get; }
     public abstract Location.move_position move_pos { get; } // where in the clearing we want to be
-    
+
+
 
     public enum move_type
     {
@@ -29,6 +30,8 @@ public abstract class Pawn : MonoBehaviour
         forests,
         clear_for // Clearings and Forests
     }
+
+
 
     public virtual void init(int given_id, Location _loc)
     {
@@ -59,7 +62,7 @@ public abstract class Pawn : MonoBehaviour
     }
 
     /*
-     * When implemented by subclasses, will add their pawn type to the respective list of the Location to the respective List (enemies to enemy_pawns, player to player_pawns, etc) and then call move_position()
+     * When implemented by subclasses, will add their pawn type to the respective list of the Location to the respective List (enemies to enemy_pawns, player to player_pawns, etc) and then call new_loc.add_pawn(this)
      */
     public virtual void move(Location new_loc)
     {
@@ -71,13 +74,6 @@ public abstract class Pawn : MonoBehaviour
         new_loc.add_pawn(this);
     }
 
-    // Because enemy pawns and player pawns need to be added to separate lists, must be implemented differently. Call in move to set Pawns values
-    /*
-    protected void move_position(Location new_loc)
-    {
-        
-    }
-    //*/
 
     /*
      * Relative change to health, adding or subtracting
