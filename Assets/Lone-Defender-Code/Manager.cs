@@ -39,8 +39,8 @@ public class Manager : MonoBehaviour
     [SerializeField] protected List<IDisplay_location_helper> display_setup_list; // A list of all classes that need a display location
 
     // Debug items
-    [SerializeField] protected List<string> sub_state_name_debug;
-    [SerializeField] protected List<string> game_state_name_debug;
+    //[SerializeField] protected List<string> sub_state_name_debug;
+    //[SerializeField] protected List<string> game_state_name_debug;
 
 
     private void Awake()
@@ -51,9 +51,9 @@ public class Manager : MonoBehaviour
 
     public void init()
     {
+        init_clearings();
         init_game_states();
         init_sub_states();
-        init_clearings();
         init_player();
     }
 
@@ -85,7 +85,7 @@ public class Manager : MonoBehaviour
      */
     public void deal_player_hits(int hits, Clearing cl)
     {
-        List<Enemy> e = cl.pawns["enemy"].ConvertAll(x => (Enemy)x);
+        List<Enemy> e = cl.get_enemies();
         Pawn p;
 
         if(e.Count > 0)
@@ -451,24 +451,12 @@ public class Manager : MonoBehaviour
         return ret_val;
     }
 
+    
+
     private void Update()
     {
         if (Input.GetKeyDown("d"))
-        {
-            // so they appear in the inspector
-            sub_state_name_debug = new List<string>(sub_states.Values.ToList().Select(v => v.sub_state_name));
-            //Debug.Log("sub_states: " + String.Join(",", dictionary_keys));
-
-            // so they appear in the inspector
-            game_state_name_debug = new List<string>(game_states.Values.ToList().Select(v => v.game_state_name));
-            //Debug.Log("game_states: " + string.Join(",", dictionary_values));
-
-            /* Printing the prefabs dictionary
-            foreach (KeyValuePair<string, GameObject> entry in prefabs1.get_dict())
-            {
-                Debug.Log("prefab " +  entry.Key + ": " + entry.Value);
-            }
-            //*/
+        {       
             
         }
 
@@ -480,6 +468,7 @@ public class Manager : MonoBehaviour
 
         if(Input.GetKeyDown("r"))
         {
+            change_game_state("Enemy_manager");
             change_sub_state("enemy_spawn");
         }
 

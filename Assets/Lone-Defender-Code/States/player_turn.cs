@@ -19,6 +19,6 @@ public class player_turn : game_state
 
     public override void init()
     {
-        Debug.LogError("player_turn init() needs to be implemented");
+        Debug.LogWarning("player_turn init() needs to be implemented");
     }
 }

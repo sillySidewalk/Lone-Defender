@@ -87,10 +87,10 @@ public class enemy_build : sub_state
 
             Clearing cl = random_clearing.Dequeue();
 
-            bool did_add = cl.add_building(s);
+            bool was_successfull = cl.add_building(s);
 
             // if we failed to add, try again
-            if(!did_add)
+            if(!was_successfull)
             {
                 i--;
             }

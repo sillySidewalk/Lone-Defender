@@ -27,11 +27,15 @@ public class counting_display : Location_display
     {
         go.transform.position = sprite_loc.position;
 
-        loc.get_count(game_piece_type);
+        int count = loc.get_count(game_piece_type);
+
+        count_txt.text = count.ToString();
     }
 
     public override void remove_game_piece(Game_piece go)
     {
-        loc.get_count(game_piece_type);
+        int count = loc.get_count(game_piece_type);
+
+        count_txt.text = count.ToString();
     }
 }

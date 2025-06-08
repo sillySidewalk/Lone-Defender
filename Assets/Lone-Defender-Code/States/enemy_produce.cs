@@ -47,7 +47,7 @@ public class enemy_produce : sub_state
     {
         foreach (factory f in e_man.enemy_factories)
         {
-            int produce_value = (int) Mathf.Floor(f.loc.pawns["enemy"].Count/ 3);
+            int produce_value = (int) Mathf.Floor(f.loc.get_enemies().Count/ 3);
 
             for(int i = 0; i < produce_value; i++)
             {

@@ -20,6 +20,16 @@ public abstract class Building : Game_piece
         e_man = init_e_man;
     }
 
+    public void move(Location new_loc)
+    {
+        if (loc != null)
+        {
+            remove_loc();
+        }
+        loc = new_loc;
+        new_loc.add_building(this);
+    }
+
     // Remove self from the loc, if there is one
     public void remove_loc()
     {

@@ -58,22 +58,6 @@ public abstract class Location : MonoBehaviour
         init_displays();
     }
 
-    /* Replaced by dict_helper
-    public virtual void init_display_dict()
-    {
-        if(display_dict_keys.Count != display_dict_values.Count)
-        {
-            Debug.LogError("display_dict_keys.Count must equal display_dict_values.Count");
-            return;
-        }
-
-        for (int i = 0; i < display_dict_keys.Count; i++)
-        {
-            display_dict.Add(display_dict_keys[i], display_dict_values[i]);
-        }
-    }
-    */
-
     protected void init_displays()
     {
         
@@ -116,10 +100,22 @@ public abstract class Location : MonoBehaviour
         }
     }
 
+    public List<Enemy> get_enemies()
+    {
+        return pawns["Enemy"].ConvertAll(x => (Enemy)x);
+    }
+
     public virtual void add_to_display(Game_piece gp)
     {
         display_dict[gp.GetType().Name].add_game_piece(gp);
     }
+
+    /*
+    public virtual void add_to_displau(Game_piece gp, String gp_type)
+    {
+        display_dict[gp_type].add_game_piece(gp);
+    }
+    */
 
     public virtual void remove_from_display(Game_piece gp)
     {
@@ -137,51 +133,12 @@ public abstract class Location : MonoBehaviour
         add_to_display((Game_piece)p);
     }
 
-    /* Old Version
-     * 
-     * 
-     * 
-     * When a pawn moves to a clearing, Location decides where and what array to put the pawn based on what move_position they have
-     * 
-     * if a location has specific stuff, override, then call base.add_pawn(p)
-     */
-    /*
-    public virtual void add_pawn(Pawn p)
-    {
-        if (p.move_pos == move_position.enemy)
-        {
-            enemy_pawns.Add((Enemy)p);
-        }
-        else if (p.move_pos == move_position.player)
-        {
-            player_pawns.Add(p);
-        }
-
-        p.transform.position = display_positions[(int)p.move_pos].position;
-    }
-    */
-
     public virtual void remove_pawn(Pawn p)
     {        
         pawns[p.GetType().Name].Remove(p);
 
         remove_from_display((Game_piece)p);
     }
-
-
-    /* Old Version
-    public virtual void remove_pawn(Pawn p)
-    {
-        if(p.move_pos == move_position.enemy)
-        {
-            enemy_pawns.Remove((Enemy)p);
-        }
-        else if(p.move_pos == move_position.player)
-        {
-            player_pawns.Remove(p);
-        }
-    }
-    */
 
     /*
      * add a building to this location. If there are already the max buildings, return false, else true
@@ -197,8 +154,7 @@ public abstract class Location : MonoBehaviour
         buildings.Add(b);
         b.loc = this;
 
-        // give the building prefab the correct building position, minus 1 to account for 0 index array
-        b.transform.position = building_locs[buildings.Count - 1].position;
+        add_to_display((Game_piece)b);
 
         return true;
     }
