@@ -18,7 +18,7 @@ public class player_move : sub_state
 
     public override void init()
     {
-        Debug.LogError("player_move init() needs to be implemented");
+        Debug.LogWarning("player_move init() needs to be implemented");
     }
 
     public override void start_state()

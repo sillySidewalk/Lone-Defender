@@ -10,7 +10,7 @@ using UnityEngine;
  */
 public class Location_display : MonoBehaviour
 {
-    protected Location loc;
+    [SerializeField] protected Location loc;
     protected List<int> display_positions;
     
     //protected Dictionary<string, List<int>> position_by_location = new (); // The string is each type of loction, the list is each position it wants (for most it's just one)

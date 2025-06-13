@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 36097064743430707}
   - component: {fileID: 36097064743430706}
   - component: {fileID: 4829743802842845746}
+  - component: {fileID: 1255610808200614039}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -174,10 +175,15 @@ MonoBehaviour:
   - {fileID: 1640782850938107348}
   game_state_obj: {fileID: 5025024221956382221}
   sub_state_obj: {fileID: 2654189267449253632}
+  game_states:
+    _serializedList: []
+  sub_states:
+    _serializedList: []
   current_sub_state: {fileID: 0}
   current_game_state: {fileID: 0}
   player: {fileID: 0}
   ran_man: {fileID: 4829743802842845746}
+  enemy_man: {fileID: 1255610808200614039}
   prefabs:
     _serializedList:
     - Key: spawn
@@ -190,8 +196,6 @@ MonoBehaviour:
       Value: {fileID: 5935705706742043812, guid: bbbafa9b03288f5499082b4a1720c065, type: 3}
     - Key: corruption token
       Value: {fileID: 7338870694817552941, guid: a88c9fb04f5901c4d8b91ca344fd8cab, type: 3}
-  sub_state_name_debug: []
-  game_state_name_debug: []
 --- !u!114 &4829743802842845746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,6 +209,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
+--- !u!114 &1255610808200614039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36097064743430704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19813d45e837fd44e8e8ef72647844bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 36097064743430706}
+  enemies: []
+  enemy_spawns: []
+  enemy_factories: []
 --- !u!1 &36097064770256719
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,7 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
-  e_man: {fileID: 8999572322248301682}
+  e_man: {fileID: 0}
   p_turn: {fileID: 0}
 --- !u!1 &5025024221956382221
 GameObject:
@@ -393,7 +413,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2141879959047786864}
   - component: {fileID: 2180528563032423778}
-  - component: {fileID: 8999572322248301682}
+  - component: {fileID: 4078044898013885454}
   m_Layer: 0
   m_Name: Game_state_object
   m_TagString: Untagged
@@ -430,7 +450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
   selected_pawn: {fileID: 0}
---- !u!114 &8999572322248301682
+--- !u!114 &4078044898013885454
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -439,7 +459,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5025024221956382221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4d19f10c0fd6934598c4198dac8ebce, type: 3}
+  m_Script: {fileID: 11500000, guid: d592ff4c9c6214b4096dc3e7a5676b6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}

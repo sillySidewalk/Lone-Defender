@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 using System.Xml;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
@@ -21,6 +22,7 @@ public class Manager : MonoBehaviour
     protected List<sub_state> loc_clk_sstage_subscription = new List<sub_state>(); // which substates want to be told about a Location click
     public Player player;
     public Random_manager ran_man;
+    public Enemy_manager enemy_man;
     // public Enemy_manager e_man; // Can be access from game_states
     //public int dice_value = 10; // The type of dice
     int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
@@ -29,18 +31,10 @@ public class Manager : MonoBehaviour
 
     //[SerializeField] public dh_gameobject dh_prefabs;
     [SerializeField] public SerializedDictionary<String, GameObject> prefabs;
-    // To initialize the prefabs dictionary, have 2 list that will become keys and values
-    //public Dictionary<string, GameObject> prefabs = new();
-    //public List<string> prefab_dict_keys;
-    //public List<GameObject> prefab_dict_values;
 
     public float enemy_march_anim_time { get; } = .5f; // How long, in seconds, to wait between enemy march animation
 
     [SerializeField] protected List<IDisplay_location_helper> display_setup_list; // A list of all classes that need a display location
-
-    // Debug items
-    [SerializeField] protected List<string> sub_state_name_debug;
-    [SerializeField] protected List<string> game_state_name_debug;
 
 
     private void Awake()
@@ -51,9 +45,10 @@ public class Manager : MonoBehaviour
 
     public void init()
     {
+        init_clearings();
+        init_enemy_man();
         init_game_states();
         init_sub_states();
-        init_clearings();
         init_player();
     }
 
@@ -85,7 +80,7 @@ public class Manager : MonoBehaviour
      */
     public void deal_player_hits(int hits, Clearing cl)
     {
-        List<Enemy> e = cl.pawns["enemy"].ConvertAll(x => (Enemy)x);
+        List<Enemy> e = cl.get_enemies();
         Pawn p;
 
         if(e.Count > 0)
@@ -204,6 +199,11 @@ public class Manager : MonoBehaviour
     protected void init_player()
     {
         player.init(request_id(), clearings[0]);
+    }
+
+    protected void init_enemy_man()
+    {
+        enemy_man.init();
     }
 
     /*
@@ -451,41 +451,39 @@ public class Manager : MonoBehaviour
         return ret_val;
     }
 
+    
+
     private void Update()
     {
         if (Input.GetKeyDown("d"))
-        {
-            // so they appear in the inspector
-            sub_state_name_debug = new List<string>(sub_states.Values.ToList().Select(v => v.sub_state_name));
-            //Debug.Log("sub_states: " + String.Join(",", dictionary_keys));
-
-            // so they appear in the inspector
-            game_state_name_debug = new List<string>(game_states.Values.ToList().Select(v => v.game_state_name));
-            //Debug.Log("game_states: " + string.Join(",", dictionary_values));
-
-            /* Printing the prefabs dictionary
-            foreach (KeyValuePair<string, GameObject> entry in prefabs1.get_dict())
-            {
-                Debug.Log("prefab " +  entry.Key + ": " + entry.Value);
-            }
-            //*/
+        {       
             
         }
 
         if(Input.GetKeyDown("e"))
         {
-            change_game_state("Enemy_manager");
-            change_sub_state("enemy_build");
+            //change_game_state("Enemy_manager_state");
+            //change_sub_state("enemy_build");
+
+            
+            enemy_man.remove_enemy_buildings();
+
+            enemy_man.place_spawns();
+            enemy_man.place_factories();
         }
 
         if(Input.GetKeyDown("r"))
         {
-            change_sub_state("enemy_spawn");
+            //change_game_state("Enemy_manager_state");
+            //change_sub_state("enemy_spawn");
+
+            enemy_man.create_enemies();
+            
         }
 
         if( Input.GetKeyDown("s"))
         {
-            Enemy_manager em = (Enemy_manager)game_states["Enemy_manager"];
+            Enemy_manager_state em = (Enemy_manager_state)game_states["Enemy_manager_state"];
             em.enemies[0].march();
         }
 

@@ -9,12 +9,12 @@ using UnityEngine;
 
 public class multi_fcfs_display : Location_display
 {
-    protected int display_count; // how many displays there are
+    //protected int display_count; // how many displays there are
     protected GameObject display_prefab; // The Location_display to use for each slot
     [SerializeField] protected List<Location_display> displays = new();
-    protected List<Game_piece>  tracked_go = new (); // To keep track of which displays are already used
+    [SerializeField] protected List<Game_piece>  tracked_go; // To keep track of which displays are already used
 
-    
+
 
     /* Old version
     public override void init(List<int> positions)
@@ -34,6 +34,21 @@ public class multi_fcfs_display : Location_display
     */
 
 
+    public override void init(Location l)
+    {
+        base.init(l);
+        init_sub_displays(l);
+        //int display_count = displays.Count;
+        tracked_go = new List<Game_piece>(new Game_piece[displays.Count]);
+    }
+
+    protected void init_sub_displays(Location l)
+    {
+        foreach(Location_display d in displays)
+        {
+            d.init(l);
+        }
+    }
 
 
     /*
@@ -41,9 +56,9 @@ public class multi_fcfs_display : Location_display
      */
     protected int get_available_slot()
     {
-        for(int i = 0; i < display_count;i++)
+        for(int i = 0; i < displays.Count;i++)
         {
-            if (tracked_go[i] == null)
+            if (tracked_go[i] == null)  
             {
                 return i;
             }
@@ -58,7 +73,7 @@ public class multi_fcfs_display : Location_display
         int open_slot = get_available_slot();
         if(open_slot == -1)
         {
-            Debug.LogError("No slot available for new GameObject");
+            Debug.LogError("No slot available for new GameObject Loc: " + loc.get_id());
             return;
         }
 
@@ -68,7 +83,7 @@ public class multi_fcfs_display : Location_display
 
     public override void remove_game_piece(Game_piece go)
     {
-        for(int i = 0; i < display_count; i++)
+        for(int i = 0; i < displays.Count; i++)
         {
             if (tracked_go[i] == go)
             {
