@@ -23,8 +23,7 @@ public class enemy_spawn : sub_state
 
     public override void start_state()
     {
-        StartCoroutine(march_by_clearing());
-
+        StartCoroutine(e_man.march_by_clearing());
         foreach (spawn s in e_man.enemy_spawns)
         {
             int spawn_value = e_man.spawn_const_amount + man.ran_man.d4(e_man.spawn_dice_amount).Sum();
@@ -43,16 +42,26 @@ public class enemy_spawn : sub_state
         throw new System.NotImplementedException();
     }
 
+    /*
     protected IEnumerator march_by_clearing()
     {
 
         HashSet<Clearing> clearing_set = new();
         foreach (Clearing c in man.clearings.ToList())
         {
-            
-
-            foreach (Enemy e in c.pawns["enemy"].ConvertAll(x => (Enemy)x).ToList())
+            // Check if enemies have been added to the pawns list, otherwise create an empty list that will do nothing
+            List<Enemy> enemies = null;
+            if (c.pawns.ContainsKey("Enemy"))
             {
+                 enemies = c.get_enemies();
+            }
+            else
+            {
+                enemies = new List<Enemy>();
+            }
+            
+            foreach (Enemy e in enemies)
+            { 
                 Clearing next = e.march();
                 if (next != null)
                 {
@@ -72,8 +81,5 @@ public class enemy_spawn : sub_state
             clearing_set.Clear();
         }
     }
-
-
-
-
+    */
 }

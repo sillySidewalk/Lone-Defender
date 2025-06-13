@@ -11,11 +11,27 @@ public class multi_stack_display : Location_display
 {
     [SerializeField] protected List<counting_dest_display> displays = new();
 
+    public override void init(Location l)
+    {
+        base.init(l);
+        init_sub_displays(l);
+
+    }
+
+    protected void init_sub_displays(Location l)
+    {
+        foreach(counting_dest_display d in displays)
+        {
+            d.init(l);
+        }
+    }
+
     public override void add_game_piece(Game_piece go)
     {
         Enemy new_e = (Enemy)go;
         int factory_dest = new_e.fact.id;
 
+        // check if there are any other enemies with the same destination
         foreach(counting_dest_display d in displays)
         {
             if(d.factory_dest == factory_dest)
@@ -42,5 +58,21 @@ public class multi_stack_display : Location_display
     public override void remove_game_piece(Game_piece go)
     {
         base.remove_game_piece(go);
+
+        Enemy new_e = (Enemy)go;
+        int factory_dest = new_e.fact.id;
+
+        // check if there are any other enemies with the same destination
+        foreach (counting_dest_display d in displays)
+        {
+            if (d.factory_dest == factory_dest)
+            {
+                d.remove_game_piece(go);
+                return;
+            }
+        }
+
+        // if we never found a display with matching destination, there's an issue
+        Debug.LogError("Didn't find display with matching destination, but we get location to remove from pawn. Shouldn't be possible");
     }
 }
