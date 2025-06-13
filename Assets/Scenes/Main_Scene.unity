@@ -302,17 +302,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5025346704635820371, guid: 88042f4dd55a2d64caf36da039da1e48, type: 3}
   m_PrefabInstance: {fileID: 7818044990725178844}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2125722367 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8999572322248301682, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
-  m_PrefabInstance: {fileID: 36097063912709661}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4d19f10c0fd6934598c4198dac8ebce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &36097063912709661
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -411,7 +400,7 @@ PrefabInstance:
     - target: {fileID: 266517552366023510, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: e_man
       value: 
-      objectReference: {fileID: 2125722367}
+      objectReference: {fileID: 0}
     - target: {fileID: 888215383849467034, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: man
       value: 
@@ -515,7 +504,7 @@ PrefabInstance:
     - target: {fileID: 7185416775519593140, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: e_man
       value: 
-      objectReference: {fileID: 2125722367}
+      objectReference: {fileID: 0}
     - target: {fileID: 7531196763449324536, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: man
       value: 
@@ -527,7 +516,7 @@ PrefabInstance:
     - target: {fileID: 8800437702749974864, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: e_man
       value: 
-      objectReference: {fileID: 2125722367}
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8880579504080324812, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
     - {fileID: 8749985405926006510, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
@@ -591,10 +580,6 @@ PrefabInstance:
       propertyPath: _map
       value: 
       objectReference: {fileID: 1317336111}
-    - target: {fileID: 4063607621489788452, guid: 88042f4dd55a2d64caf36da039da1e48, type: 3}
-      propertyPath: current_location
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5025346704635820371, guid: 88042f4dd55a2d64caf36da039da1e48, type: 3}
       propertyPath: m_Name
       value: Player

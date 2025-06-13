@@ -73,7 +73,7 @@ public class multi_fcfs_display : Location_display
         int open_slot = get_available_slot();
         if(open_slot == -1)
         {
-            Debug.LogError("No slot available for new GameObject");
+            Debug.LogError("No slot available for new GameObject Loc: " + loc.get_id());
             return;
         }
 

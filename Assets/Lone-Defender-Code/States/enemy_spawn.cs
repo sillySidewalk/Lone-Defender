@@ -23,7 +23,7 @@ public class enemy_spawn : sub_state
 
     public override void start_state()
     {
-        // StartCoroutine(march_by_clearing());
+        StartCoroutine(e_man.march_by_clearing());
         foreach (spawn s in e_man.enemy_spawns)
         {
             int spawn_value = e_man.spawn_const_amount + man.ran_man.d4(e_man.spawn_dice_amount).Sum();
@@ -42,6 +42,7 @@ public class enemy_spawn : sub_state
         throw new System.NotImplementedException();
     }
 
+    /*
     protected IEnumerator march_by_clearing()
     {
 
@@ -80,4 +81,5 @@ public class enemy_spawn : sub_state
             clearing_set.Clear();
         }
     }
+    */
 }

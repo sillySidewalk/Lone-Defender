@@ -34,10 +34,10 @@ public class enemy_build : sub_state
 
     public override void start_state()
     {
-        remove_enemy_buildings();
+        e_man.remove_enemy_buildings();
 
-        place_spawns();
-        place_factories();
+        e_man.place_spawns();
+        e_man.place_factories();
     }
 
     public override void end_state()
@@ -49,6 +49,7 @@ public class enemy_build : sub_state
     /*
      * Remove all the enemies buildings from the clearings, since the buildings are static, don't need to remove them from Enemy_manager
      */
+    /*
     void remove_enemy_buildings()
     {
         foreach(Building b in e_man.enemy_spawns)
@@ -61,6 +62,7 @@ public class enemy_build : sub_state
             b.remove_loc();
         }    
     }
+    */
 
 
     /*
@@ -68,6 +70,7 @@ public class enemy_build : sub_state
      * 
      * The process will try to place a spawn alone. Currently assuming there won't be more spawns than clearings
      */
+    /*
     void place_spawns()
     {
         // get a random list of clearings to assign spawns to, prevents doubling up. Make a queue for 
@@ -96,12 +99,14 @@ public class enemy_build : sub_state
             }
         }
     }
+    */
 
     /*
      * Placing the factory buildings. If any of the spawns have a null location, they aren't on the map and return early
      * 
      * The factories should be 2 - 3 spaces away from it's linked spawn and not contain another factory. 
      */
+    /*
     void place_factories()
     {
         // Since each factory is tied to the spawn with the same index, need to use standard for loop
@@ -132,10 +137,9 @@ public class enemy_build : sub_state
                     }
                 }
             }
-
-
         }
     }
+    */
 
     
 

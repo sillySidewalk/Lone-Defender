@@ -10,7 +10,7 @@ using System.Linq;
  * Enemy_manager has a list of sub_states that represent what it does on a given turn. it will have a list of those sub_states that will represent how often they will happen, where they can appear more than once. It then draws from that list to determine the order of the turn types, when one is drawn it's not replaced till all are drawn
  * 
  */
-public class Enemy_manager : game_state
+public class Enemy_manager_state : game_state
 {
     List<sub_state> sub_states; // The possible turn types
     List<sub_state> sstate_bag; // The bag to be drawn from, can have multiple occurances of a given sub_state
@@ -62,23 +62,24 @@ public class Enemy_manager : game_state
 
     public override void init()
     {
-        init_buildings();
+        //init_buildings();
     }
 
+    /*
     protected void init_buildings()
     {
         for (int i = 0; i < spawn_factory_amount; i++)
         {
             GameObject s_go = Instantiate(man.prefabs["spawn"], new Vector3(0, 0, 0), Quaternion.identity);
             spawn s = s_go.GetComponent<spawn>();
-            s.init(man.request_id(), man, this);
+            //s.init(man.request_id(), man, this);
             enemy_spawns.Add(s);
             Clearing c = man.clearings[spawn_starting_clearing[i]];
             s.move(c);
 
             GameObject f_go = Instantiate(man.prefabs["factory"], new Vector3(0, 0, 0), Quaternion.identity);
             factory f = f_go.GetComponent<factory>();
-            f.init(man.request_id(), man, this);
+            //f.init(man.request_id(), man, this);
             enemy_factories.Add(f.GetComponent<factory>());
             c = man.clearings[factory_starting_clearing[i]];
             f.move(c);
@@ -87,12 +88,15 @@ public class Enemy_manager : game_state
             s.fact = f;
         }
     }   
+    */
 
     /*
      * add enemy to enemies list
      */
+    /*
     public void add_enemy(Enemy e)
     {
         enemies.Add(e);
     }
+    */
 }
