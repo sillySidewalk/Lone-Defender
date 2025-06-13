@@ -21,6 +21,7 @@ public class enemy_produce : sub_state
 
     public override void start_state()
     {
+        Debug.LogError("Need to move factory produce to factory");
         factory_produce();
     }
 

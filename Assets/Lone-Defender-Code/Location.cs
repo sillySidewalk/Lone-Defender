@@ -166,6 +166,7 @@ public abstract class Location : MonoBehaviour
     public void remove_building(Building b)
     {
         buildings.Remove(b);
+        remove_from_display(b);
     }
 
 
