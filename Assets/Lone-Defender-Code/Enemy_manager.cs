@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 
 
@@ -21,7 +22,8 @@ public class Enemy_manager : MonoBehaviour
     protected List<int> factory_starting_clearing = new List<int> { 10 };
     List<sub_state> sub_states; // The possible turn types
     List<sub_state> sstate_bag; // The bag to be drawn from, can have multiple occurances of a given sub_state
-    Queue<sub_state> sstate_order; // The order that turn types will occur
+    Queue<string> sstate_order; // The order that turn types will occur
+    [SerializeField] protected int score; // how many victory points the enemy has, which leads to their victorys
 
     public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is based on spawn_const_amount + (spawn_dice_amount)d4
     public int spawn_dice_amount { get; } = 1;
@@ -29,6 +31,7 @@ public class Enemy_manager : MonoBehaviour
     public void init()
     {
         init_buildings();
+        init_sstate_order();
     }
 
     protected void init_buildings()
@@ -54,19 +57,25 @@ public class Enemy_manager : MonoBehaviour
         }
     }
 
+    protected void init_sstate_order()
+    {
+        sstate_order = new Queue<string>( new List<string> { "enemy_spawn", "enemy_spawn", "event", "enemy_spawn", "enemy_produce", "event", "enemy_scoring"});
+    }
+
     /*
      * The order of enemy turn types. After each player turn, the enemy get the next one of these.
      */
     protected void get_order()
-    { 
+    {
         List<sub_state> order = man.ran_man.randomize_list(sstate_bag);
 
         // Add the scoring every 5 - 7 turns
         int scoring_turn = man.ran_man.rnd.Next(5, 8);
 
-        order.Insert(scoring_turn, man.sub_states["scoring"]);
+        order.Insert(scoring_turn, man.sub_states["enemy_scoring"]);
 
-        sstate_order = new Queue<sub_state>(order);
+        // mayb not be necessary and if it is, must be reworked
+        //sstate_order = new Queue<string>(order);
 
     }
 
@@ -75,7 +84,13 @@ public class Enemy_manager : MonoBehaviour
      */
     public string get_next()
     {
-        return sstate_order.Dequeue().sub_state_name;
+        // refill the bag
+        if(sstate_order.Count == 0)
+        {
+            init_sstate_order();
+        }
+
+        return sstate_order.Dequeue();
     }
 
 
@@ -201,7 +216,7 @@ public class Enemy_manager : MonoBehaviour
         }
 
         // Go through each clearing and March all the enemies and activate arrows
-        foreach(var item in enemy_storage) 
+        foreach (var item in enemy_storage)
         {
             foreach (Enemy e in item.Value)
             {
@@ -245,5 +260,53 @@ public class Enemy_manager : MonoBehaviour
 
             e.init(man.request_id(), l, man, this, f);
         }
+    }
+
+    /*
+     * Move the spawn building and creates units. 
+     * 
+     * Spawning happens after moving to ensure that it has some meat shields
+     * 
+     * Not sure if this will stay here, might move it to an enemy game state, but at least it will be functional
+     */
+    public void move_spawn()
+    {
+        // Get all clearings at least one distance away from player, so we don't spawn too close
+        List<Clearing> available_clearings = man.location_by_distance(man.player.current_location, 2, 5).ConvertAll(x => (Clearing)x);
+
+        // get a random list of clearings to assign spawns to, prevents doubling up. Make a queue for 
+        Queue<Clearing> random_clearing = new Queue<Clearing>(man.ran_man.randomize_list(available_clearings));
+
+        foreach (spawn s in enemy_spawns)
+        {
+            if(random_clearing.Count <= 0)
+            {
+                Debug.LogError("ran out of clearings, shouldn't be possible");
+                return;
+            }
+
+            s.remove_loc();
+            
+            // go through random_clearing to find an available slot, in theory there should be one available as I'm only planning for one building, but this is just in case, stop if we run out of clearings
+            bool add_building_success = false;
+            while (!add_building_success || random_clearing.Count <= 0)
+            {
+                add_building_success = random_clearing.Dequeue().add_building(s);
+            }    
+            
+            // if we building didn't add the building, throw an error
+            if(!add_building_success)
+            {
+                Debug.LogError("building failed to add, did we run out of clearings? random_clearing.Count: " + random_clearing.Count);
+            }
+
+        }
+
+        create_enemies();
+    }
+
+    public void inc_score(int x)
+    {
+        score += x;
     }
 }

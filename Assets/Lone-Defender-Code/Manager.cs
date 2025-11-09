@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 using System.Xml;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class Manager : MonoBehaviour
     public List<Forest> forests;
     [SerializeField] protected GameObject game_state_obj;
     [SerializeField] protected GameObject sub_state_obj;
+    [SerializeField] public GameObject events_obj;
     public SerializedDictionary<string, game_state> game_states = new();
     public SerializedDictionary<string, sub_state> sub_states = new();
     public sub_state current_sub_state;
@@ -25,8 +27,9 @@ public class Manager : MonoBehaviour
     public Enemy_manager enemy_man;
     // public Enemy_manager e_man; // Can be access from game_states
     //public int dice_value = 10; // The type of dice
-    int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
-    int item_id = 0; // The id handed out to other objects that request it
+    public int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
+    protected int item_id = 0; // The id handed out to other objects that request it
+    [SerializeField] protected TextMeshProUGUI action_point_ui;
 
 
     //[SerializeField] public dh_gameobject dh_prefabs;
@@ -54,12 +57,12 @@ public class Manager : MonoBehaviour
 
 
     /*
-     * An attack (from player pawn) to Clearing
+     * An attack on enemies to Clearing
      * parameters:
      *      List of ints representing attacks
      *      Clearing they are attacking
      */
-    public void player_pawn_attack(List<int> attacks, Clearing cl)
+    public void attack_enemy(List<int> attacks, Clearing cl)
     {
         int def_mod = cl.get_en_def_sum();
         int hits = 0;
@@ -72,18 +75,18 @@ public class Manager : MonoBehaviour
             }
         }
 
-        deal_player_hits(hits, cl);
+        deal_hits_to_enemy(hits, cl);
     }
 
     /*
-     * Recieve the player's hits and remove pawns
+     * Hit enemies and remove them
      */
-    public void deal_player_hits(int hits, Clearing cl)
+    public void deal_hits_to_enemy(int hits, Clearing cl)
     {
         List<Enemy> e = cl.get_enemies();
         Pawn p;
 
-        if(e.Count > 0)
+        if(e != null && e.Count > 0)
         {
             // For each hit, remove an enemy pawn, stop if we run out of hits or run out of Enemy Pawns
             for (; hits > 0 && e.Count > 0; hits--)
@@ -99,6 +102,30 @@ public class Manager : MonoBehaviour
             Debug.Log("Remaining " + hits + " hits would go to Buildings or Tokens");
         }
         
+    }
+
+    public bool is_player_at(Location loc)
+    {
+        if(player.current_location == loc)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+            
+    }
+
+    // Check if player is at clearing. If so, deliver attacks
+    public void attack_player(List<int> atks, Clearing cl)
+    {
+        if(!is_player_at(cl))
+        {
+            return;
+        }
+
+        player.receive_atk(atks);
     }
 
     
@@ -198,7 +225,7 @@ public class Manager : MonoBehaviour
 
     protected void init_player()
     {
-        player.init(request_id(), clearings[0]);
+        player.init(request_id(), clearings[0], action_point_ui);
     }
 
     protected void init_enemy_man()
@@ -451,25 +478,37 @@ public class Manager : MonoBehaviour
         return ret_val;
     }
 
-    
+    // For debugging, adding corruption_tokens to a location
+    public void add_corruption_to_location(Location loc, int num_tokens)
+    {
+        for(int i = 0; i < num_tokens; i++)
+        {
+            GameObject t_go = Instantiate(prefabs["corruption_token"]);
+            LD_token new_t = t_go.GetComponent<corruption_token>();
+
+            loc.add_token(new_t, new_t.GetType().Name);
+        }
+        
+    }
+
+    public string list_to_string(List<int> l)
+    {
+        return string.Join(", ", l);
+    }
+
 
     private void Update()
     {
         if (Input.GetKeyDown("d"))
-        {       
+        {
+            change_sub_state("LD_event");
+            change_sub_state("player_end_turn");
             
         }
 
-        if(Input.GetKeyDown("e"))
+        if (Input.GetKeyDown("e"))
         {
-            //change_game_state("Enemy_manager_state");
-            //change_sub_state("enemy_build");
-
-            
-            enemy_man.remove_enemy_buildings();
-
-            enemy_man.place_spawns();
-            enemy_man.place_factories();
+            change_sub_state("player_choose");
         }
 
         if(Input.GetKeyDown("r"))
@@ -490,6 +529,11 @@ public class Manager : MonoBehaviour
         if(Input.GetKeyDown("t"))
         {
             clearings[0].print_pawns();
+        }
+
+        if(Input.GetKeyDown("q"))
+        {
+            enemy_man.move_spawn();
         }
 
         /* testing location_by_distance

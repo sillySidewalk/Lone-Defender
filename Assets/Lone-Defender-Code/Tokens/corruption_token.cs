@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class corruption_token : LD_token
 {
-    public override string token_name { get; } = "corruption token";
+    public override string token_name { get; } = "corruption_token";
 
-    public override Dictionary<string, List<int>> display_position
+    public override void add_effect()
     {
-        get
-        {
-            return new Dictionary<string, List<int>>
-            {
-                { "Clearing", new List<int>(){ 0 } },
-            };
-        }
+
     }
 }

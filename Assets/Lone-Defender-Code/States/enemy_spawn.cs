@@ -39,7 +39,7 @@ public class enemy_spawn : sub_state
 
     public override void loc_click(Location loc)
     {
-        throw new System.NotImplementedException();
+        Debug.LogError("Enemy sub_state shouldn't have click");
     }
 
     /*

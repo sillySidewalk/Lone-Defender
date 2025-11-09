@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 6452014821668402387}
   - component: {fileID: 561032051631018051}
   m_Layer: 0
-  m_Name: corruption token
+  m_Name: corruption_token
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 7338870694817552941}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1029641039825311524}
@@ -131,6 +131,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d11714837415d5a499a3bcbcb656bcd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  man: {fileID: 0}
+  ld_name: 
 --- !u!1 &7576115889830016248
 GameObject:
   m_ObjectHideFlags: 0

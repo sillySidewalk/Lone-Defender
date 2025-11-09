@@ -13,12 +13,7 @@ public abstract class Pawn : Game_piece
     public int id { get { return _id; } }
     //[SerializeField] protected Manager man;
     [SerializeField] public Location current_location;
-    [SerializeField] protected int max_hp;
-    [SerializeField] protected int hp;
-    [SerializeField] protected int max_stealth;
-    [SerializeField] protected int stealth;
-    [SerializeField] protected int max_ap;// Action points
-    [SerializeField] protected int ap;
+    
     abstract public move_type m_type { get; }
     public abstract Location.move_position move_pos { get; } // where in the clearing we want to be
 
@@ -75,32 +70,7 @@ public abstract class Pawn : Game_piece
     }
 
 
-    /*
-     * Relative change to health, adding or subtracting
-     */
-    public void adjust_health(int value)
-    {
-        hp += value;
-        Mathf.Clamp(hp, 0, max_hp);
-    }
-
-    /*
-     * Relative change to stealth, adding or subtracting
-     */
-    public void adjust_stealth(int value)
-    {
-        stealth += value;
-        Mathf.Clamp(stealth, 0, max_stealth);
-    }
-
-    /*
-     * Relative change to Action Points, adding or subtracting
-     */
-    public void adjust_ap(int value)
-    {
-        ap += value;
-        Mathf.Clamp(ap, 0, max_ap);
-    }
+    
 
 
 }

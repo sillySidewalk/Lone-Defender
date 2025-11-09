@@ -419,6 +419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddecbeb34b687f846b7e24c262c4aedc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loc: {fileID: 0}
   sprite_loc: {fileID: 4237860374068588891}
-  count_txt: {fileID: 0}
+  count_txt: {fileID: 2026486379382442694}
   game_piece_type: 

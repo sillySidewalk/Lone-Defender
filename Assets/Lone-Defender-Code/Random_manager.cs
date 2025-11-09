@@ -41,6 +41,12 @@ public class Random_manager : MonoBehaviour
 
     }
 
+    //give general access to random numbers
+    public int random_num(int min, int max)
+    {
+        return rnd.Next(min, max+1); // Max is exclusive, so plus 1
+    }
+
 
     /*
      * https://code-maze.com/csharp-randomize-list/
