@@ -25,7 +25,7 @@ public abstract class Location : MonoBehaviour
     //[SerializeField] public Transform player_position; // The position in the location where the player is put
     [SerializeField] protected List<Building> buildings = new (); // Number of buildings is limited
     [SerializeField] protected List<Transform> building_locs = new List<Transform>(); // Where the buildings will go
-    [SerializeField] public Dictionary<string, List<LD_token>> tokens = new (); // string is token type name, Number of tokens is not limited
+    [SerializeField] public SerializedDictionary<string, List<LD_token>> tokens = new (); // string is token type name, Number of tokens is not limited
     //[SerializeField] protected dh_pawns dh_pawns;
     [SerializeField] public SerializedDictionary<String, List<Pawn>> pawns = new();
     //[SerializeField] public List<Enemy> enemy_pawns = new (); // Pawns are not limited (Probably)
@@ -85,6 +85,7 @@ public abstract class Location : MonoBehaviour
      */
     public int get_count(string type)
     {
+        
         if(tokens.ContainsKey(type))
         {
             return tokens[type].Count;
@@ -102,12 +103,29 @@ public abstract class Location : MonoBehaviour
 
     public List<Enemy> get_enemies()
     {
-        return pawns["Enemy"].ConvertAll(x => (Enemy)x);
+        if (pawns.ContainsKey("Enemy"))
+        {
+            return pawns["Enemy"].ConvertAll(x => (Enemy)x);
+        }
+        else
+        {
+            return null;
+        }
+
+        
     }
 
+
+    // Assume display is gamepiece name, other add_to_display if it needs to be specified
     public virtual void add_to_display(Game_piece gp)
     {
         display_dict[gp.GetType().Name].add_game_piece(gp);
+    }
+
+    // Because some tokens share a space (e.g. events), it should be easier to accept a string for the display they want
+    public virtual void add_to_display(Game_piece gp, string display_type)
+    {
+        display_dict[display_type].add_game_piece(gp);
     }
 
     /*
@@ -117,9 +135,9 @@ public abstract class Location : MonoBehaviour
     }
     */
 
-    public virtual void remove_from_display(Game_piece gp)
+    public virtual void remove_from_display(Game_piece gp, string display_type)
     {
-        display_dict[gp.GetType().Name].remove_game_piece(gp);
+        display_dict[display_type].remove_game_piece(gp);
     }
 
     public virtual void add_pawn(Pawn p)
@@ -130,14 +148,14 @@ public abstract class Location : MonoBehaviour
             pawns.Add(p_name, new List<Pawn>());
         }
         pawns[p_name].Add(p);
-        add_to_display((Game_piece)p);
+        add_to_display((Game_piece)p, p.GetType().Name);
     }
 
     public virtual void remove_pawn(Pawn p)
     {        
         pawns[p.GetType().Name].Remove(p);
 
-        remove_from_display((Game_piece)p);
+        remove_from_display((Game_piece)p, p.GetType().Name);
     }
 
     /*
@@ -154,7 +172,7 @@ public abstract class Location : MonoBehaviour
         buildings.Add(b);
         b.loc = this;
 
-        add_to_display((Game_piece)b);
+        add_to_display((Game_piece)b, b.GetType().Name);
 
         return true;
     }
@@ -166,13 +184,52 @@ public abstract class Location : MonoBehaviour
     public void remove_building(Building b)
     {
         buildings.Remove(b);
-        remove_from_display(b);
+        remove_from_display(b, b.GetType().Name);
     }
-
 
     public void add_token(LD_token t)
     {
+        string t_name = t.GetType().Name;
+        if (!tokens.ContainsKey(t_name))
+        {
+            tokens.Add(t_name, new List<LD_token>());
+        }
+        tokens[t_name].Add(t);
+        add_to_display((Game_piece)t);
+        t.loc = this;
+    }
 
+
+    public void add_token(LD_token t, string display_type)
+    {
+        string t_name = t.GetType().Name;
+        if (!tokens.ContainsKey(t_name))
+        {
+            tokens.Add(t_name, new List<LD_token>());
+        }
+        tokens[t_name].Add(t);
+        add_to_display((Game_piece)t, display_type);
+        t.loc = this;
+    }
+
+
+    public void remove_token(LD_token t)
+    {
+        tokens[t.GetType().Name].Remove(t);
+
+        remove_from_display((Game_piece)t, t.GetType().Name);
+
+        t.remove();
+    }
+
+    // For when the display type needs to be specified
+    public void remove_token(LD_token t, string display_type)
+    {
+        tokens[t.GetType().Name].Remove(t);
+
+        remove_from_display((Game_piece)t, display_type);
+
+        t.remove();
     }
 
 

@@ -52,11 +52,11 @@ public class enemy_produce : sub_state
 
             for(int i = 0; i < produce_value; i++)
             {
-                GameObject ct_ob = Instantiate(man.prefabs["corruption token"], new Vector3(0, 0, 0), Quaternion.identity);
+                GameObject ct_ob = Instantiate(man.prefabs["corruption_token"], new Vector3(0, 0, 0), Quaternion.identity);
                 corruption_token ct = ct_ob.GetComponent<corruption_token>();
 
                 Clearing factory_clearing = (Clearing)f.loc;
-                factory_clearing.add_corruption(ct);
+                factory_clearing.add_token(ct, ct.GetType().Name);
             }
         }
     }
