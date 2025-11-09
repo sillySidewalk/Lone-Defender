@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,6 +9,7 @@ public class player_attack : sub_state
     [SerializeField] protected TextMeshProUGUI btn_text;
     List<string> button_texts = new() { "Attack", "End Atk" };
     List<Location> possible_attack_locs;
+    
 
 
     public override string next_state { get; } = "player_choose";
@@ -38,7 +40,15 @@ public class player_attack : sub_state
     {
         if(possible_attack_locs.Contains(loc))
         {
-            p_turn.selected_pawn.attack_clearing((Clearing)loc);
+            bool check_deduct_val = man.player.ap_system.check_deduct_ap(1);
+            if (check_deduct_val)
+            {
+                p_turn.selected_pawn.attack_clearing((Clearing)loc);
+            }
+            else
+            {
+                Debug.Log("Not enough actions points");
+            }
         }
         
     }

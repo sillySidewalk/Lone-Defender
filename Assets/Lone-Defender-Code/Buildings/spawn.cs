@@ -17,12 +17,14 @@ public class spawn : Building
         }
     }
 
+    /*
     public override Location_display get_location_display(string location_type)
     {
         Debug.LogError("Spawn needs to implement get_location_display");
 
         return null;
     }
+    //*/
 
 
     public void spawn_enemies(int amount)

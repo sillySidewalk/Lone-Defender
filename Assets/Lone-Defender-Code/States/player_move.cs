@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,10 +16,11 @@ public class player_move : sub_state
     [SerializeField] protected TextMeshProUGUI move_btn_text;
     List<string> button_texts = new() { "Move", "End Move"};
     public override bool loc_click_sub { get; } = true;
+    [SerializeField] protected SerializedDictionary<string, int> ap_cost = new SerializedDictionary<string, int> { { "clearing", 1 } };
 
     public override void init()
     {
-        Debug.LogWarning("player_move init() needs to be implemented");
+        
     }
 
     public override void start_state()
@@ -50,7 +52,15 @@ public class player_move : sub_state
     {
         if(possible_moves.Contains(loc))
         {
-            selected_pawn.move(loc);
+            bool check_deduct_val = man.player.ap_system.check_deduct_ap(ap_cost["clearing"]);
+            if (check_deduct_val)
+            {
+                selected_pawn.move(loc);
+            }
+            else
+            {
+                Debug.Log("not enough Action Points");
+            }
         }
         update_pawn_moves();
     }

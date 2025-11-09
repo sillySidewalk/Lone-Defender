@@ -46,11 +46,13 @@ public class Clearing : Location
      */
     protected void init_token_dictionary()
     {
-        // Don't overwrite the list at this string if it already exists
+        /* old, not needed
+         * Don't overwrite the list at this string if it already exists
         if(!tokens.ContainsKey("corruption token"))
         {
             tokens["corruption token"] = new List<LD_token>();
         }
+        */
     }
 
     /*
@@ -82,42 +84,8 @@ public class Clearing : Location
         return p_atk_mods.Sum();
     }
 
-    /* OLD and remove
-     * Check the pawns move position to see if it's an enemy and should update the text
-     *
-    public void update_enemy_cnt_text(Pawn p)
-    {
-        if (p.move_pos == Location.move_position.enemy)
-        {
-            enemy_count_txt.text = enemy_pawns.Count.ToString();
-        }
-    }
-    */
-
-
-    /*
-     * If it's an enemy, increase the enemy text
-     * 
-     * then do normal move stuff
-     */
-    /* Old Version, no longer needed
-    public override void add_pawn(Pawn p)
-    {
-        base.add_pawn(p);
-
-        update_enemy_cnt_text(p);
-    }
-    */
-
-    /* Old Version, no longer needed
-    public override void remove_pawn(Pawn p)
-    {
-
-        base.remove_pawn(p);
-
-        update_enemy_cnt_text(p);
-    }
-    */
+    
+    
 
     public void activate_arrow(bool to_activate, List<Clearing> destination_clearings)
     {

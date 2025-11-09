@@ -15,10 +15,12 @@ public class factory : Building
         }
     }
 
+    /*
     public override Location_display get_location_display(string location_type)
     {
         Debug.LogError("Factory needs to implement get_location_display");
 
         return null;
     }
+    //*/
 }
