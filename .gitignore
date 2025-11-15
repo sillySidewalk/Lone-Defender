@@ -75,3 +75,8 @@ crashlytics-build.properties
 # Ignore plugins, not sure about third party stuff, even if it is free
 /Assets/Plugins.meta
 /Assets/Plugins/
+
+
+# Ignore TextMesh Pro
+/Assets/TextMesh Pro
+/Assets/TextMesh Pro.meta
