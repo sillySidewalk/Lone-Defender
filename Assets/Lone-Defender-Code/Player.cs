@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : Pawn
 {
@@ -13,12 +14,15 @@ public class Player : Pawn
     public List<int> atk_mod = new List<int>();  // List of modifiers to player's attack dice, applies to all dice
     public List<int> def_mod = new List<int>(); // List of modifiers to received attacks, aplies to all dice
     public action_point_system ap_system;
+    public stealth_system stealth_sys;
     protected int action_point_max = 12;
     protected int action_points_per_round = 6;
     [SerializeField] protected int max_hp;
     [SerializeField] protected int hp;
-    [SerializeField] protected int max_stealth;
-    [SerializeField] protected int stealth;
+    [SerializeField] public int max_stealth = 10;
+    [SerializeField] public int starting_stealth = 5;
+
+    
 
 
     public override move_type m_type { get; } = move_type.clear_for;
@@ -74,6 +78,11 @@ public class Player : Pawn
 
         man.attack_enemy(atk_rolls, cl);
 
+        // retaliation happens before stealth reduction
+        man.enemy_man.retal_system.attack_retaliation();
+
+        stealth_sys.attack_update_stealth();
+
     }
 
     /* 
@@ -110,18 +119,5 @@ public class Player : Pawn
         hp += value;
         Mathf.Clamp(hp, 0, max_hp);
     }
-
-    /*
-     * Relative change to stealth, adding or subtracting
-     */
-    public void adjust_stealth(int value)
-    {
-        stealth += value;
-        Mathf.Clamp(stealth, 0, max_stealth);
-    }
-
-    
-
-
 
 }

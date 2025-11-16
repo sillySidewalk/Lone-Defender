@@ -24,6 +24,7 @@ public class Enemy_manager : MonoBehaviour
     List<sub_state> sstate_bag; // The bag to be drawn from, can have multiple occurances of a given sub_state
     Queue<string> sstate_order; // The order that turn types will occur
     [SerializeField] protected int score; // how many victory points the enemy has, which leads to their victorys
+    [SerializeField] public retaliation_system retal_system;
 
     public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is based on spawn_const_amount + (spawn_dice_amount)d4
     public int spawn_dice_amount { get; } = 1;
