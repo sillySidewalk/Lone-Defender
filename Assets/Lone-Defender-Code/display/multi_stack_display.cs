@@ -26,17 +26,31 @@ public class multi_stack_display : Location_display
         }
     }
 
+
     public override void add_game_piece(Game_piece go)
     {
-        Enemy new_e = (Enemy)go;
-        int factory_dest = new_e.fact.id;
+        if(go is Enemy)
+        {
+            add_enemy((Enemy) go);
+        }
+        else
+        {
+            Debug.LogError("need to implement adding non-enemy game pieces for multi_stack_display");
+        }
+    }
+
+    protected void add_enemy(Enemy new_e)
+    {
+        int factory_dest = new_e.fact.id; ;
+
+        
 
         // check if there are any other enemies with the same destination
         foreach(counting_dest_display d in displays)
         {
             if(d.factory_dest == factory_dest)
             {
-                d.add_game_piece(go);
+                d.add_game_piece((Game_piece) new_e);
                 return;
             }
         }
@@ -46,7 +60,7 @@ public class multi_stack_display : Location_display
         {
             if (d.factory_dest == -1)
             {
-                d.add_game_piece(go);
+                d.add_game_piece((Game_piece) new_e);
                 return;
             }
         }

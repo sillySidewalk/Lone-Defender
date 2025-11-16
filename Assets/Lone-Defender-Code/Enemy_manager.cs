@@ -25,6 +25,7 @@ public class Enemy_manager : MonoBehaviour
     Queue<string> sstate_order; // The order that turn types will occur
     [SerializeField] protected int score; // how many victory points the enemy has, which leads to their victorys
     [SerializeField] public retaliation_system retal_system;
+    [SerializeField] public int enemy_atk_dice = 2; // how many dice per enemy in attack or retaliation
 
     public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is based on spawn_const_amount + (spawn_dice_amount)d4
     public int spawn_dice_amount { get; } = 1;

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class retaliation_system : MonoBehaviour
 {
-    Manager man;
-    Enemy_manager e_man;
-    Player p;
+    [SerializeField] protected Manager man;
+    [SerializeField] protected Enemy_manager e_man;
+    [SerializeField] protected Player p;
 
     public void init()
     {
@@ -17,17 +17,19 @@ public class retaliation_system : MonoBehaviour
     /*
      * After Player attacks, enemies retaliate
      * 
-     * Retaliation dice is based off number of enemies * 2, then reduced by stealth, then rolled and applied to P
+     * Retaliation dice is based off number of enemies * enemy_managers attack dice, then reduced by stealth, then rolled and applied to P
      */
     public void attack_retaliation()
     {
+        
         Clearing player_clearing = (Clearing) p.current_location;
 
-        int retal_dice = player_clearing.get_enemies().Count * 2;
+        int retal_dice_count = player_clearing.get_count("Enemy") * e_man.enemy_atk_dice;
 
-        retal_dice = p.stealth_sys.reduce_retal_dice(retal_dice);
 
-        List<int> retal_rolls = man.ran_man.d10(retal_dice);
+        retal_dice_count -= p.stealth_sys.retal_reduce_val();
+
+        List<int> retal_rolls = man.ran_man.d10(retal_dice_count);
 
         man.attack_player(retal_rolls, player_clearing);
     }

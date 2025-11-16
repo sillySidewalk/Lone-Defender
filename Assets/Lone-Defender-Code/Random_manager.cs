@@ -15,16 +15,26 @@ public class Random_manager : MonoBehaviour
     /*
      * Roll the dice n times
      */
-    public List<int> d10(int n)
+    public List<int> d10(int dice_count)
     {
         List<int> return_dice = new List<int>();
 
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < dice_count; i++)
         {
             return_dice.Add(rnd.Next(1, 10 + 1)); // Max is exclusive, so plus 1
         }
 
-        return return_dice;
+        if(return_dice.Count > 0 )
+        {
+            Debug.Log("d10 rolls: " + man.list_to_string(return_dice));
+        }
+        else
+        {
+            Debug.Log("d10: rolls: None");
+        }
+
+
+            return return_dice;
 
     }
 

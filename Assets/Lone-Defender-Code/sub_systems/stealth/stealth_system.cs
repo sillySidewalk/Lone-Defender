@@ -5,10 +5,12 @@ using UnityEngine.Events;
 
 public class stealth_system : MonoBehaviour
 {
-    Manager man;
-    Player p;
-    protected int current_stealth;
-    protected int max_stealth;
+    [SerializeField] protected Manager man;
+    [SerializeField] protected Player p;
+    [SerializeField] protected int current_stealth;
+    [SerializeField] protected int max_stealth;
+    [SerializeField] protected int atk_stealth_penalty = 1; // for each attack, reduce current_stealth by this
+    [SerializeField] protected int sth_atk_reduct = 3; // for each point of stealth, reduce atk dice by this
 
     
 
@@ -26,7 +28,7 @@ public class stealth_system : MonoBehaviour
 
     public void attack_update_stealth()
     {
-        update_stealth(-1);
+        update_stealth(-1 * atk_stealth_penalty);
     }
 
 
@@ -34,14 +36,18 @@ public class stealth_system : MonoBehaviour
     {
         current_stealth += value;
 
-        Mathf.Clamp(current_stealth, 0, max_stealth);
+        current_stealth = Mathf.Clamp(current_stealth, 0, max_stealth);
     }
 
     // Reduce retaliation dice by stealth value
-    public int reduce_retal_dice(int retal_dice)
+    public int retal_reduce_val()
     {
-        int ret_dice = retal_dice - (current_stealth * 3);
 
-        return ret_dice;
+        return current_stealth * sth_atk_reduct;
+    }
+
+    public int atk_reduce_val()
+    {
+        return current_stealth * sth_atk_reduct;
     }
 }

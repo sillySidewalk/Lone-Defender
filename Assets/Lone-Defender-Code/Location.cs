@@ -96,7 +96,7 @@ public abstract class Location : MonoBehaviour
         }
         else
         {
-            Debug.LogError("type wasn't found");
+            //Debug.LogError("type wasn't found");
             return 0;
         }
     }
