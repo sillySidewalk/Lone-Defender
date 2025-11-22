@@ -96,23 +96,21 @@ public abstract class Location : MonoBehaviour
         }
         else
         {
-            Debug.LogError("type wasn't found");
+            //Debug.LogError("type wasn't found");
             return 0;
         }
     }
 
     public List<Enemy> get_enemies()
     {
-        if (pawns.ContainsKey("Enemy"))
+
+        if(!pawns.ContainsKey("Enemy"))
         {
-            return pawns["Enemy"].ConvertAll(x => (Enemy)x);
-        }
-        else
-        {
-            return null;
+            pawns.Add("Enemy", new List<Pawn>());
         }
 
-        
+        return pawns["Enemy"].ConvertAll(x => (Enemy)x);
+                
     }
 
 

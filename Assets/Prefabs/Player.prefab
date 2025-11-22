@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3817817812202786207}
   - component: {fileID: 4063607621489788452}
   - component: {fileID: 1885392949718507246}
+  - component: {fileID: 7383048210373006087}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -51,16 +52,16 @@ MonoBehaviour:
   ld_name: 
   _id: 0
   current_location: {fileID: 0}
-  max_hp: 0
-  hp: 0
-  max_stealth: 0
-  stealth: 0
-  max_ap: 0
-  ap: 0
   atk_value: 10
   atk_distance: 1
   atk_mod: 
+  def_mod: 
   ap_system: {fileID: 1885392949718507246}
+  stealth_sys: {fileID: 0}
+  max_hp: 0
+  hp: 0
+  max_stealth: 0
+  starting_stealth: 5
 --- !u!114 &1885392949718507246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,6 +78,20 @@ MonoBehaviour:
   action_p_per_round: 0
   action_points_current: 0
   action_points_ui: {fileID: 0}
+--- !u!114 &7383048210373006087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5025346704635820371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eb3c05f2ad550248b4e94d9e858f764, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 0}
+  p: {fileID: 4063607621489788452}
 --- !u!1 &7095781939187214630
 GameObject:
   m_ObjectHideFlags: 0

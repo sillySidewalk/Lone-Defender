@@ -83,16 +83,17 @@ public class Manager : MonoBehaviour
      */
     public void deal_hits_to_enemy(int hits, Clearing cl)
     {
-        List<Enemy> e = cl.get_enemies();
+        List<Enemy> enemies = cl.get_enemies();
         Pawn p;
 
-        if(e != null && e.Count > 0)
+        if(enemies != null && enemies.Count > 0)
         {
             // For each hit, remove an enemy pawn, stop if we run out of hits or run out of Enemy Pawns
-            for (; hits > 0 && e.Count > 0; hits--)
+            for (; hits > 0 && enemies.Count > 0; hits--)
             {
-                p = e[0];
-                e.RemoveAt(0);
+                p = enemies[0];
+                cl.remove_pawn(p);
+                enemies.RemoveAt(0);
                 Destroy(p.gameObject);
             }
         }
@@ -125,6 +126,11 @@ public class Manager : MonoBehaviour
             return;
         }
 
+        player.receive_atk(atks);
+    }
+
+    public void attack_player(List<int> atks)
+    {
         player.receive_atk(atks);
     }
 
@@ -199,21 +205,7 @@ public class Manager : MonoBehaviour
         current_game_state.start_state();
     }
 
-    /* OLD
-    protected void init_prefab_dict()
-    {
-        if(prefab_dict_keys.Count != prefab_dict_values.Count)
-        {
-            Debug.LogError("prefab_dict_keys.Count != prefab_dict_values.Count, which shouldn't happen");
-            return;
-        }
-
-        for(int i = 0; i < prefab_dict_keys.Count; i++)
-        {
-            prefabs.Add(prefab_dict_keys[i], prefab_dict_values[i]);
-        }
-    }
-    */
+    
 
     protected void init_clearings()
     {
@@ -233,24 +225,7 @@ public class Manager : MonoBehaviour
         enemy_man.init();
     }
 
-    /*
-     * Finding the maximum number of max buildings in all the clearings
-     */
-    /*
-    protected int find_max_max_buildings()
-    {
-        int max_max = 0;
-
-        foreach(Clearing cl in clearings)
-        {
-            max_max = Mathf.Max(max_max, cl.max_buildings);
-        }
-        
-        return max_max;
-    }
-    //*/
-
-
+    
     /*
      * When a Location is clicked, it will call this. Then Manager will check if the current sub state wants to be notified, then send over the information
      */
@@ -497,18 +472,74 @@ public class Manager : MonoBehaviour
     }
 
 
+
+    /* For debugging
+     * 
+     * Since enemies need factory certain displays, either pass in a factory or null, then create minimal factory
+     */
+    public void spawn_enemies(int amount, int clearing_num, factory fact)
+    {
+        if(fact == null)
+        {
+            fact = GameObject.Instantiate(prefabs["factory"]).GetComponent<factory>();
+            fact.init(0, this, enemy_man);
+            fact.loc = clearings[0];
+        }
+
+        Clearing c = clearings[clearing_num];
+        for (int i = 0; i < amount; i++)
+        {
+            GameObject e_obj = Instantiate(prefabs["Enemy"]);
+            Enemy e = e_obj.GetComponent<Enemy>();
+
+            e.init(request_id(), c, this, enemy_man, fact);
+        }
+    }
+
+    /*
+     * testing the retaliation and stealth system
+     * 
+     * Spawn enemies, have player attack
+     * 
+     * A new thing I'm trying, instead of creating tests and then removing them, I'll create a function that contains all the parts of the test, with each part having a number. Then just make key presses call the relevant parts. This way tests can stay around and hopefully be more clear later
+     */
+    public void test_retal_stealth(int part)
+    {
+        // spawn enemies at clearing 0, where player starts
+        if(part == 0)
+        {
+            spawn_enemies(9, 0, null);
+        }
+    }
+
+
+    /*
+     * Testing enemy attack at end of turn
+     */
+    public void test_en_atk(int part)
+    {
+        if(part == 0)
+        {
+            spawn_enemies(9, 0, null);
+        }
+        if(part == 1)
+        {
+            change_sub_state("enemy_attack");
+        }
+    }
+
+
     private void Update()
     {
         if (Input.GetKeyDown("d"))
         {
-            change_sub_state("LD_event");
-            change_sub_state("player_end_turn");
+            test_en_atk(0);
             
         }
 
         if (Input.GetKeyDown("e"))
         {
-            change_sub_state("player_choose");
+            test_en_atk(1);
         }
 
         if(Input.GetKeyDown("r"))
