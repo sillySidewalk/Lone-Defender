@@ -513,17 +513,33 @@ public class Manager : MonoBehaviour
     }
 
 
+    /*
+     * Testing enemy attack at end of turn
+     */
+    public void test_en_atk(int part)
+    {
+        if(part == 0)
+        {
+            spawn_enemies(9, 0, null);
+        }
+        if(part == 1)
+        {
+            change_sub_state("enemy_attack");
+        }
+    }
+
+
     private void Update()
     {
         if (Input.GetKeyDown("d"))
         {
-            test_retal_stealth(0);
+            test_en_atk(0);
             
         }
 
         if (Input.GetKeyDown("e"))
         {
-            change_sub_state("player_choose");
+            test_en_atk(1);
         }
 
         if(Input.GetKeyDown("r"))

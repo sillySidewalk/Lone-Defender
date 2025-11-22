@@ -104,7 +104,7 @@ public class Player : Pawn
 
         foreach(int atk in atks)
         {
-            if(atk > man.min_atk_val)
+            if(atk >= man.min_atk_val)
             {
                 adjust_health(-1);
             }

@@ -246,6 +246,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ea03f7e09363a41853280eb90254ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  man: {fileID: 0}
+  e_man: {fileID: 0}
+  p: {fileID: 0}
 --- !u!1 &36097064770256719
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,6 +316,7 @@ GameObject:
   - component: {fileID: 8931404892783810686}
   - component: {fileID: 7081402041345131391}
   - component: {fileID: 5571328634552592467}
+  - component: {fileID: 4774127000498837812}
   m_Layer: 0
   m_Name: Sub_state_object
   m_TagString: Untagged
@@ -504,6 +508,24 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   event_list: []
+--- !u!114 &4774127000498837812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654189267449253632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dea21222ea8278f43b0b07aa13f056c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 36097064743430706}
+  e_man: {fileID: 1255610808200614039}
+  p_turn: {fileID: 0}
+  on_end_sstate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3774316388218008173
 GameObject:
   m_ObjectHideFlags: 0
