@@ -15,4 +15,17 @@ public static class My_list_extensions
         l.RemoveAt(0);
         return return_val;
     }
+
+    // Remove the last x elements
+    public static void Remove_end<T>(this List<T> l, int x)
+    {
+        if (x >= l.Count)
+        {
+            l.Clear();
+        }
+        else
+        {
+            l.RemoveRange(l.Count - x, x);
+        }
+    }
 }
