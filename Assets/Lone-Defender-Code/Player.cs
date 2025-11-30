@@ -122,4 +122,9 @@ public class Player : Pawn
         hp = Mathf.Clamp(hp, 0, max_hp);
     }
 
+    public List<int> quest_attempts()
+    {
+        return man.ran_man.d10(atk_value);
+    }
+
 }

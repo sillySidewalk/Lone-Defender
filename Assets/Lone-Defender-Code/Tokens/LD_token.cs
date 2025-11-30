@@ -7,10 +7,13 @@ public abstract class LD_token : Game_piece
     [SerializeField] public abstract string token_name { get; }
     [SerializeField] protected Location _loc;
     [SerializeField] public Location loc { get { return _loc; } set { _loc = value; } }
+
+
     
 
     public void move(Location new_loc)
     {
+        Debug.Log("token new_loc transform: " + new_loc.transform.position);
         transform.position = new_loc.transform.position;
         loc = new_loc;
     }

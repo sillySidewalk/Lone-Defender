@@ -207,6 +207,53 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &760825091 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8984752885051626579, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+  m_PrefabInstance: {fileID: 36097063912709661}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &760825095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760825091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 549fee08308ee1e44972a95e7730bca3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 0}
+  qs: {fileID: 0}
+  quest_token: {fileID: 0}
+  q_name: test3
+  loc: {fileID: 0}
+  vp_value: 3
+  difficulty: 3
+  success_reduction: 0
+  progress: 0
+--- !u!114 &760825096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760825091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 549fee08308ee1e44972a95e7730bca3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 0}
+  qs: {fileID: 0}
+  quest_token: {fileID: 0}
+  q_name: test2
+  loc: {fileID: 0}
+  vp_value: 5
+  difficulty: 5
+  success_reduction: 2
+  progress: 0
 --- !u!114 &1284147262 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4063607621489788452, guid: 88042f4dd55a2d64caf36da039da1e48, type: 3}
@@ -547,6 +594,10 @@ PrefabInstance:
     - target: {fileID: 7755096211979533212, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7861563630260751498, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: q_name
+      value: test
       objectReference: {fileID: 0}
     - target: {fileID: 8800437702749974864, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: e_man

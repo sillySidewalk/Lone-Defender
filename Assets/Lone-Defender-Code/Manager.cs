@@ -25,6 +25,7 @@ public class Manager : MonoBehaviour
     public Player player;
     public Random_manager ran_man;
     public Enemy_manager enemy_man;
+    public quest_system qs;
     // public Enemy_manager e_man; // Can be access from game_states
     //public int dice_value = 10; // The type of dice
     public int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
@@ -53,6 +54,7 @@ public class Manager : MonoBehaviour
         init_game_states();
         init_sub_states();
         init_player();
+        init_quest_system();
     }
 
 
@@ -223,6 +225,11 @@ public class Manager : MonoBehaviour
     protected void init_enemy_man()
     {
         enemy_man.init();
+    }
+
+    protected void init_quest_system()
+    {
+        qs.init();
     }
 
     
@@ -466,9 +473,11 @@ public class Manager : MonoBehaviour
         
     }
 
-    public string list_to_string(List<int> l)
+    public void call_quest()
     {
-        return string.Join(", ", l);
+        List<int> dice_attemps = player.quest_attempts();
+
+        qs.attempt_quest_clr( (Clearing) player.current_location, dice_attemps);
     }
 
 
@@ -533,8 +542,17 @@ public class Manager : MonoBehaviour
     {
         if (Input.GetKeyDown("d"))
         {
-            test_en_atk(0);
-            
+            List<int> l = new List<int>() { 0, 1, 2, 3, 4 };
+            int x = 5;
+            if(x >= l.Count)
+            {
+                l.Clear();
+            }
+            else
+            {
+                l.RemoveRange(l.Count - x, x);
+            }
+            Debug.Log(l.List_to_string());
         }
 
         if (Input.GetKeyDown("e"))

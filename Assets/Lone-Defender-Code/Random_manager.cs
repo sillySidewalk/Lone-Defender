@@ -48,7 +48,7 @@ public class Random_manager : MonoBehaviour
     //give general access to random numbers
     public int random_num(int min, int max)
     {
-        return rnd.Next(min, max+1); // Max is exclusive, so plus 1
+        return rnd.Next(min, max + 1); // Max is exclusive, so plus 1
     }
 
 
@@ -59,5 +59,34 @@ public class Random_manager : MonoBehaviour
     {
         var shuffledList = listToShuffle.OrderBy(_ => rnd.Next()).ToList();
         return shuffledList;
+    }
+
+
+    /*
+     * Randomize a list of number for each clearing, shuffle list and return the requested number of numbers
+     * 
+     * allows multiple random clearings without duplicates
+     */
+    public List<int> random_clearing_nums(int num_clearings)
+    {
+        List<int> clearings = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+        clearings = randomize_list(clearings);
+        return clearings.GetRange(0, num_clearings);
+    }
+
+
+    /*
+     * Allows requester to have certain numbers removed, in case those locations are already in use
+     */
+    public List<int> random_clearing_nums(int num_clearings, List<int> exclusions)
+    {
+        List<int> clearings = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+        foreach( int exlusion in exclusions)
+        {
+            clearings.RemoveAt(exlusion);
+        }
+
+        clearings = randomize_list(clearings);
+        return clearings.GetRange(0, num_clearings);
     }
 }

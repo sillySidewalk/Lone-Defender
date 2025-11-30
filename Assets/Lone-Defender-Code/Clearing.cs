@@ -16,11 +16,6 @@ public class Clearing : Location
     [SerializeField] List<GameObject> arrow = new(); // For setting up id_to_arrow
     [SerializeField] List<int> arrow_to = new(); // For setting up id_to_arrow, the clearing id the arrow points to
     //[SerializeField] protected TextMeshProUGUI corruption_token_count_txt;
-    /* This doesn't address the issue of tokens like corruption having their own counter
-    protected List<string> token_location_name = new();
-    protected List<GameObject> token_location_pos;
-    protected Dictionary<string, GameObject> token_locations = new();
-    */
     public override string location_type { get; } = "Clearing";
 
 
@@ -30,7 +25,6 @@ public class Clearing : Location
 
         init_arrow_dictionary();
         init_token_dictionary();
-        //init_token_location_dictionary();
     }
 
     protected void init_arrow_dictionary()
@@ -55,21 +49,7 @@ public class Clearing : Location
         */
     }
 
-    /*
-    protected void init_token_location_dictionary()
-    {
-        if (token_location_name.Count != token_location_pos.Count)
-        {
-            Debug.LogError("Clearing init_token_location_dictionary: token_location_name.Count must equal token_location_pos.Count");
-            return;
-        }
-
-        for(int i = 0; i < token_location_name.Count; i++)
-        {
-
-        }
-    }
-    //*/
+    
 
     /*
      * Return the sum of the Enemies Defense Modifiers
@@ -115,11 +95,5 @@ public class Clearing : Location
         }
     }
     
-    /*
-    public void add_token(LD_token t)
-    {
-        tokens[t.token_name].Add(t);
-
-    }
-    */
+    
 }
