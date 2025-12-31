@@ -36,14 +36,6 @@ public class player_move : sub_state
         man.remove_all_highlights();
     }
 
-    /*
-     * End the sub_state and transiton back to choose_sub_state
-     */
-    public override void call()
-    {
-        man.change_sub_state(next_state);
-    }
-
 
     /*
      * Manager passed us a Location click, if the pawn can move there, then move

@@ -13,7 +13,7 @@ public class player_end_turn : sub_state
 
     public override bool loc_click_sub => false;
 
-    public override void call()
+    public override void call(string sub_state_name)
     {
         Debug.LogError("player_end_turn should not be called");
     }

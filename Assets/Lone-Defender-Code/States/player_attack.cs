@@ -53,11 +53,6 @@ public class player_attack : sub_state
         
     }
 
-    public override void call()
-    {
-        man.change_sub_state(next_state);
-    }
-
     void update_locations()
     {
         Player cur_p = p_turn.selected_pawn;

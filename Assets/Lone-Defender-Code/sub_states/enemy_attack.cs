@@ -14,7 +14,7 @@ public class enemy_attack : sub_state
 
     public override bool loc_click_sub => false;
 
-    public override void call()
+    public override void call(string sub_state_name)
     {
         Debug.LogError("enemy_attack sub_state shouldn't be called");
     }

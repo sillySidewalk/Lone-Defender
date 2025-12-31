@@ -12,7 +12,7 @@ public class enemy_scoring : sub_state
     public override bool loc_click_sub { get; } = false;
 
     // Shouldn't be called
-    public override void call()
+    public override void call(string sub_state_name)
     {
         Debug.LogError("Enemy sub_state shouldn't be called");
     }

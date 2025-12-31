@@ -47,7 +47,7 @@ public class LD_event_state : sub_state
         Debug.LogError("LD_event shouldn't have loc_click");
     }
 
-    public override void call()
+    public override void call(string sub_state_name)
     {
         Debug.LogError("Enemy sub_state shouldn't be called");
     }

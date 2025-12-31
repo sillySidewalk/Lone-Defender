@@ -14,7 +14,7 @@ public class enemy_produce : sub_state
 
     public override bool loc_click_sub { get; } = false;
 
-    public override void call()
+    public override void call(string sub_state_name)
     {
         Debug.LogError("enemy_produce shouldn't be called");
     }

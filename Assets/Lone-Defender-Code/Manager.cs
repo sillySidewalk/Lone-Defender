@@ -263,18 +263,11 @@ public class Manager : MonoBehaviour
 
 
     /*
-     * If not in the sub_state, change into the sub_state. If in the sub_state already, pass the message onto the substate
+     * Pass to substate, mostly for changing state
      */
     public void call_sub_state(String sub_state_name)
     {
-        if (current_sub_state.sub_state_name != sub_state_name)
-        {
-           change_sub_state(sub_state_name);
-        }
-        else
-        {
-            current_sub_state.call();
-        }
+        current_sub_state.call(sub_state_name);
 
         
     }
@@ -562,17 +555,7 @@ public class Manager : MonoBehaviour
 
         if (Input.GetKeyDown("d"))
         {
-            List<int> l = new List<int>() { 0, 1, 2, 3, 4 };
-            int x = 5;
-            if(x >= l.Count)
-            {
-                l.Clear();
-            }
-            else
-            {
-                l.RemoveRange(l.Count - x, x);
-            }
-            Debug.Log(l.List_to_string());
+            
         }
 
         if (Input.GetKeyDown("e"))

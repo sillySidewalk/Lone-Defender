@@ -26,9 +26,9 @@ public class player_choose : sub_state
         
     }
 
-    public override void call()
+    public override void called()
     {
-        Debug.LogError("player_choose call() shouldn't be called");
+        Debug.LogError("player_choose shouldn't reach called()");
     }
 
     public override void loc_click(Location loc)

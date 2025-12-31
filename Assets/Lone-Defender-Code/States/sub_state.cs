@@ -18,9 +18,25 @@ public abstract class  sub_state : MonoBehaviour
     public abstract void end_state();
 
     /*
-     * When the same mechanism to change into this sub_state is called (usually a button), gets passed to the sub_state (usually to end the sub_state)
+     * If call is this, usually return to player_choose. If call is not us, change into that state
      */
-    public abstract void call();
+    public virtual void call(string call_sub_state_name)
+    {
+        if(call_sub_state_name != sub_state_name)
+        {
+            man.change_sub_state(call_sub_state_name);
+        }
+        else
+        {
+            called();
+        }
+    }
+
+    // if we are called while the current state
+    public virtual void called()
+    {
+        man.change_sub_state(next_state);
+    }
 
     public abstract void loc_click(Location loc);
 
