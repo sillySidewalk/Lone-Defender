@@ -26,6 +26,8 @@ public class Manager : MonoBehaviour
     public Random_manager ran_man;
     public Enemy_manager enemy_man;
     public quest_system qs;
+    protected string next_state = null;
+    protected string next_sub_state = null;
     // public Enemy_manager e_man; // Can be access from game_states
     //public int dice_value = 10; // The type of dice
     public int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
@@ -55,6 +57,21 @@ public class Manager : MonoBehaviour
         init_sub_states();
         init_player();
         init_quest_system();
+
+
+    }
+
+    // Check if we need to update the current state after something happens
+    protected void check_state()
+    {
+        if(next_state != null && next_state != current_game_state.game_state_name)
+        {
+            change_game_state(next_state);
+        }
+        if(next_sub_state != null && next_sub_state != current_sub_state.sub_state_name)
+        {
+            change_sub_state(next_sub_state);
+        }
     }
 
 
@@ -252,13 +269,14 @@ public class Manager : MonoBehaviour
     {
         if (current_sub_state.sub_state_name != sub_state_name)
         {
-            change_sub_state(sub_state_name);
+           change_sub_state(sub_state_name);
         }
         else
         {
             current_sub_state.call();
         }
 
+        
     }
 
     /*
@@ -484,7 +502,7 @@ public class Manager : MonoBehaviour
 
     /* For debugging
      * 
-     * Since enemies need factory certain displays, either pass in a factory or null, then create minimal factory
+     * Since enemies need factory for certain displays, either pass in a factory or null, then create minimal factory
      */
     public void spawn_enemies(int amount, int clearing_num, factory fact)
     {
@@ -540,6 +558,8 @@ public class Manager : MonoBehaviour
 
     private void Update()
     {
+        check_state();
+
         if (Input.GetKeyDown("d"))
         {
             List<int> l = new List<int>() { 0, 1, 2, 3, 4 };
