@@ -2,6 +2,7 @@ using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
@@ -17,12 +18,12 @@ public class Enemy_manager : MonoBehaviour
     public List<Enemy> enemies = new();
     public List<spawn> enemy_spawns; // Because there are only 2 types of buildings and a spawn is always attached to a factory, easier to just have a list of each
     public List<factory> enemy_factories;
-    protected int spawn_factory_amount = 1; // How many spawns and factories to make
-    protected List<int> spawn_starting_clearing = new List<int>() { 1 }; // Which clearing the given spawn should start in 
-    protected List<int> factory_starting_clearing = new List<int> { 10 };
-    List<sub_state> sub_states; // The possible turn types
-    List<sub_state> sstate_bag; // The bag to be drawn from, can have multiple occurances of a given sub_state
-    Queue<string> sstate_order; // The order that turn types will occur
+    [SerializeField] protected int spawn_factory_amount = 1; // How many spawns and factories to make
+    [SerializeField] protected List<int> spawn_starting_clearing = new List<int>() { 1 }; // Which clearing the given spawn should start in 
+    [SerializeField] protected List<int> factory_starting_clearing = new List<int> { 10 };
+    [SerializeField] List<sub_state> sub_states; // The possible turn types
+    [SerializeField] List<string> sstate_bag = new List<string>(); // The bag to be drawn from, can have multiple occurances of a given sub_state
+    [SerializeField] List<string> sstate_order; // The order that turn types will occur
     [SerializeField] protected int score; // how many victory points the enemy has, which leads to their victorys
     [SerializeField] public retaliation_system retal_system;
     [SerializeField] public int enemy_atk_dice = 2; // how many dice per enemy in attack or retaliation
@@ -33,7 +34,8 @@ public class Enemy_manager : MonoBehaviour
     public void init()
     {
         init_buildings();
-        init_sstate_order();
+        init_substate_bag();
+        fill_sstate_order();
     }
 
     protected void init_buildings()
@@ -59,9 +61,26 @@ public class Enemy_manager : MonoBehaviour
         }
     }
 
-    protected void init_sstate_order()
+    protected void init_substate_bag()
     {
-        sstate_order = new Queue<string>( new List<string> { "enemy_spawn", "enemy_spawn", "event", "enemy_spawn", "enemy_produce", "event", "enemy_scoring"});
+        // Since I will probably populate this in the inspector, this will check if bag is null
+        if(sstate_bag.Count == 0)
+        {
+            Debug.LogError("Enemy_manager sub_state bag is empty");
+        }
+
+    }
+
+    /*
+     * Fill sstate_order from sstate_bag, doesn't change sstate_bag
+     */
+    protected void fill_sstate_order()
+    {
+        List<string> temp_sstate_bag = new List<string>(sstate_bag);
+
+        // Add the scoring every 5 - 7 turns, because turns consist of 2 enemy actions and I want scoring to be the second action of the turn, it's (turn_number * 2) -1
+        int scoring_turn = man.ran_man.rnd.Next(5, 8);
+        int scoring_action_num = (scoring_turn * 2) - 1;
     }
 
     /*
@@ -69,16 +88,12 @@ public class Enemy_manager : MonoBehaviour
      */
     protected void get_order()
     {
-        List<sub_state> order = man.ran_man.randomize_list(sstate_bag);
+        List<string> order = man.ran_man.randomize_list(sstate_bag);
 
         // Add the scoring every 5 - 7 turns
         int scoring_turn = man.ran_man.rnd.Next(5, 8);
 
-        order.Insert(scoring_turn, man.sub_states["enemy_scoring"]);
-
-        // mayb not be necessary and if it is, must be reworked
-        //sstate_order = new Queue<string>(order);
-
+        order.Insert(scoring_turn, "enemy_scoring");
     }
 
     /*
@@ -89,7 +104,7 @@ public class Enemy_manager : MonoBehaviour
         // refill the bag
         if(sstate_order.Count == 0)
         {
-            init_sstate_order();
+            fill_sstate_order();
         }
 
         return sstate_order.Dequeue();
