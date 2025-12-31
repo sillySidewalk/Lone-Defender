@@ -12,7 +12,7 @@ using System.Linq;
  */
 public class Enemy_manager_state : game_state
 {
-    List<sub_state> sub_states; // The possible turn types
+    private List<sub_state> sub_states; // The possible turn types
     List<sub_state> sstate_bag; // The bag to be drawn from, can have multiple occurances of a given sub_state
     Queue<sub_state> sstate_order; // The order that turn types will occur
     public List<Enemy> enemies = new();
@@ -23,13 +23,13 @@ public class Enemy_manager_state : game_state
     protected List<int> factory_starting_clearing = new List<int> { 10 };
 
 
-    public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is based on spawn_const_amount + (spawn_dice_amount)d4
+    public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is based on: spawn_const_amount + (spawn_dice_amount)d4
     public int spawn_dice_amount { get; } = 1;
 
     public override string game_state_name { get; } = "Enemy_manager";
 
 
-    void get_order()
+    public void get_order()
     {
         List<sub_state> order = man.ran_man.randomize_list(sstate_bag);
 
@@ -62,41 +62,8 @@ public class Enemy_manager_state : game_state
 
     public override void init()
     {
-        //init_buildings();
+        
     }
 
-    /*
-    protected void init_buildings()
-    {
-        for (int i = 0; i < spawn_factory_amount; i++)
-        {
-            GameObject s_go = Instantiate(man.prefabs["spawn"], new Vector3(0, 0, 0), Quaternion.identity);
-            spawn s = s_go.GetComponent<spawn>();
-            //s.init(man.request_id(), man, this);
-            enemy_spawns.Add(s);
-            Clearing c = man.clearings[spawn_starting_clearing[i]];
-            s.move(c);
-
-            GameObject f_go = Instantiate(man.prefabs["factory"], new Vector3(0, 0, 0), Quaternion.identity);
-            factory f = f_go.GetComponent<factory>();
-            //f.init(man.request_id(), man, this);
-            enemy_factories.Add(f.GetComponent<factory>());
-            c = man.clearings[factory_starting_clearing[i]];
-            f.move(c);
-
-            // add factory to spawn
-            s.fact = f;
-        }
-    }   
-    */
-
-    /*
-     * add enemy to enemies list
-     */
-    /*
-    public void add_enemy(Enemy e)
-    {
-        enemies.Add(e);
-    }
-    */
+   
 }

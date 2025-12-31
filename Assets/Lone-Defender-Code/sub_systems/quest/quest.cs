@@ -40,6 +40,13 @@ public class quest : MonoBehaviour
     // player try for successess on quest
     public void attempt_progress(List<int> attempts)
     {
+        bool check_deduct_val = man.player.ap_system.check_deduct_ap(1);
+        if (!check_deduct_val)
+        {
+            Debug.Log("Not enough actions points");
+            return;
+        }
+
         int successes = 0;
 
         foreach(int attempt in attempts)
