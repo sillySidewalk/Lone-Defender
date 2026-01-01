@@ -22,7 +22,8 @@ public class Enemy_manager : MonoBehaviour
     [SerializeField] protected List<int> spawn_starting_clearing = new List<int>() { 1 }; // Which clearing the given spawn should start in 
     [SerializeField] protected List<int> factory_starting_clearing = new List<int> { 10 };
     [SerializeField] List<sub_state> sub_states; // The possible turn types
-    [SerializeField] List<string> sstate_bag = new List<string>(); // The bag to be drawn from, can have multiple occurances of a given sub_state
+    [SerializeField] List<string> sstate_bag_mandatory = new List<string>(); // what enemy actions must always happen each cycle (from enemy_scoring to enemy_scoring)
+    [SerializeField] List<string> sstate_bag_other = new List<string>(); // The bag other actions can occur
     [SerializeField] List<string> sstate_order; // The order that turn types will occur
     [SerializeField] protected int score; // how many victory points the enemy has, which leads to their victorys
     [SerializeField] public retaliation_system retal_system;
@@ -64,7 +65,7 @@ public class Enemy_manager : MonoBehaviour
     protected void init_substate_bag()
     {
         // Since I will probably populate this in the inspector, this will check if bag is null
-        if(sstate_bag.Count == 0)
+        if(sstate_bag_other.Count == 0)
         {
             Debug.LogError("Enemy_manager sub_state bag is empty");
         }
@@ -76,11 +77,22 @@ public class Enemy_manager : MonoBehaviour
      */
     protected void fill_sstate_order()
     {
-        List<string> temp_sstate_bag = new List<string>(sstate_bag);
+        List<string> temp_sstate_bag = man.ran_man.randomize_list<string>(new List<string>(sstate_bag_other));
+        List<string> temp_sstate_mandatory = new List<string>(sstate_bag_mandatory);
+        
 
         // Add the scoring every 5 - 7 turns, because turns consist of 2 enemy actions and I want scoring to be the second action of the turn, it's (turn_number * 2) -1
         int scoring_turn = man.ran_man.rnd.Next(5, 8);
         int scoring_action_num = (scoring_turn * 2) - 1;
+
+        // how many optional actions to grab
+        int num_optional_actions = scoring_action_num - sstate_bag_mandatory.Count;
+
+        temp_sstate_mandatory.AddRange(temp_sstate_bag.GetRange(0, num_optional_actions));
+
+        // Add to current list
+        sstate_order.AddRange(man.ran_man.randomize_list<string>(temp_sstate_mandatory));
+
     }
 
     /*
@@ -88,7 +100,7 @@ public class Enemy_manager : MonoBehaviour
      */
     protected void get_order()
     {
-        List<string> order = man.ran_man.randomize_list(sstate_bag);
+        List<string> order = man.ran_man.randomize_list(sstate_bag_other);
 
         // Add the scoring every 5 - 7 turns
         int scoring_turn = man.ran_man.rnd.Next(5, 8);
