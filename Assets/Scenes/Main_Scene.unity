@@ -507,6 +507,42 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: sstate_bag_optional.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: sstate_bag_mandatory.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: sstate_bag_optional.Array.data[0]
+      value: enemy_event
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: sstate_bag_optional.Array.data[1]
+      value: enemy_event
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: sstate_bag_optional.Array.data[2]
+      value: enemy_event
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: sstate_bag_mandatory.Array.data[0]
+      value: enemy_produce
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: sstate_bag_mandatory.Array.data[1]
+      value: enemy_event
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: sstate_bag_mandatory.Array.data[2]
+      value: repair
+      objectReference: {fileID: 0}
+    - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: sstate_bag_mandatory.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1640782850310674658, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: man
       value: 

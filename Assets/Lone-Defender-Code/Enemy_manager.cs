@@ -23,13 +23,13 @@ public class Enemy_manager : MonoBehaviour
     [SerializeField] protected List<int> factory_starting_clearing = new List<int> { 10 };
     [SerializeField] List<sub_state> sub_states; // The possible turn types
     [SerializeField] List<string> sstate_bag_mandatory = new List<string>(); // what enemy actions must always happen each cycle (from enemy_scoring to enemy_scoring)
-    [SerializeField] List<string> sstate_bag_other = new List<string>(); // The bag other actions can occur
+    [SerializeField] List<string> sstate_bag_optional = new List<string>(); // The bag other actions can occur
     [SerializeField] List<string> sstate_order; // The order that turn types will occur
     [SerializeField] protected int score; // how many victory points the enemy has, which leads to their victorys
     [SerializeField] public retaliation_system retal_system;
     [SerializeField] public int enemy_atk_dice = 2; // how many dice per enemy in attack or retaliation
 
-    public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is based on spawn_const_amount + (spawn_dice_amount)d4
+    public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is: spawn_const_amount + (spawn_dice_amount)d4
     public int spawn_dice_amount { get; } = 1;
 
     public void init()
@@ -65,7 +65,7 @@ public class Enemy_manager : MonoBehaviour
     protected void init_substate_bag()
     {
         // Since I will probably populate this in the inspector, this will check if bag is null
-        if(sstate_bag_other.Count == 0)
+        if(sstate_bag_optional.Count == 0)
         {
             Debug.LogError("Enemy_manager sub_state bag is empty");
         }
@@ -77,22 +77,38 @@ public class Enemy_manager : MonoBehaviour
      */
     protected void fill_sstate_order()
     {
-        List<string> temp_sstate_bag = man.ran_man.randomize_list<string>(new List<string>(sstate_bag_other));
+        List<string> temp_sstate_optional = man.ran_man.randomize_list<string>(new List<string>(sstate_bag_optional));
         List<string> temp_sstate_mandatory = new List<string>(sstate_bag_mandatory);
         
 
         // Add the scoring every 5 - 7 turns, because turns consist of 2 enemy actions and I want scoring to be the second action of the turn, it's (turn_number * 2) -1
-        int scoring_turn = man.ran_man.rnd.Next(5, 8);
-        int scoring_action_num = (scoring_turn * 2) - 1;
+        int scoring_turn = man.ran_man.random_num(5, 7);
+        int actions_till_scoring = (scoring_turn * 2) - 1;
+
+        // to keep enemy_spawns at a reasonable number, set equal to the number of turns till scoring, plus or minus 1
+        int num_enemy_spawns = scoring_turn + (man.ran_man.random_num(0, 1) - 1);
+        Debug.Log("scoring_turn: " + scoring_turn);
+        Debug.Log("num_enemy_spawns: " + num_enemy_spawns);
+
+        for(int i = 0; i < num_enemy_spawns; i++)
+        {
+            temp_sstate_mandatory.Add("enemy_spawn");
+        }
 
         // how many optional actions to grab
-        int num_optional_actions = scoring_action_num - sstate_bag_mandatory.Count;
+        int num_optional_actions = actions_till_scoring - temp_sstate_mandatory.Count;
 
-        temp_sstate_mandatory.AddRange(temp_sstate_bag.GetRange(0, num_optional_actions));
+        Debug.Log("temp_sstate_mandatory.Count: " + temp_sstate_mandatory.Count);
+        Debug.Log("num_optional_actions: " + num_optional_actions);
 
-        // Add to current list
+        temp_sstate_mandatory.AddRange(temp_sstate_optional.GetRange(0, num_optional_actions));
+
+        // Add to current sstate_order, in case it's not empty
         sstate_order.AddRange(man.ran_man.randomize_list<string>(temp_sstate_mandatory));
 
+
+        // TODO: add enemy_scoring to the end
+        sstate_order.Add("enemy_scoring");
     }
 
     /*
@@ -100,7 +116,7 @@ public class Enemy_manager : MonoBehaviour
      */
     protected void get_order()
     {
-        List<string> order = man.ran_man.randomize_list(sstate_bag_other);
+        List<string> order = man.ran_man.randomize_list(sstate_bag_optional);
 
         // Add the scoring every 5 - 7 turns
         int scoring_turn = man.ran_man.rnd.Next(5, 8);
