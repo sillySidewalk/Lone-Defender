@@ -4,11 +4,11 @@ using System.Linq;
 using UnityEngine;
 
 /*
- * Play a random event
+ * Play a random event. Happens at start of player turn
  */
-public class LD_event_state : sub_state
+public class LD_event_state : auto_exit_sub_state
 {
-    public override string next_state => throw new System.NotImplementedException();
+    public override string called_next_state => throw new System.NotImplementedException();
 
     public override string sub_state_name => "LD_event";
 
@@ -19,15 +19,19 @@ public class LD_event_state : sub_state
 
     public override void init()
     {
+        auto_next_state = "player_start_turn";
+
         event_list = man.events_obj.GetComponents<LD_event>().ToList();
 
         foreach (LD_event e in event_list)
         {
             e.init();
         }
+
+        
     }
 
-    public override void start_state()
+    protected override void sub_state_work()
     {
         int random_event = man.ran_man.random_num(0, event_list.Count-1);
         

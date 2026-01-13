@@ -235,9 +235,18 @@ MonoBehaviour:
   enemies: []
   enemy_spawns: []
   enemy_factories: []
+  spawn_factory_amount: 1
+  spawn_starting_clearing: 01000000
+  factory_starting_clearing: 0a000000
+  sub_states: []
+  sstate_bag_mandatory: []
+  sstate_bag_optional: []
+  sstate_order: []
+  actions_per_turn: 2
   score: 0
   retal_system: {fileID: 6285281907325625361}
   enemy_atk_dice: 2
+  actions_this_turn: 0
 --- !u!114 &6285281907325625361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,12 +323,12 @@ GameObject:
   - component: {fileID: 2034638411180597377}
   - component: {fileID: 7150153044890944238}
   - component: {fileID: 266517552366023510}
+  - component: {fileID: 7081402041345131391}
+  - component: {fileID: 5571328634552592467}
   - component: {fileID: 7185416775519593140}
   - component: {fileID: 8800437702749974864}
   - component: {fileID: 6930677439394415522}
   - component: {fileID: 8931404892783810686}
-  - component: {fileID: 7081402041345131391}
-  - component: {fileID: 5571328634552592467}
   - component: {fileID: 4774127000498837812}
   m_Layer: 0
   m_Name: Sub_state_object
@@ -358,6 +367,7 @@ MonoBehaviour:
   man: {fileID: 36097064743430706}
   e_man: {fileID: 0}
   p_turn: {fileID: 2180528563032423778}
+  direct_man: {fileID: 2180528563032423778}
   on_end_sstate:
     m_PersistentCalls:
       m_Calls: []
@@ -381,6 +391,7 @@ MonoBehaviour:
   man: {fileID: 36097064743430706}
   e_man: {fileID: 0}
   p_turn: {fileID: 2180528563032423778}
+  direct_man: {fileID: 2180528563032423778}
   on_end_sstate:
     m_PersistentCalls:
       m_Calls: []
@@ -399,82 +410,11 @@ MonoBehaviour:
   man: {fileID: 36097064743430706}
   e_man: {fileID: 0}
   p_turn: {fileID: 2180528563032423778}
+  direct_man: {fileID: 2180528563032423778}
   on_end_sstate:
     m_PersistentCalls:
       m_Calls: []
   btn_text: {fileID: 7790895906796292061}
---- !u!114 &7185416775519593140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2654189267449253632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54f7a8f6f596d6e4da7baf814dbf168d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  man: {fileID: 36097064743430706}
-  e_man: {fileID: 0}
-  p_turn: {fileID: 0}
-  on_end_sstate:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &8800437702749974864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2654189267449253632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e158df115b568f47aedeadc6f3a3d6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  man: {fileID: 36097064743430706}
-  e_man: {fileID: 0}
-  p_turn: {fileID: 0}
-  on_end_sstate:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &6930677439394415522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2654189267449253632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65251e558c8a6f9419552ad282818143, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  man: {fileID: 36097064743430706}
-  e_man: {fileID: 0}
-  p_turn: {fileID: 0}
-  on_end_sstate:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &8931404892783810686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2654189267449253632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39b0023b265faab448de31e1d35ab318, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  man: {fileID: 36097064743430706}
-  e_man: {fileID: 1255610808200614039}
-  p_turn: {fileID: 0}
-  on_end_sstate:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &7081402041345131391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +430,7 @@ MonoBehaviour:
   man: {fileID: 36097064743430706}
   e_man: {fileID: 0}
   p_turn: {fileID: 0}
+  direct_man: {fileID: 2180528563032423778}
   on_end_sstate:
     m_PersistentCalls:
       m_Calls: []
@@ -508,10 +449,87 @@ MonoBehaviour:
   man: {fileID: 36097064743430706}
   e_man: {fileID: 0}
   p_turn: {fileID: 0}
+  direct_man: {fileID: 2180528563032423778}
   on_end_sstate:
     m_PersistentCalls:
       m_Calls: []
   event_list: []
+--- !u!114 &7185416775519593140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654189267449253632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54f7a8f6f596d6e4da7baf814dbf168d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 36097064743430706}
+  e_man: {fileID: 1255610808200614039}
+  p_turn: {fileID: 0}
+  direct_man: {fileID: 4078044898013885454}
+  on_end_sstate:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8800437702749974864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654189267449253632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e158df115b568f47aedeadc6f3a3d6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 36097064743430706}
+  e_man: {fileID: 1255610808200614039}
+  p_turn: {fileID: 0}
+  direct_man: {fileID: 4078044898013885454}
+  on_end_sstate:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &6930677439394415522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654189267449253632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65251e558c8a6f9419552ad282818143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 36097064743430706}
+  e_man: {fileID: 1255610808200614039}
+  p_turn: {fileID: 0}
+  direct_man: {fileID: 4078044898013885454}
+  on_end_sstate:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8931404892783810686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654189267449253632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b0023b265faab448de31e1d35ab318, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  man: {fileID: 36097064743430706}
+  e_man: {fileID: 1255610808200614039}
+  p_turn: {fileID: 0}
+  direct_man: {fileID: 4078044898013885454}
+  on_end_sstate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4774127000498837812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,6 +545,7 @@ MonoBehaviour:
   man: {fileID: 36097064743430706}
   e_man: {fileID: 1255610808200614039}
   p_turn: {fileID: 0}
+  direct_man: {fileID: 4078044898013885454}
   on_end_sstate:
     m_PersistentCalls:
       m_Calls: []
@@ -625,7 +644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
-  selected_pawn: {fileID: 0}
+  player: {fileID: 0}
 --- !u!114 &4078044898013885454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -639,9 +658,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
-  enemies: []
-  enemy_spawns: []
-  enemy_factories: []
+  e_man: {fileID: 0}
+  sub_states: []
 --- !u!1 &6267099372590595351
 GameObject:
   m_ObjectHideFlags: 0

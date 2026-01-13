@@ -5,9 +5,9 @@ using UnityEngine.Events;
 
 
 
-public class player_end_turn : sub_state
+public class player_end_turn : auto_exit_sub_state
 {
-    public override string next_state => throw new System.NotImplementedException();
+    public override string called_next_state => throw new System.NotImplementedException();
 
     public override string sub_state_name => "player_end_turn";
 
@@ -18,7 +18,7 @@ public class player_end_turn : sub_state
         Debug.LogError("player_end_turn should not be called");
     }
 
-    public override void start_state()
+    protected override void sub_state_work()
     {
         
     }

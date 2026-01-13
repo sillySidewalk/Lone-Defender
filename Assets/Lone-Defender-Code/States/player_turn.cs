@@ -5,7 +5,7 @@ using UnityEngine;
 public class player_turn : game_state
 {
     public override string game_state_name { get; } = "player_turn";
-    public Player selected_pawn; // The current Player pawn selected, mostly used by sub_states
+    public Player player; // The current Player pawn selected, mostly used by sub_states
 
     public override void start_state()
     {
@@ -20,5 +20,10 @@ public class player_turn : game_state
     public override void init()
     {
         //Debug.LogWarning("player_turn init() needs to be implemented");
+    }
+
+    public override string get_next()
+    {
+        return null;
     }
 }

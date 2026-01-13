@@ -9,7 +9,7 @@ public class player_choose : sub_state
 {
     public override bool loc_click_sub { get; } = false;
     public override string sub_state_name { get; } = "player_choose";
-    public override string next_state { get; } // Since this is basically the default, it mostly doesn't default go to another sub_state
+    public override string called_next_state { get; } // Since this is basically the default, it mostly doesn't default go to another sub_state
 
     public override void init()
     {

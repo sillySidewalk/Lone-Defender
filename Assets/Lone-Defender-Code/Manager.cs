@@ -67,10 +67,12 @@ public class Manager : MonoBehaviour
         if(next_state != null && next_state != current_game_state.game_state_name)
         {
             change_game_state(next_state);
+            next_state = null;
         }
-        if(next_sub_state != null && next_sub_state != current_sub_state.sub_state_name)
+        else if (next_sub_state != null && next_sub_state != current_sub_state.sub_state_name)
         {
             change_sub_state(next_sub_state);
+            next_sub_state = null;
         }
     }
 
@@ -268,21 +270,29 @@ public class Manager : MonoBehaviour
     public void call_sub_state(String sub_state_name)
     {
         current_sub_state.call(sub_state_name);
+    }
 
-        
+    public void request_change_state(string game_state_name)
+    {
+        next_state = game_state_name;
+    }
+
+    public void request_change_sub_state(string sub_state_name)
+    {
+        next_sub_state = sub_state_name;
     }
 
     /*
      * End the previous sub_state and start the new one
      */
-    public void change_sub_state(String sub_state_name)
+    protected void change_sub_state(String sub_state_name)
     {
         current_sub_state.end_state();
         current_sub_state = sub_states[sub_state_name];
         current_sub_state.start_state();
     }
 
-    public void change_game_state(String game_state_name)
+    protected void change_game_state(String game_state_name)
     {
         current_game_state.end_state();
         current_game_state = game_states[game_state_name];
@@ -544,7 +554,7 @@ public class Manager : MonoBehaviour
         }
         if(part == 1)
         {
-            change_sub_state("enemy_attack");
+            request_change_sub_state("enemy_attack");
         }
     }
 
@@ -555,7 +565,7 @@ public class Manager : MonoBehaviour
 
         if (Input.GetKeyDown("d"))
         {
-            
+            request_change_sub_state("enemy_spawn");
         }
 
         if (Input.GetKeyDown("e"))
@@ -574,8 +584,8 @@ public class Manager : MonoBehaviour
 
         if( Input.GetKeyDown("s"))
         {
-            Enemy_manager_state em = (Enemy_manager_state)game_states["Enemy_manager_state"];
-            em.enemies[0].march();
+            Enemy_turn_state em = (Enemy_turn_state)game_states["Enemy_manager_state"];
+            //em.enemies[0].march();
         }
 
         if(Input.GetKeyDown("t"))

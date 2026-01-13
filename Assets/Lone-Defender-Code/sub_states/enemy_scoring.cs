@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
-public class enemy_scoring : sub_state
+public class enemy_scoring : auto_exit_sub_state
 {
-    public override string next_state { get; } = "";
+    public override string called_next_state { get; } = "";
 
     public override string sub_state_name { get; } = "enemy_scoring";
 
@@ -24,7 +24,7 @@ public class enemy_scoring : sub_state
      *      2-3: 1 point
      * Then remove corruption tokens
      */
-    public override void start_state()
+    protected override void sub_state_work()
     {
         foreach(Clearing c in man.clearings)
         {
@@ -59,6 +59,7 @@ public class enemy_scoring : sub_state
         }
         
     }
+
 
     public override void end_state()
     {

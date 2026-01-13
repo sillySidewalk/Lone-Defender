@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class enemy_spawn : sub_state
+public class enemy_spawn : auto_exit_sub_state
 {
-    public override string next_state => throw new System.NotImplementedException();
+    public override string called_next_state => throw new System.NotImplementedException();
 
     public override string sub_state_name { get; } = "enemy_spawn";
 
@@ -21,7 +21,7 @@ public class enemy_spawn : sub_state
         
     }
 
-    public override void start_state()
+    protected override void sub_state_work()
     {
         StartCoroutine(e_man.march_by_clearing());
         foreach (spawn s in e_man.enemy_spawns)
@@ -31,6 +31,7 @@ public class enemy_spawn : sub_state
             s.spawn_enemies(spawn_value);
         }
     }
+
 
     public override void end_state()
     {

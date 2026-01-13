@@ -12,4 +12,7 @@ public abstract class game_state : MonoBehaviour
     public abstract void end_state();
 
     public abstract void init();
+
+    public abstract string get_next();
+
 }

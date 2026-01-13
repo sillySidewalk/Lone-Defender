@@ -9,7 +9,7 @@ using UnityEngine.SocialPlatforms.Impl;
 
 
 /*
- * Enemy_manager holds all enemy logic. Enemy turns will simply call Enemy_manager functions
+ * Handles controlling the enemy
  */
 
 public class Enemy_manager : MonoBehaviour
@@ -25,9 +25,11 @@ public class Enemy_manager : MonoBehaviour
     [SerializeField] List<string> sstate_bag_mandatory = new List<string>(); // what enemy actions must always happen each cycle (from enemy_scoring to enemy_scoring)
     [SerializeField] List<string> sstate_bag_optional = new List<string>(); // The bag other actions can occur
     [SerializeField] List<string> sstate_order; // The order that turn types will occur
+    [SerializeField] protected int actions_per_turn = 2; // how many actions the enemy gets per player turn
     [SerializeField] protected int score; // how many victory points the enemy has, which leads to their victorys
     [SerializeField] public retaliation_system retal_system;
     [SerializeField] public int enemy_atk_dice = 2; // how many dice per enemy in attack or retaliation
+    [SerializeField] protected int actions_this_turn = 0;
 
     public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is: spawn_const_amount + (spawn_dice_amount)d4
     public int spawn_dice_amount { get; } = 1;
@@ -87,8 +89,6 @@ public class Enemy_manager : MonoBehaviour
 
         // to keep enemy_spawns at a reasonable number, set equal to the number of turns till scoring, plus or minus 1
         int num_enemy_spawns = scoring_turn + (man.ran_man.random_num(0, 1) - 1);
-        Debug.Log("scoring_turn: " + scoring_turn);
-        Debug.Log("num_enemy_spawns: " + num_enemy_spawns);
 
         for(int i = 0; i < num_enemy_spawns; i++)
         {
@@ -97,9 +97,6 @@ public class Enemy_manager : MonoBehaviour
 
         // how many optional actions to grab
         int num_optional_actions = actions_till_scoring - temp_sstate_mandatory.Count;
-
-        Debug.Log("temp_sstate_mandatory.Count: " + temp_sstate_mandatory.Count);
-        Debug.Log("num_optional_actions: " + num_optional_actions);
 
         temp_sstate_mandatory.AddRange(temp_sstate_optional.GetRange(0, num_optional_actions));
 
@@ -114,6 +111,7 @@ public class Enemy_manager : MonoBehaviour
     /*
      * The order of enemy turn types. After each player turn, the enemy get the next one of these.
      */
+    /*
     protected void get_order()
     {
         List<string> order = man.ran_man.randomize_list(sstate_bag_optional);
@@ -123,14 +121,23 @@ public class Enemy_manager : MonoBehaviour
 
         order.Insert(scoring_turn, "enemy_scoring");
     }
+    */
 
     /*
      * Get the next state and remove it from sstate_order
      */
     public string get_next()
     {
+        // if enemy has used their action for their turn, switch to end turn
+        if(actions_this_turn >= actions_per_turn)
+        {
+            return "enemy_end_turn";
+        }
+
+        actions_this_turn++;
+
         // refill the bag
-        if(sstate_order.Count == 0)
+        if (sstate_order.Count == 0)
         {
             fill_sstate_order();
         }
@@ -353,5 +360,10 @@ public class Enemy_manager : MonoBehaviour
     public void inc_score(int x)
     {
         score += x;
+    }
+
+    public void reset_turn_actions()
+    {
+        actions_this_turn = 0;
     }
 }

@@ -12,7 +12,7 @@ public class player_attack : sub_state
     
 
 
-    public override string next_state { get; } = "player_choose";
+    public override string called_next_state { get; } = "player_choose";
 
     public override string sub_state_name { get; } = "player_attack";
 
@@ -43,7 +43,7 @@ public class player_attack : sub_state
             bool check_deduct_val = man.player.ap_system.check_deduct_ap(1);
             if (check_deduct_val)
             {
-                p_turn.selected_pawn.attack_clearing((Clearing)loc);
+                p_turn.player.attack_clearing((Clearing)loc);
             }
             else
             {
@@ -55,7 +55,7 @@ public class player_attack : sub_state
 
     void update_locations()
     {
-        Player cur_p = p_turn.selected_pawn;
+        Player cur_p = p_turn.player;
         possible_attack_locs = man.location_by_distance(cur_p.current_location, 0, cur_p.atk_distance);
     }
 
