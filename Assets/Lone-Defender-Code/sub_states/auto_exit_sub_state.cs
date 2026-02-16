@@ -11,11 +11,11 @@ using UnityEngine;
  */
 public abstract class auto_exit_sub_state : sub_state
 {
-    protected string auto_next_state = null;
+    [SerializeField] protected string auto_next_state = null;
 
 
 
-    // 
+    
     public override void start_state()
     {
         determin_auto_next_state();
@@ -23,6 +23,7 @@ public abstract class auto_exit_sub_state : sub_state
         sub_state_work();
 
         man.request_change_sub_state(auto_next_state);
+        
     }
 
     // What actually happens in the enemy_sub_state

@@ -9,7 +9,7 @@ public class player_turn : game_state
 
     public override void start_state()
     {
-        
+        man.request_change_sub_state("player_start_state");
     }
 
     public override void end_state()
@@ -24,6 +24,11 @@ public class player_turn : game_state
 
     public override string get_next()
     {
+        if(man.current_sub_state.name == "player_start_state")
+        {
+            return "player_choose";
+        }
+
         return null;
     }
 }

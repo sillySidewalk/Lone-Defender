@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ public class Clearing : Location
 
     [SerializeField] List<int> en_def_mods; // List of the Enemies Defense Modifiers, applies to each attack from player
     [SerializeField] List<int> p_atk_mods; // List of Player attack Modifiers for this location, applies to each attack from player
-    protected Dictionary<int, GameObject> id_to_arrow = new();
+    [SerializeField] protected SerializedDictionary<int, GameObject> id_to_arrow = new();
     [SerializeField] List<GameObject> arrow = new(); // For setting up id_to_arrow
     [SerializeField] List<int> arrow_to = new(); // For setting up id_to_arrow, the clearing id the arrow points to
     //[SerializeField] protected TextMeshProUGUI corruption_token_count_txt;
@@ -24,7 +25,6 @@ public class Clearing : Location
         base.init();
 
         init_arrow_dictionary();
-        init_token_dictionary();
     }
 
     protected void init_arrow_dictionary()
@@ -33,20 +33,6 @@ public class Clearing : Location
         {
             id_to_arrow.Add(arrow_to[i], arrow[i]);
         }
-    }
-
-    /*
-     * Add token types specific to clearings to the location dictionary
-     */
-    protected void init_token_dictionary()
-    {
-        /* old, not needed
-         * Don't overwrite the list at this string if it already exists
-        if(!tokens.ContainsKey("corruption token"))
-        {
-            tokens["corruption token"] = new List<LD_token>();
-        }
-        */
     }
 
     

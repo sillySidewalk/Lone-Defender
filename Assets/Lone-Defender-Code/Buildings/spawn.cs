@@ -33,6 +33,7 @@ public class spawn : Building
         {
             GameObject e_obj = Instantiate(man.prefabs["Enemy"]);
             Enemy e = e_obj.GetComponent<Enemy>();
+            e_obj.transform.parent = man.enemy_holder.transform; // Make all enemies children of the enemy_holder
 
             e.init(man.request_id(), loc, man, e_man, fact);
         }

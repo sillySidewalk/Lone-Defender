@@ -21,7 +21,7 @@ public class enemy_produce : auto_exit_sub_state
 
     protected override void sub_state_work()
     {
-        Debug.LogError("Need to move factory produce to factory");
+        Debug.LogWarning("Need to move factory produce to factory");
         factory_produce();
     }
 

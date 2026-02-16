@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using static UnityEditor.Progress;
 
 
 
@@ -25,11 +26,11 @@ public class Enemy_manager : MonoBehaviour
     [SerializeField] List<string> sstate_bag_mandatory = new List<string>(); // what enemy actions must always happen each cycle (from enemy_scoring to enemy_scoring)
     [SerializeField] List<string> sstate_bag_optional = new List<string>(); // The bag other actions can occur
     [SerializeField] List<string> sstate_order; // The order that turn types will occur
+    [SerializeField] protected int actions_this_turn = 0;
     [SerializeField] protected int actions_per_turn = 2; // how many actions the enemy gets per player turn
     [SerializeField] protected int score; // how many victory points the enemy has, which leads to their victorys
     [SerializeField] public retaliation_system retal_system;
     [SerializeField] public int enemy_atk_dice = 2; // how many dice per enemy in attack or retaliation
-    [SerializeField] protected int actions_this_turn = 0;
 
     public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is: spawn_const_amount + (spawn_dice_amount)d4
     public int spawn_dice_amount { get; } = 1;
@@ -244,14 +245,10 @@ public class Enemy_manager : MonoBehaviour
         }
     }
 
-
-    /*
-     * We get all enemies and store them by their clearing, so that they don't march twice
-     */
-    public IEnumerator march_by_clearing()
+    // Get a dictionary of all enemies, sorted by clearing. This prevents moving an enemy twice
+    public List<(Clearing, List<Enemy>)> enemies_by_clearing()
     {
-        SerializedDictionary<Clearing, List<Enemy>> enemy_storage = new(); // store the enemies at each clearing
-        HashSet<Clearing> clearing_set = new(); // clearings for marching arrow
+        List<(Clearing, List<Enemy>)> enemy_storage_by_clearing = new(); // store the enemies at each clearing
 
         // Go through once to get all enemies by clearing
         foreach (Clearing c in man.clearings.ToList())
@@ -259,37 +256,29 @@ public class Enemy_manager : MonoBehaviour
             // Check if enemies have been added to the pawns list, otherwise create an empty list that will do nothing
             if (c.pawns.ContainsKey("Enemy"))
             {
-                enemy_storage.Add(c, c.get_enemies());
+                // Using a tuple for simple access to elements like a Stack (vs a dictionary)
+                enemy_storage_by_clearing.Add((c, c.get_enemies()));
             }
-            else
-            {
-                enemy_storage.Add(c, new List<Enemy>());
-            }
+            
         }
 
-        // Go through each clearing and March all the enemies and activate arrows
-        foreach (var item in enemy_storage)
+        return enemy_storage_by_clearing;
+    }
+
+    // March all enemies at a clearing. Return their destinations for activating arrows
+    public List<Clearing> march_clearing(Clearing c, List<Enemy> enemies_at_clearing)
+    {
+        List<Clearing> clearings_for_arrow = new();
+        foreach (Enemy e in enemies_at_clearing)
         {
-            foreach (Enemy e in item.Value)
+            Clearing destination = e.march();
+            if (destination != null)
             {
-                Clearing next = e.march();
-                if (next != null)
-                {
-                    clearing_set.Add(next);
-                }
+                clearings_for_arrow.Add(destination);
             }
-
-            if (clearing_set.Count > 0)
-            {
-                item.Key.activate_arrow(true, clearing_set.ToList());
-
-                yield return new WaitForSeconds(man.enemy_march_anim_time);
-
-                item.Key.activate_arrow(false, clearing_set.ToList());
-            }
-
-            clearing_set.Clear();
         }
+
+        return clearings_for_arrow;
     }
 
     public void create_enemies()

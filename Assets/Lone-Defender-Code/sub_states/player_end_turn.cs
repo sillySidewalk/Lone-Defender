@@ -4,8 +4,13 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
+/*
+ * Transition to enemy's turn
+ * 
+ * Because this has to change game state instead of substate, not making this an auto_exit_sub_state
+ */
 
-public class player_end_turn : auto_exit_sub_state
+public class player_end_turn : sub_state
 {
     public override string called_next_state => throw new System.NotImplementedException();
 
@@ -16,11 +21,6 @@ public class player_end_turn : auto_exit_sub_state
     public override void call(string sub_state_name)
     {
         Debug.LogError("player_end_turn should not be called");
-    }
-
-    protected override void sub_state_work()
-    {
-        
     }
 
     public override void end_state()
@@ -35,11 +35,16 @@ public class player_end_turn : auto_exit_sub_state
 
     public override void loc_click(Location loc)
     {
-        Debug.LogError("player_end_turn should not be called");
+        Debug.LogError("player_end_turn should not be clicked");
+    }
+
+    public override void start_state()
+    {
+        man.request_change_state("Enemy_turn_state");
     }
 
 
     // Go through subscribed end turn effects
 
-    
+
 }

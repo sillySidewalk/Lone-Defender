@@ -11,16 +11,16 @@ public class player_move : sub_state
 {
     public override string called_next_state { get; } = "player_choose";
     public override string sub_state_name { get; } = "player_move";
-    Pawn selected_pawn;
-    List<Location> possible_moves;
+    [SerializeField] Player player_pawn;
+    [SerializeField] List<Location> possible_moves;
     [SerializeField] protected TextMeshProUGUI move_btn_text;
-    List<string> button_texts = new() { "Move", "End Move"};
+    [SerializeField] List<string> button_texts = new() { "Move", "End Move"};
     public override bool loc_click_sub { get; } = true;
     [SerializeField] protected SerializedDictionary<string, int> ap_cost = new SerializedDictionary<string, int> { { "clearing", 1 } };
 
     public override void init()
     {
-        
+        player_pawn = p_turn.player;
     }
 
     public override void start_state()
@@ -47,7 +47,7 @@ public class player_move : sub_state
             bool check_deduct_val = man.player.ap_system.check_deduct_ap(ap_cost["clearing"]);
             if (check_deduct_val)
             {
-                selected_pawn.move(loc);
+                player_pawn.move(loc);
             }
             else
             {
@@ -65,8 +65,8 @@ public class player_move : sub_state
     void update_pawn_moves()
     {
         man.remove_all_highlights();
-        selected_pawn = p_turn.player;
-        possible_moves = selected_pawn.possible_moves();
+        //player_pawn = p_turn.player;
+        possible_moves = player_pawn.possible_moves();
         man.hightlight_loc(possible_moves);
     }
 }

@@ -529,7 +529,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_optional.Array.data[3]
-      value: repair
+      value: enemy_repair
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_optional.Array.data[4]
@@ -549,7 +549,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_mandatory.Array.data[3]
-      value: repair
+      value: enemy_repair
       objectReference: {fileID: 0}
     - target: {fileID: 1640782850310674658, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: man
@@ -587,6 +587,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 2180528563032423778, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1284147262}
     - target: {fileID: 2180528563032423778, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: selected_pawn
       value: 
