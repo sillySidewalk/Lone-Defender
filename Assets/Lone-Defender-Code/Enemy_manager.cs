@@ -22,10 +22,10 @@ public class Enemy_manager : MonoBehaviour
     [SerializeField] protected int spawn_factory_amount = 1; // How many spawns and factories to make
     [SerializeField] protected List<int> spawn_starting_clearing = new List<int>() { 1 }; // Which clearing the given spawn should start in 
     [SerializeField] protected List<int> factory_starting_clearing = new List<int> { 10 };
-    [SerializeField] List<sub_state> sub_states; // The possible turn types
-    [SerializeField] List<string> sstate_bag_mandatory = new List<string>(); // what enemy actions must always happen each cycle (from enemy_scoring to enemy_scoring)
-    [SerializeField] List<string> sstate_bag_optional = new List<string>(); // The bag other actions can occur
-    [SerializeField] List<string> sstate_order; // The order that turn types will occur
+    [SerializeField] protected List<sub_state> sub_states; // The possible turn types
+    [SerializeField] protected List<string> sstate_bag_mandatory = new List<string>(); // what enemy actions must always happen each cycle (from enemy_scoring to enemy_scoring)
+    [SerializeField] protected List<string> sstate_bag_optional = new List<string>(); // The bag other actions can occur
+    [SerializeField] protected  List<string> sstate_order; // The order that turn types will occur
     [SerializeField] protected int actions_this_turn = 0;
     [SerializeField] protected int actions_per_turn = 2; // how many actions the enemy gets per player turn
     [SerializeField] protected int score; // how many victory points the enemy has, which leads to their victorys
@@ -304,23 +304,29 @@ public class Enemy_manager : MonoBehaviour
     }
 
     /*
-     * Move the spawn building and creates units. 
-     * 
-     * Spawning happens after moving to ensure that it has some meat shields
-     * 
-     * Not sure if this will stay here, might move it to an enemy game state, but at least it will be functional
+     * Move the spawn building, putting it at least 1 away from P
      */
     public void move_spawn()
     {
         // Get all clearings at least one distance away from player, so we don't spawn too close
         List<Clearing> available_clearings = man.location_by_distance(man.player.current_location, 2, 5).ConvertAll(x => (Clearing)x);
 
-        // get a random list of clearings to assign spawns to, prevents doubling up. Make a queue for 
-        Queue<Clearing> random_clearing = new Queue<Clearing>(man.ran_man.randomize_list(available_clearings));
+        
+
+        // get a random list of clearings to assign spawns to, prevents doubling up
+        List<Clearing> random_clearings = man.ran_man.randomize_list(available_clearings);
+
+        // Remove the factory location(s)
+        foreach(factory f in enemy_factories)
+        {
+            random_clearings.Remove((Clearing)f.loc);
+        }
+
+        Queue<Clearing> random_clearing_queue = new Queue<Clearing>(random_clearings);
 
         foreach (spawn s in enemy_spawns)
         {
-            if(random_clearing.Count <= 0)
+            if(random_clearing_queue.Count <= 0)
             {
                 Debug.LogError("ran out of clearings, shouldn't be possible");
                 return;
@@ -328,22 +334,20 @@ public class Enemy_manager : MonoBehaviour
 
             s.remove_loc();
             
-            // go through random_clearing to find an available slot, in theory there should be one available as I'm only planning for one building, but this is just in case, stop if we run out of clearings
+            // go through random_clearing to find an available slot, in theory there should be one available as I'm only planning for one building, but this is just in case, stop if we run out of clearings. 
             bool add_building_success = false;
-            while (!add_building_success || random_clearing.Count <= 0)
+            while (!add_building_success || random_clearing_queue.Count <= 0)
             {
-                add_building_success = random_clearing.Dequeue().add_building(s);
+                add_building_success = random_clearing_queue.Dequeue().add_building(s);
             }    
             
             // if we building didn't add the building, throw an error
             if(!add_building_success)
             {
-                Debug.LogError("building failed to add, did we run out of clearings? random_clearing.Count: " + random_clearing.Count);
+                Debug.LogError("building failed to add, did we run out of clearings? random_clearing.Count: " + random_clearing_queue.Count);
             }
 
         }
-
-        create_enemies();
     }
 
     public void inc_score(int x)
@@ -354,5 +358,16 @@ public class Enemy_manager : MonoBehaviour
     public void reset_turn_actions()
     {
         actions_this_turn = 0;
+    }
+
+    // For debugging, fill sstate_order with sstate_fill up to amount
+    public void debug_bag_fill(string sstate_fill, int amount)
+    {
+        sstate_order = new();
+
+        for (int i = 0; i <= amount; i++)
+        {
+            sstate_order.Add(sstate_fill);
+        }
     }
 }

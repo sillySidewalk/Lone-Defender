@@ -517,6 +517,13 @@ public class Manager : MonoBehaviour
         }
     }
 
+
+    // While testing enemy_spawn, I need a several enemy_spawn and nothing else
+    protected void debug_all_enemy_spawns()
+    {
+        enemy_man.debug_bag_fill("enemy_spawn", 30);
+    }
+
     /*
      * testing the retaliation and stealth system
      * 
@@ -568,7 +575,7 @@ public class Manager : MonoBehaviour
 
         if (Input.GetKeyDown("d"))
         {
-            test_auto_ex_and_get_next(0);
+            debug_all_enemy_spawns();
         }
 
         if (Input.GetKeyDown("e"))

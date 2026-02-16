@@ -13,13 +13,13 @@ public class enemy_spawn : sub_state
 
     public override bool loc_click_sub { get; } = false;
 
-    protected float animation_timer = 0; // for tracking how much time has passed
-    protected bool is_animating = false;
-    protected List<(Clearing, List<Enemy>)> enemy_storage_by_clearing;
-    protected Clearing current_march_clearing = null;
-    protected List<Enemy> current_enemies = null;
-    protected List<Clearing> current_arrows = null;
-    protected int current_step = -1; // This way the first steps() call makes it 0
+    [SerializeField] protected float animation_timer = 0; // for tracking how much time has passed
+    [SerializeField] protected bool is_animating = false;
+    [SerializeField] protected List<(Clearing, List<Enemy>)> enemy_storage_by_clearing;
+    [SerializeField] protected Clearing current_march_clearing = null;
+    [SerializeField] protected List<Enemy> current_enemies = null;
+    [SerializeField] protected List<Clearing> current_arrows = null;
+    [SerializeField] protected int current_step = -1; // This way the first steps() call makes it 0
     
 
     public override void call(string sub_state_name)
@@ -31,14 +31,22 @@ public class enemy_spawn : sub_state
     {
         
     }
+    public override void end_state()
+    {
+
+    }
 
     public override void start_state()
     {
         enemy_storage_by_clearing = e_man.enemies_by_clearing();
 
-        steps(); // start the animations
+        steps(); // start the animations        
+    }
 
-        
+
+    public override void loc_click(Location loc)
+    {
+        Debug.LogError("Enemy sub_state shouldn't have click");
     }
 
     // To keep track of the flow of the state. Shows the order of the steps. We start at -1, so the first increment makes it 0 
@@ -48,17 +56,32 @@ public class enemy_spawn : sub_state
 
         if (current_step == 0)
         {
-            check_next_animating();
+            move_spawn_building_step();
         }
         else if (current_step == 1)
         {
+            check_next_animating();
+        }
+        else if (current_step == 2)
+        {
             spawn_enemies();
         }
-        else if(current_step == 2)
+        else if (current_step == 3)
         {
             finish_steps();
         }
+        else
+        {
+            Debug.LogError("current_step is greater than all steps. current_steps: " + current_step);
+        }
         
+    }
+
+    protected void move_spawn_building_step()
+    {
+        e_man.move_spawn();
+
+        steps();
     }
 
 
@@ -69,16 +92,6 @@ public class enemy_spawn : sub_state
         string next_state = e_man.get_next();
 
         man.request_change_sub_state(next_state);
-    }
-
-    public override void end_state()
-    {
-        
-    }
-
-    public override void loc_click(Location loc)
-    {
-        Debug.LogError("Enemy sub_state shouldn't have click");
     }
 
 
@@ -94,22 +107,6 @@ public class enemy_spawn : sub_state
         steps();
     }
 
-
-    /*
-     * Update the timer. When timer is done, deactivate the arrow and march the next clearing
-     * 
-     */
-    protected void march_step()
-    {
-        animation_timer += Time.deltaTime;
-
-        if (animation_timer >= man.enemy_march_anim_time)
-        {
-            end_animating();
-
-            check_next_animating();
-        }
-    }
 
     // check if any more locations need to be marched, else spawn enemies
     public void check_next_animating()
@@ -165,6 +162,22 @@ public class enemy_spawn : sub_state
         // we always want this so that march_step will move to check_next_animating()
         is_animating = true;
         
+    }
+
+    /*
+     * Update the timer. When timer is done, deactivate the arrow and march the next clearing
+     * 
+     */
+    protected void march_step()
+    {
+        animation_timer += Time.deltaTime;
+
+        if (animation_timer >= man.enemy_march_anim_time)
+        {
+            end_animating();
+
+            check_next_animating();
+        }
     }
 
     private void Update()
