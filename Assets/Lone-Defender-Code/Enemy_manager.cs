@@ -2,13 +2,15 @@ using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using static UnityEditor.Progress;
 
 
 
 /*
- * Enemy_manager holds all enemy logic. Enemy turns will simply call Enemy_manager functions
+ * Handles controlling the enemy
  */
 
 public class Enemy_manager : MonoBehaviour
@@ -17,23 +19,27 @@ public class Enemy_manager : MonoBehaviour
     public List<Enemy> enemies = new();
     public List<spawn> enemy_spawns; // Because there are only 2 types of buildings and a spawn is always attached to a factory, easier to just have a list of each
     public List<factory> enemy_factories;
-    protected int spawn_factory_amount = 1; // How many spawns and factories to make
-    protected List<int> spawn_starting_clearing = new List<int>() { 1 }; // Which clearing the given spawn should start in 
-    protected List<int> factory_starting_clearing = new List<int> { 10 };
-    List<sub_state> sub_states; // The possible turn types
-    List<sub_state> sstate_bag; // The bag to be drawn from, can have multiple occurances of a given sub_state
-    Queue<string> sstate_order; // The order that turn types will occur
+    [SerializeField] protected int spawn_factory_amount = 1; // How many spawns and factories to make
+    [SerializeField] protected List<int> spawn_starting_clearing = new List<int>() { 1 }; // Which clearing the given spawn should start in 
+    [SerializeField] protected List<int> factory_starting_clearing = new List<int> { 10 };
+    [SerializeField] List<sub_state> sub_states; // The possible turn types
+    [SerializeField] List<string> sstate_bag_mandatory = new List<string>(); // what enemy actions must always happen each cycle (from enemy_scoring to enemy_scoring)
+    [SerializeField] List<string> sstate_bag_optional = new List<string>(); // The bag other actions can occur
+    [SerializeField] List<string> sstate_order; // The order that turn types will occur
+    [SerializeField] protected int actions_this_turn = 0;
+    [SerializeField] protected int actions_per_turn = 2; // how many actions the enemy gets per player turn
     [SerializeField] protected int score; // how many victory points the enemy has, which leads to their victorys
     [SerializeField] public retaliation_system retal_system;
     [SerializeField] public int enemy_atk_dice = 2; // how many dice per enemy in attack or retaliation
 
-    public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is based on spawn_const_amount + (spawn_dice_amount)d4
+    public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is: spawn_const_amount + (spawn_dice_amount)d4
     public int spawn_dice_amount { get; } = 1;
 
     public void init()
     {
         init_buildings();
-        init_sstate_order();
+        init_substate_bag();
+        fill_sstate_order();
     }
 
     protected void init_buildings()
@@ -59,37 +65,82 @@ public class Enemy_manager : MonoBehaviour
         }
     }
 
-    protected void init_sstate_order()
+    protected void init_substate_bag()
     {
-        sstate_order = new Queue<string>( new List<string> { "enemy_spawn", "enemy_spawn", "event", "enemy_spawn", "enemy_produce", "event", "enemy_scoring"});
+        // Since I will probably populate this in the inspector, this will check if bag is null
+        if(sstate_bag_optional.Count == 0)
+        {
+            Debug.LogError("Enemy_manager sub_state bag is empty");
+        }
+
+    }
+
+    /*
+     * Fill sstate_order from sstate_bag, doesn't change sstate_bag
+     */
+    protected void fill_sstate_order()
+    {
+        List<string> temp_sstate_optional = man.ran_man.randomize_list<string>(new List<string>(sstate_bag_optional));
+        List<string> temp_sstate_mandatory = new List<string>(sstate_bag_mandatory);
+        
+
+        // Add the scoring every 5 - 7 turns, because turns consist of 2 enemy actions and I want scoring to be the second action of the turn, it's (turn_number * 2) -1
+        int scoring_turn = man.ran_man.random_num(5, 7);
+        int actions_till_scoring = (scoring_turn * 2) - 1;
+
+        // to keep enemy_spawns at a reasonable number, set equal to the number of turns till scoring, plus or minus 1
+        int num_enemy_spawns = scoring_turn + (man.ran_man.random_num(0, 1) - 1);
+
+        for(int i = 0; i < num_enemy_spawns; i++)
+        {
+            temp_sstate_mandatory.Add("enemy_spawn");
+        }
+
+        // how many optional actions to grab
+        int num_optional_actions = actions_till_scoring - temp_sstate_mandatory.Count;
+
+        temp_sstate_mandatory.AddRange(temp_sstate_optional.GetRange(0, num_optional_actions));
+
+        // Add to current sstate_order, in case it's not empty
+        sstate_order.AddRange(man.ran_man.randomize_list<string>(temp_sstate_mandatory));
+
+
+        // TODO: add enemy_scoring to the end
+        sstate_order.Add("enemy_scoring");
     }
 
     /*
      * The order of enemy turn types. After each player turn, the enemy get the next one of these.
      */
+    /*
     protected void get_order()
     {
-        List<sub_state> order = man.ran_man.randomize_list(sstate_bag);
+        List<string> order = man.ran_man.randomize_list(sstate_bag_optional);
 
         // Add the scoring every 5 - 7 turns
         int scoring_turn = man.ran_man.rnd.Next(5, 8);
 
-        order.Insert(scoring_turn, man.sub_states["enemy_scoring"]);
-
-        // mayb not be necessary and if it is, must be reworked
-        //sstate_order = new Queue<string>(order);
-
+        order.Insert(scoring_turn, "enemy_scoring");
     }
+    */
 
     /*
      * Get the next state and remove it from sstate_order
      */
     public string get_next()
     {
-        // refill the bag
-        if(sstate_order.Count == 0)
+        // if enemy has used their action for their turn, switch to end turn
+        if(actions_this_turn >= actions_per_turn)
         {
-            init_sstate_order();
+            return "enemy_end_turn";
+        }
+
+        actions_this_turn++;
+
+        // refill the bag
+        if (sstate_order.Count == 0)
+        {
+            fill_sstate_order();
         }
 
         return sstate_order.Dequeue();
@@ -194,14 +245,10 @@ public class Enemy_manager : MonoBehaviour
         }
     }
 
-
-    /*
-     * We get all enemies and store them by their clearing, so that they don't march twice
-     */
-    public IEnumerator march_by_clearing()
+    // Get a dictionary of all enemies, sorted by clearing. This prevents moving an enemy twice
+    public List<(Clearing, List<Enemy>)> enemies_by_clearing()
     {
-        SerializedDictionary<Clearing, List<Enemy>> enemy_storage = new(); // store the enemies at each clearing
-        HashSet<Clearing> clearing_set = new(); // clearings for marching arrow
+        List<(Clearing, List<Enemy>)> enemy_storage_by_clearing = new(); // store the enemies at each clearing
 
         // Go through once to get all enemies by clearing
         foreach (Clearing c in man.clearings.ToList())
@@ -209,37 +256,29 @@ public class Enemy_manager : MonoBehaviour
             // Check if enemies have been added to the pawns list, otherwise create an empty list that will do nothing
             if (c.pawns.ContainsKey("Enemy"))
             {
-                enemy_storage.Add(c, c.get_enemies());
+                // Using a tuple for simple access to elements like a Stack (vs a dictionary)
+                enemy_storage_by_clearing.Add((c, c.get_enemies()));
             }
-            else
-            {
-                enemy_storage.Add(c, new List<Enemy>());
-            }
+            
         }
 
-        // Go through each clearing and March all the enemies and activate arrows
-        foreach (var item in enemy_storage)
+        return enemy_storage_by_clearing;
+    }
+
+    // March all enemies at a clearing. Return their destinations for activating arrows
+    public List<Clearing> march_clearing(Clearing c, List<Enemy> enemies_at_clearing)
+    {
+        List<Clearing> clearings_for_arrow = new();
+        foreach (Enemy e in enemies_at_clearing)
         {
-            foreach (Enemy e in item.Value)
+            Clearing destination = e.march();
+            if (destination != null)
             {
-                Clearing next = e.march();
-                if (next != null)
-                {
-                    clearing_set.Add(next);
-                }
+                clearings_for_arrow.Add(destination);
             }
-
-            if (clearing_set.Count > 0)
-            {
-                item.Key.activate_arrow(true, clearing_set.ToList());
-
-                yield return new WaitForSeconds(man.enemy_march_anim_time);
-
-                item.Key.activate_arrow(false, clearing_set.ToList());
-            }
-
-            clearing_set.Clear();
         }
+
+        return clearings_for_arrow;
     }
 
     public void create_enemies()
@@ -310,5 +349,10 @@ public class Enemy_manager : MonoBehaviour
     public void inc_score(int x)
     {
         score += x;
+    }
+
+    public void reset_turn_actions()
+    {
+        actions_this_turn = 0;
     }
 }

@@ -199,6 +199,8 @@ MonoBehaviour:
       Value: {fileID: 3311970132474096525}
   en_def_mods: 
   p_atk_mods: 
+  id_to_arrow:
+    _serializedList: []
   arrow: []
   arrow_to: 
 --- !u!1 &2392338681559086654

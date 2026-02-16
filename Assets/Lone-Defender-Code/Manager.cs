@@ -19,26 +19,29 @@ public class Manager : MonoBehaviour
     [SerializeField] public GameObject events_obj;
     public SerializedDictionary<string, game_state> game_states = new();
     public SerializedDictionary<string, sub_state> sub_states = new();
-    public sub_state current_sub_state;
     public game_state current_game_state;
+    public sub_state current_sub_state;
     protected List<sub_state> loc_clk_sstage_subscription = new List<sub_state>(); // which substates want to be told about a Location click
     public Player player;
     public Random_manager ran_man;
     public Enemy_manager enemy_man;
     public quest_system qs;
+    [SerializeField] protected string next_state = null;
+    [SerializeField] protected string next_sub_state = null;
     // public Enemy_manager e_man; // Can be access from game_states
     //public int dice_value = 10; // The type of dice
     public int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
     protected int item_id = 0; // The id handed out to other objects that request it
     [SerializeField] protected TextMeshProUGUI action_point_ui;
+    [SerializeField] public GameObject enemy_holder; // All enemy pawns will be put under this object for easy of visuals
 
 
     //[SerializeField] public dh_gameobject dh_prefabs;
     [SerializeField] public SerializedDictionary<String, GameObject> prefabs;
 
-    public float enemy_march_anim_time { get; } = .5f; // How long, in seconds, to wait between enemy march animation
+    [SerializeField] public float enemy_march_anim_time = .5f; // How long, in seconds, to wait between enemy march animation
 
-    [SerializeField] protected List<IDisplay_location_helper> display_setup_list; // A list of all classes that need a display location
+    //[SerializeField] protected List<IDisplay_location_helper> display_setup_list; // A list of all classes that need a display location
 
 
     private void Awake()
@@ -55,6 +58,26 @@ public class Manager : MonoBehaviour
         init_sub_states();
         init_player();
         init_quest_system();
+
+        request_change_state("player_turn");
+    }
+
+    // Check if we need to update the current state after something happens
+    protected void check_state()
+    {
+        if (next_state != null)
+        {
+            string temp_next_state = next_state;
+            next_state = null;
+            change_game_state(temp_next_state);
+        }
+        else if (next_sub_state != null)
+        {
+            string temp_next_sub_state = next_sub_state;
+            next_sub_state = null;
+            change_sub_state(temp_next_sub_state);
+        }
+        
     }
 
 
@@ -137,37 +160,6 @@ public class Manager : MonoBehaviour
     }
 
     
-    /* Shouldn't be used
-     * 
-     * Move the enemy pawns. They can only move from one clearing to adjacent clearing     
-     */
-    /*
-    public void move_enemies(Clearing start_cl, Clearing end_cl, int num)
-    {
-        List<Pawn> e_pawns = start_cl.enemy_pawns;
-
-        // Check if there's enough enemy pawns
-        if( e_pawns.Count < num )
-        {
-            Debug.LogError("Not enough enemies in start clearing");
-            return;
-        }
-
-        // Since all enemies are the sane, just move the first num enemies
-        List<Pawn> moving_pawns = e_pawns.Take(num).ToList();
-        
-        e_pawns.RemoveRange(0, num);
-
-        foreach(Pawn p in moving_pawns)
-        {
-            p.move(end_cl);
-        }
-
-        end_cl.enemy_count_txt.text = num.ToString();
-    }
-    */
-
-
     /*
      * For initializing, get the sub_state game object with all the sub_states, then add them to the list of sub_states
      */
@@ -188,14 +180,12 @@ public class Manager : MonoBehaviour
             }
         }
 
-        // set choose_sub_state as initial state and call it's start
-        current_sub_state = sub_states["player_choose"];
-        current_sub_state.start_state();
     }
 
     protected void init_game_states()
     {
         List<game_state> gstates = game_state_obj.GetComponents<game_state>().ToList();
+
 
         foreach(game_state gstate in gstates)
         {
@@ -203,8 +193,6 @@ public class Manager : MonoBehaviour
             gstate.init();
         }
 
-        current_game_state = game_states["player_turn"];
-        current_game_state.start_state();
     }
 
     
@@ -246,34 +234,58 @@ public class Manager : MonoBehaviour
 
 
     /*
-     * If not in the sub_state, change into the sub_state. If in the sub_state already, pass the message onto the substate
+     * Pass to substate, mostly for changing state
      */
     public void call_sub_state(String sub_state_name)
     {
-        if (current_sub_state.sub_state_name != sub_state_name)
-        {
-            change_sub_state(sub_state_name);
-        }
-        else
-        {
-            current_sub_state.call();
-        }
+        current_sub_state.call(sub_state_name);
+    }
 
+    public void request_change_state(string game_state_name)
+    {
+        next_state = game_state_name;
+    }
+
+    public void request_change_sub_state(string sub_state_name)
+    {
+        next_sub_state = sub_state_name;
     }
 
     /*
      * End the previous sub_state and start the new one
      */
-    public void change_sub_state(String sub_state_name)
+    protected void change_sub_state(String sub_state_name)
     {
-        current_sub_state.end_state();
+        if (current_sub_state != null)
+        {
+            current_sub_state.end_state();
+        }
+
+        if(!sub_states.ContainsKey(sub_state_name)) // prevent infinite loop
+        {
+            Debug.LogError("sub_state_name: " + sub_state_name + " is not in sub_states");
+            next_sub_state = null;
+            return;
+        }
+
         current_sub_state = sub_states[sub_state_name];
         current_sub_state.start_state();
     }
 
-    public void change_game_state(String game_state_name)
+    protected void change_game_state(String game_state_name)
     {
-        current_game_state.end_state();
+        if(current_game_state != null)
+        {
+            current_game_state.end_state();
+        }
+
+        if (!game_states.ContainsKey(game_state_name)) // prevent infinite loop
+        {
+            Debug.LogError("game_state_name: " + game_state_name + " is not in game_states_states");
+            next_state = null;
+            return;
+        }
+
         current_game_state = game_states[game_state_name];
         current_game_state.start_state();
     }
@@ -484,7 +496,7 @@ public class Manager : MonoBehaviour
 
     /* For debugging
      * 
-     * Since enemies need factory certain displays, either pass in a factory or null, then create minimal factory
+     * Since enemies need factory for certain displays, either pass in a factory or null, then create minimal factory
      */
     public void spawn_enemies(int amount, int clearing_num, factory fact)
     {
@@ -533,34 +545,38 @@ public class Manager : MonoBehaviour
         }
         if(part == 1)
         {
-            change_sub_state("enemy_attack");
+            request_change_sub_state("enemy_attack");
+        }
+    }
+
+    /*
+     * Test auto_exit_sub_state and get_next
+     */
+    public void test_auto_ex_and_get_next(int part)
+    {
+        // start Enemy_turn_state, which should automatically start it's action order. Should add debut logging at start of states for easy verification
+        if(part == 0)
+        {
+            request_change_state("Enemy_turn_state");
         }
     }
 
 
     private void Update()
     {
+        check_state();
+
         if (Input.GetKeyDown("d"))
         {
-            List<int> l = new List<int>() { 0, 1, 2, 3, 4 };
-            int x = 5;
-            if(x >= l.Count)
-            {
-                l.Clear();
-            }
-            else
-            {
-                l.RemoveRange(l.Count - x, x);
-            }
-            Debug.Log(l.List_to_string());
+            test_auto_ex_and_get_next(0);
         }
 
         if (Input.GetKeyDown("e"))
         {
-            test_en_atk(1);
+            change_sub_state("enemy_event");
         }
 
-        if(Input.GetKeyDown("r"))
+        if (Input.GetKeyDown("r"))
         {
             //change_game_state("Enemy_manager_state");
             //change_sub_state("enemy_spawn");
@@ -571,8 +587,8 @@ public class Manager : MonoBehaviour
 
         if( Input.GetKeyDown("s"))
         {
-            Enemy_manager_state em = (Enemy_manager_state)game_states["Enemy_manager_state"];
-            em.enemies[0].march();
+            Enemy_turn_state em = (Enemy_turn_state)game_states["Enemy_manager_state"];
+            //em.enemies[0].march();
         }
 
         if(Input.GetKeyDown("t"))

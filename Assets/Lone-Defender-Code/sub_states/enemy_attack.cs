@@ -6,15 +6,15 @@ using UnityEngine;
 /*
  * Enemies attack in their clearing
  */
-public class enemy_attack : sub_state
+public class enemy_attack : auto_exit_sub_state
 {
-    public override string next_state => throw new System.NotImplementedException();
+    public override string called_next_state => throw new System.NotImplementedException();
 
     public override string sub_state_name => "enemy_attack";
 
     public override bool loc_click_sub => false;
 
-    public override void call()
+    public override void call(string sub_state_name)
     {
         Debug.LogError("enemy_attack sub_state shouldn't be called");
     }
@@ -34,7 +34,7 @@ public class enemy_attack : sub_state
         Debug.LogError("enemy_attack sub_state shouldn't have loc_click");
     }
 
-    public override void start_state()
+    protected override void sub_state_work()
     {
         List<Clearing> clearings = man.clearings;
         foreach(Clearing c in clearings)
@@ -55,4 +55,5 @@ public class enemy_attack : sub_state
             }
         }
     }
+
 }

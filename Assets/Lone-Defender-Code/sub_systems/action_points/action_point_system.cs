@@ -17,7 +17,7 @@ public class action_point_system: MonoBehaviour
         action_points_ui = ap_ui;
         action_p_per_round = _ap_turn;
         action_point_max = _ap_max;
-        action_points_current = _ap_turn;
+        action_points_current = 0;
         update_ui();
         //init_actions();
     }
@@ -106,5 +106,10 @@ public void update_ui()
         {
             return false;
         }
+    }
+
+    public void refill_action_point()
+    {
+        add_action_points(action_p_per_round);
     }
 }
