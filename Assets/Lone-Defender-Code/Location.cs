@@ -20,26 +20,17 @@ public abstract class Location : MonoBehaviour
     [SerializeField] protected Manager man;
     [SerializeField] public int max_buildings;
     [SerializeField] protected List<Transform> display_positions = new(); // List of transforms for position references
-    //[SerializeField] public Transform enemy_position; // The position in the location where enemies are put
-    //[SerializeField] public TextMeshProUGUI enemy_count_txt; // A counter to show how many enemies are in the enemy_position
-    //[SerializeField] public Transform player_position; // The position in the location where the player is put
     [SerializeField] protected List<Building> buildings = new (); // Number of buildings is limited
     [SerializeField] protected List<Transform> building_locs = new List<Transform>(); // Where the buildings will go
     [SerializeField] public SerializedDictionary<string, List<LD_token>> tokens = new (); // string is token type name, Number of tokens is not limited
-    //[SerializeField] protected dh_pawns dh_pawns;
     [SerializeField] public SerializedDictionary<String, List<Pawn>> pawns = new();
-    //[SerializeField] public List<Enemy> enemy_pawns = new (); // Pawns are not limited (Probably)
-    //[SerializeField] public List<Pawn> player_pawns = new List<Pawn>(); // Pawns are not limited (Probably)
     [SerializeField] public List<Location> adjacent_locations = new List<Location>(); // Clearings and Forests
     [SerializeField] public List<Road> adjacent_roads = new List<Road>(); // slightly different context between forest and clearing, but I think it'll be ok
     public GameObject location_highlighter;
 
     [SerializeField] protected List<GameObject> display_slot = new List<GameObject>(); // the Position that each location display will go, currently has pre-locations
-    //[SerializeField] protected dict_helper_loc_display dh_display;
-    [SerializeField] protected SerializedDictionary<String, Location_display> display_dict; // for use when adding game piece, game pieces will have display name to reference which to add them
-    //[SerializeField] protected List<string> display_dict_keys = new();
-    //[SerializeField] protected List<Location_display> display_dict_values = new();
 
+    [SerializeField] protected SerializedDictionary<String, Location_display> display_dict; // for use when adding game piece, game pieces will have display name to reference which to add them
 
 
     public enum move_position // Which of the move positions to be in, like player or enemy

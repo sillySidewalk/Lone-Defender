@@ -509,7 +509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_optional.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_mandatory.Array.size
@@ -525,11 +525,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_optional.Array.data[2]
-      value: enemy_event
+      value: enemy_repair
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_optional.Array.data[3]
-      value: enemy_repair
+      value: enemy_event
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_optional.Array.data[4]

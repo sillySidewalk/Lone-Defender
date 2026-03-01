@@ -14,7 +14,8 @@ public class lightning_token : LD_token
     // attack 10 times
     public override void remove_effect()
     {
-        List<int> atks = man.ran_man.d10(10);
+        List<int> atks = man.ran_man.d10(10, "lighting token");
+
         man.attack_enemy(atks, (Clearing)_loc);
         man.attack_player(atks, (Clearing)_loc);
 

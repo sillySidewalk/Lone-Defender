@@ -110,21 +110,6 @@ public class Enemy_manager : MonoBehaviour
     }
 
     /*
-     * The order of enemy turn types. After each player turn, the enemy get the next one of these.
-     */
-    /*
-    protected void get_order()
-    {
-        List<string> order = man.ran_man.randomize_list(sstate_bag_optional);
-
-        // Add the scoring every 5 - 7 turns
-        int scoring_turn = man.ran_man.rnd.Next(5, 8);
-
-        order.Insert(scoring_turn, "enemy_scoring");
-    }
-    */
-
-    /*
      * Get the next state and remove it from sstate_order
      */
     public string get_next()
@@ -367,5 +352,15 @@ public class Enemy_manager : MonoBehaviour
         {
             sstate_order.Add(sstate_fill);
         }
+    }
+
+    public List<Building> get_buildings()
+    {
+        List<Building> return_buildings = new();
+
+        return_buildings.AddRange(enemy_spawns.Cast<Building>());
+        return_buildings.AddRange(enemy_factories.Cast<Building>());
+
+        return return_buildings;
     }
 }

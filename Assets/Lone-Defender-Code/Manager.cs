@@ -123,9 +123,19 @@ public class Manager : MonoBehaviour
             }
         }
 
-        if(hits > 0)
+        if(hits <= 0)
         {
-            Debug.Log("Remaining " + hits + " hits would go to Buildings or Tokens");
+            return;
+        }
+
+
+        // Since there should only be one building per location, just grab first
+        List<Building> buildings = cl.get_buildings();
+        if(buildings.Count > 0)
+        {
+            Building b = cl.get_buildings()[0];
+
+            b.apply_hits(hits);
         }
         
     }

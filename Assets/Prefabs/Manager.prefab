@@ -210,6 +210,7 @@ MonoBehaviour:
       Value: {fileID: 5341558797072797801, guid: 14d492dea7761c44bb3010b722c6c450, type: 3}
     - Key: quest_token
       Value: {fileID: 7603079478360413684, guid: 0fd754771262b3342895d3836d4446c7, type: 3}
+  enemy_march_anim_time: 0.5
 --- !u!114 &4829743802842845746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,6 +469,7 @@ MonoBehaviour:
       m_Calls: []
   auto_next_state: 
   event_list: []
+  current_event: {fileID: 0}
 --- !u!114 &7185416775519593140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,7 +489,12 @@ MonoBehaviour:
   on_end_sstate:
     m_PersistentCalls:
       m_Calls: []
-  auto_next_state: 
+  animation_timer: 0
+  is_animating: 0
+  current_march_clearing: {fileID: 0}
+  current_enemies: []
+  current_arrows: []
+  current_step: -1
 --- !u!114 &8800437702749974864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,7 +608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 36097064743430706}
-  e_man: {fileID: 0}
+  e_man: {fileID: 1255610808200614039}
   p_turn: {fileID: 0}
   direct_man: {fileID: 4078044898013885454}
   on_end_sstate:
