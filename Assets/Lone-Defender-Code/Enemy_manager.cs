@@ -311,8 +311,6 @@ public class Enemy_manager : MonoBehaviour
         // Get all clearings at least one distance away from player, so we don't spawn too close
         List<Clearing> available_clearings = man.location_by_distance(man.player.current_location, 2, 5).ConvertAll(x => (Clearing)x);
 
-        
-
         // get a random list of clearings to assign spawns to, prevents doubling up
         List<Clearing> random_clearings = man.ran_man.randomize_list(available_clearings);
 
@@ -365,7 +363,7 @@ public class Enemy_manager : MonoBehaviour
     {
         sstate_order = new();
 
-        for (int i = 0; i <= amount; i++)
+        for (int i = 0; i < amount; i++)
         {
             sstate_order.Add(sstate_fill);
         }

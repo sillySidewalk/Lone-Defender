@@ -26,9 +26,12 @@ public class player_choose : sub_state
         
     }
 
+    // Should only be called at when ending turn. Then ask player_turn for next step to keep flow centralized
     public override void called()
     {
-        Debug.LogError("player_choose shouldn't reach called()");
+        string next_sub_state = direct_man.get_next();
+
+        man.request_change_sub_state(next_sub_state);
     }
 
     public override void loc_click(Location loc)

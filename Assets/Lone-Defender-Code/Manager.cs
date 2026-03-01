@@ -575,7 +575,7 @@ public class Manager : MonoBehaviour
 
         if (Input.GetKeyDown("d"))
         {
-            debug_all_enemy_spawns();
+            enemy_man.debug_bag_fill("enemy_scoring", 10);
         }
 
         if (Input.GetKeyDown("e"))

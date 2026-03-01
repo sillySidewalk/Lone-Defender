@@ -551,6 +551,10 @@ PrefabInstance:
       propertyPath: sstate_bag_mandatory.Array.data[3]
       value: enemy_repair
       objectReference: {fileID: 0}
+    - target: {fileID: 1527285403173774970, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: sub_state_name
+      value: player_choose
+      objectReference: {fileID: 0}
     - target: {fileID: 1640782850310674658, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: man
       value: 

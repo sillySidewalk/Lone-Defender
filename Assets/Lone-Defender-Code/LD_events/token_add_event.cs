@@ -17,7 +17,7 @@ public class token_add_event : LD_event
     // These events remove their tokens at the end of P's turn (for now at least, might change in the future)
     public override void init()
     {
-        man.sub_states["player_end_turn"].on_end_sstate.AddListener(end_event);
+        //man.sub_states["player_end_turn"].on_end_sstate.AddListener(end_event);
     }
 
     public override void start_event()
