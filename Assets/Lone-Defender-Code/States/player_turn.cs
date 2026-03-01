@@ -24,11 +24,21 @@ public class player_turn : game_state
 
     public override string get_next()
     {
-        if(man.current_sub_state.name == "player_start_state")
+        string current_state = man.current_sub_state.sub_state_name;
+
+        if (current_state == "player_start_state")
         {
             return "player_choose";
         }
+        else if(current_state == "player_choose")
+        {
+            return "LD_event_state";
+        }
+        else if(current_state == "LD_event_state")
+        {
+            return "player_end_turn";
+        }
 
-        return null;
+            return null;
     }
 }

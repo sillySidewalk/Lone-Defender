@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
+// Because of the animations, this isn't an auto_exit_sub_state
 public class enemy_spawn : sub_state
 {
     public override string called_next_state => throw new System.NotImplementedException();
@@ -114,14 +116,6 @@ public class enemy_spawn : sub_state
         if(enemy_storage_by_clearing.Count > 0)
         {
             prepare_animating_variables();
-
-            // If current_arrows is null, it's because there's no enemies moving
-            /*
-            if(current_arrows.Count == 0) // because march_step never gets called, this breaks the flow
-            {
-                return;
-            } 
-            */
 
             start_animating();
         }

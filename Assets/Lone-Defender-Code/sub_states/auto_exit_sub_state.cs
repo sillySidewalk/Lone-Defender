@@ -32,6 +32,7 @@ public abstract class auto_exit_sub_state : sub_state
     // Some states will need to determine at run time what their next state will be
     protected virtual void determin_auto_next_state()
     {
-        auto_next_state = direct_man.get_next();
+        string next = direct_man.get_next();
+        auto_next_state = next;
     }
 }
