@@ -17,18 +17,17 @@ public class spawn : Building
         }
     }
 
-    /*
-    public override Location_display get_location_display(string location_type)
+    public override void init_damage_threshold()
     {
-        Debug.LogError("Spawn needs to implement get_location_display");
-
-        return null;
+        damage_threshold = new List<int> { 3, 3, 3 };
     }
-    //*/
 
-
+    
     public void spawn_enemies(int amount)
     {
+        // reduce spawn by damage
+        amount -= damage;
+
         for (int i = 0; i < amount; i++)
         {
             GameObject e_obj = Instantiate(man.prefabs["Enemy"]);

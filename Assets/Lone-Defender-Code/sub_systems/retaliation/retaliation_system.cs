@@ -29,7 +29,7 @@ public class retaliation_system : MonoBehaviour
 
         retal_dice_count -= p.stealth_sys.retal_reduce_val();
 
-        List<int> retal_rolls = man.ran_man.d10(retal_dice_count);
+        List<int> retal_rolls = man.ran_man.d10(retal_dice_count, "attack_retaliation");
 
         man.attack_player(retal_rolls, player_clearing);
     }

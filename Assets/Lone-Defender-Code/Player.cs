@@ -66,7 +66,7 @@ public class Player : Pawn
      */
     public void attack_clearing(Clearing cl)
     {
-        List<int> atk_rolls = man.ran_man.d10(atk_value);
+        List<int> atk_rolls = man.ran_man.d10(atk_value, "player attack clearing");
 
         int cl_mod = cl.get_p_atk_sum();
 
@@ -124,7 +124,7 @@ public class Player : Pawn
 
     public List<int> quest_attempts()
     {
-        return man.ran_man.d10(atk_value);
+        return man.ran_man.d10(atk_value, "quest attempts");
     }
 
 }

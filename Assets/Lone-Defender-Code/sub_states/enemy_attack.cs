@@ -49,7 +49,7 @@ public class enemy_attack : auto_exit_sub_state
                     continue;
                 }
 
-                List<int> atks = man.ran_man.d10(num_dice);
+                List<int> atks = man.ran_man.d10(num_dice, "enemy_attack state");
 
                 man.attack_player(atks);
             }

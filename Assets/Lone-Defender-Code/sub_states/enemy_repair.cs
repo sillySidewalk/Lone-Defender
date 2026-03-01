@@ -32,6 +32,11 @@ public class enemy_repair : auto_exit_sub_state
 
     protected override void sub_state_work()
     {
-        Debug.Log("implement enemy_repair sub_state_work");
+        List<Building> buildings = e_man.get_buildings();
+
+        foreach (Building b in buildings)
+        {
+            b.repair();
+        }
     }
 }

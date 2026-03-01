@@ -48,7 +48,12 @@ public class enemy_produce : auto_exit_sub_state
     {
         foreach (factory f in e_man.enemy_factories)
         {
-            int produce_value = (int) Mathf.Floor(f.loc.get_enemies().Count/ 3);
+            int enemy_count = f.loc.get_enemies().Count;
+
+            // Reduce enemy count by 2 for each damage
+            enemy_count -= f.get_damage() * 2;
+
+            int produce_value = (int) Mathf.Floor(enemy_count/ 3);
 
             for(int i = 0; i < produce_value; i++)
             {

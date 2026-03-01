@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class factory : Building
 {
+    public override void init_damage_threshold()
+    {
+        damage_threshold = new List<int> { 3, 3, 3 };
+    }
 
     public bool move()
     {
