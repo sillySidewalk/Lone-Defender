@@ -57,6 +57,11 @@ public class enemy_scoring : auto_exit_sub_state
             }
 
         }
+
+        foreach(factory f in e_man.enemy_factories)
+        {
+            f.move();
+        }
         
     }
 
