@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -10,12 +11,12 @@ public abstract class LD_event : MonoBehaviour
 {
     [SerializeField] protected Manager man;
 
-    protected List<int> loc_list = new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    [SerializeField] protected List<int> loc_list;
 
     // by default, nothing, but can be added
     public virtual void init()
     {
-
+        loc_list = Enumerable.Range(0, man.clearings.Count).ToList();
     }
 
     public abstract void start_event();
@@ -43,7 +44,7 @@ public abstract class LD_event : MonoBehaviour
 
             l = man.clearings[loc];
 
-            l.add_token(t, "event");
+            l.add_token(t);
         }
 
         return token_objs;

@@ -30,6 +30,7 @@ public abstract class Pawn : Game_piece
 
     public virtual void init(int given_id, Location _loc)
     {
+        base.init();
         _id = given_id;
         move(_loc);
     }

@@ -47,5 +47,34 @@ public abstract class  sub_state : MonoBehaviour
 
     public abstract void loc_click(Location loc);
 
-    public abstract void init();
+    public virtual void init()
+    {
+        man = Manager.get_instance();
+    }
+
+    /*
+     * Because several player sub_states have to check for action points before performing an action, centralize the process here
+     * 
+     * Implementation: call ap_process() before the action costing ap and then put the action costing ap in ap_act()
+     */
+    protected virtual bool ap_process(int ap_cost)
+    {
+        bool check_deduct_val = man.player.ap_system.check_deduct_ap(ap_cost);
+        if (check_deduct_val)
+        {
+            ap_act();
+        }
+        else
+        {
+            Debug.Log("Not enough actions points");
+            return false;
+        }
+
+        return true;
+    }
+
+    protected virtual void ap_act()
+    {
+
+    }
 }

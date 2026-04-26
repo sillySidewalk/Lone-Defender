@@ -30,7 +30,7 @@ public class Random_manager : MonoBehaviour
 
     }
 
-    public List<int> d4(int n)
+    public List<int> d4(int n, string context)
     {
         List<int> return_dice = new List<int>();
 
@@ -39,7 +39,7 @@ public class Random_manager : MonoBehaviour
             return_dice.Add(rnd.Next(1, 4 + 1)); // Max is exclusive, so plus 1
         }
 
-        Debug.Log("d4 rolls (" + return_dice.Count + "): " + return_dice.List_to_string());
+        Debug.Log("d4 rolls (" + return_dice.Count + ") '" + context + "':" + return_dice.List_to_string());
 
         return return_dice;
 

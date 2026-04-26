@@ -20,6 +20,7 @@ public abstract class Building : Game_piece
     [SerializeField] protected int _id;
     [SerializeField] public int id { get { return _id; } }
     [SerializeField] public Location loc; // The location of the buildings
+    [SerializeField] public override string display_type => "building";
     //[SerializeField] protected Manager man;
     [SerializeField] protected Enemy_manager e_man;
     [SerializeField] protected int hits;

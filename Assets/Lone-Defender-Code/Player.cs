@@ -9,6 +9,7 @@ using UnityEngine.Events;
 
 public class Player : Pawn
 {
+    [SerializeField] public override string display_type => "Player";
     public int atk_value = 10; // How many dice you roll while attacking
     public int atk_distance = 0; // How far away they can attack
     public List<int> atk_mod = new List<int>();  // List of modifiers to player's attack dice, applies to all dice
@@ -46,11 +47,16 @@ public class Player : Pawn
 
 
 
-    // Add the player pawns to the Location player pawn list, then do the default
+    /* Add the player pawns to the Location player pawn list, then do the default
+     * 
+     * Observer for player moving
+     */
     public override void move(Location new_loc)
     {
         //current_location.player_pawns.Remove(this);
         base.move(new_loc);
+
+
     }
 
     public int get_atk_sum()

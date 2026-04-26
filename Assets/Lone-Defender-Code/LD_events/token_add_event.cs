@@ -14,11 +14,6 @@ public class token_add_event : LD_event
     [SerializeField] protected List<LD_token> tokens = new List<LD_token>(); // for storing tokens added during event
     //[SerializeField] protected List<int> locs_added; // the locations that tokens have been added to
 
-    // These events remove their tokens at the end of P's turn (for now at least, might change in the future)
-    public override void init()
-    {
-        //man.sub_states["player_end_turn"].on_end_sstate.AddListener(end_event);
-    }
 
     public override void start_event()
     {

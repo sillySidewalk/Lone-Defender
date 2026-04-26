@@ -26,7 +26,7 @@ public class enemy_spawn : sub_state
 
     public override void call(string sub_state_name)
     {
-        Debug.LogError("This state shouldn't be called");
+        //Debug.LogError("This state shouldn't be called");
     }
 
     public override void init()
@@ -101,7 +101,7 @@ public class enemy_spawn : sub_state
     {
         foreach (spawn s in e_man.enemy_spawns)
         {
-            int spawn_value = e_man.spawn_const_amount + man.ran_man.d4(e_man.spawn_dice_amount).Sum();
+            int spawn_value = e_man.spawn_const_amount + man.ran_man.d4(e_man.spawn_dice_amount, "spawn enemies").Sum();
 
             s.spawn_enemies(spawn_value);
         }

@@ -108,7 +108,7 @@ public abstract class Location : MonoBehaviour
     // Assume display is gamepiece name, other add_to_display if it needs to be specified
     public virtual void add_to_display(Game_piece gp)
     {
-        display_dict[gp.GetType().Name].add_game_piece(gp);
+        display_dict[gp.display_type].add_game_piece(gp);
     }
 
     // Because some tokens share a space (e.g. events), it should be easier to accept a string for the display they want
@@ -137,14 +137,14 @@ public abstract class Location : MonoBehaviour
             pawns.Add(p_name, new List<Pawn>());
         }
         pawns[p_name].Add(p);
-        add_to_display((Game_piece)p, p.GetType().Name);
+        add_to_display((Game_piece)p, p.display_type);
     }
 
     public virtual void remove_pawn(Pawn p)
     {        
         pawns[p.GetType().Name].Remove(p);
 
-        remove_from_display((Game_piece)p, p.GetType().Name);
+        remove_from_display((Game_piece)p, p.display_type);
     }
 
     /*
@@ -161,7 +161,7 @@ public abstract class Location : MonoBehaviour
         buildings.Add(b);
         b.loc = this;
 
-        add_to_display((Game_piece)b, b.GetType().Name);
+        add_to_display((Game_piece)b, b.display_type);
 
         return true;
     }
@@ -173,7 +173,7 @@ public abstract class Location : MonoBehaviour
     public void remove_building(Building b)
     {
         buildings.Remove(b);
-        remove_from_display(b, b.GetType().Name);
+        remove_from_display(b, b.display_type);
     }
 
     public void add_token(LD_token t)
@@ -206,7 +206,7 @@ public abstract class Location : MonoBehaviour
     {
         tokens[t.GetType().Name].Remove(t);
 
-        remove_from_display((Game_piece)t, t.GetType().Name);
+        remove_from_display((Game_piece)t, t.display_type);
 
         t.remove();
     }
@@ -221,6 +221,16 @@ public abstract class Location : MonoBehaviour
         t.remove();
     }
 
+
+    public void highlight_locations(string display_name, string hex_color)
+    { 
+        display_dict[display_name].highlight_display_if_token(hex_color);
+    }
+
+    public void remove_display_highlights(string display_name)
+    {
+        display_dict[display_name].remove_display_highlight();
+    }    
 
     protected void OnMouseDown()
     {

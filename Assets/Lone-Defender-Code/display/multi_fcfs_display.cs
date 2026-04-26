@@ -92,4 +92,20 @@ public class multi_fcfs_display : Location_display
             }
         }
     }
+
+    public override void highlight_display_if_token(string hex_color)
+    {
+        foreach(Location_display ld in displays)
+        {
+            ld.highlight_display_if_token(hex_color);
+        }
+    }
+
+    public override void remove_display_highlight()
+    {
+        foreach (Location_display ld in displays)
+        {
+            ld.remove_display_highlight();
+        }
+    }
 }

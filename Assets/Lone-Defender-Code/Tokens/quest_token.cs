@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class quest_token : LD_token
 {
+    [SerializeField] public override string display_type => "quest_token";
     public override string token_name => "quest_token";
 
     public TextMeshPro name_txt;

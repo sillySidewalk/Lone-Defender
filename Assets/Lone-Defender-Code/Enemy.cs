@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Enemy : Pawn
 {
+    [SerializeField] public override string display_type => "Enemy";
     protected Enemy_manager e_man;
     public override Location.move_position move_pos { get; } = Location.move_position.enemy;
     public override move_type m_type { get; } = move_type.clearings;

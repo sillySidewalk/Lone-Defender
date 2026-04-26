@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class lightning_token : LD_token
+public class lightning_token : event_token
 {
     public override string token_name => "lightning_token";
 

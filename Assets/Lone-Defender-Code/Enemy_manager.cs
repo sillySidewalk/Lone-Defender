@@ -270,7 +270,7 @@ public class Enemy_manager : MonoBehaviour
     {
         foreach (spawn s in enemy_spawns)
         {
-            int spawn_value = spawn_const_amount + man.ran_man.d4(spawn_dice_amount).Sum();
+            int spawn_value = spawn_const_amount + man.ran_man.d4(spawn_dice_amount, "create enemies").Sum();
 
             s.spawn_enemies(spawn_value);
         }
