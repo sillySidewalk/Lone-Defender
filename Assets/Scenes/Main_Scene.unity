@@ -392,6 +392,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1284147262}
     - target: {fileID: 36097064743430706, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: main_camera
+      value: 
+      objectReference: {fileID: 519420031}
+    - target: {fileID: 36097064743430706, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: prefab_dict_keys.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -517,11 +521,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_optional.Array.data[0]
-      value: enemy_event
+      value: enemy_scheme
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_optional.Array.data[1]
-      value: enemy_event
+      value: enemy_scheme
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_optional.Array.data[2]
@@ -545,7 +549,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_mandatory.Array.data[2]
-      value: enemy_event
+      value: enemy_scheme
       objectReference: {fileID: 0}
     - target: {fileID: 1255610808200614039, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: sstate_bag_mandatory.Array.data[3]
@@ -619,6 +623,10 @@ PrefabInstance:
       propertyPath: man
       value: 
       objectReference: {fileID: 1317336111}
+    - target: {fileID: 6131392924084184908, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+      propertyPath: scheme_name
+      value: poison_scheme
+      objectReference: {fileID: 0}
     - target: {fileID: 6285281907325625361, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
       propertyPath: p
       value: 
@@ -646,6 +654,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 8880579504080324812, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
     - {fileID: 8749985405926006510, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
+    - {fileID: 1546443293348204807, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 44d1397cfb4d72341a21ffb015e8b571, type: 3}
 --- !u!1001 &7818044990725178844
 PrefabInstance:

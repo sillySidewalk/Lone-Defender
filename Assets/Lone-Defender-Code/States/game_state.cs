@@ -11,7 +11,10 @@ public abstract class game_state : MonoBehaviour
 
     public abstract void end_state();
 
-    public abstract void init();
+    public virtual void init()
+    {
+        man = Manager.get_instance();
+    }
 
     public abstract string get_next();
 

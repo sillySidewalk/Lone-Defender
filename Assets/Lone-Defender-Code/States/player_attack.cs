@@ -28,12 +28,14 @@ public class player_attack : sub_state
         btn_text.text = button_texts[1];
         update_locations();
         man.hightlight_loc(possible_attack_locs);
+        man.set_active_loc_click(true);
     }
 
     public override void end_state()
     {
         btn_text.text = button_texts[0];
         man.remove_all_highlights();
+        man.set_active_loc_click(false);
     }
 
     public override void loc_click(Location loc)

@@ -7,10 +7,12 @@ using System.Transactions;
 using System.Xml;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
+    [SerializeField] protected static Manager instance;
     public List<Clearing> clearings;
     public List<Road> roads;
     public List<Forest> forests;
@@ -21,7 +23,8 @@ public class Manager : MonoBehaviour
     public SerializedDictionary<string, sub_state> sub_states = new();
     public game_state current_game_state;
     public sub_state current_sub_state;
-    protected List<sub_state> loc_clk_sstage_subscription = new List<sub_state>(); // which substates want to be told about a Location click
+    [SerializeField] protected List<sub_state> loc_clk_sstage_subscription = new List<sub_state>(); // which substates want to be told about a Location click
+    [SerializeField] protected bool location_click_active = false; // if the current state wants to check for location clicks right now
     public Player player;
     public Random_manager ran_man;
     public Enemy_manager enemy_man;
@@ -41,11 +44,24 @@ public class Manager : MonoBehaviour
 
     [SerializeField] public float enemy_march_anim_time = .5f; // How long, in seconds, to wait between enemy march animation
 
-    //[SerializeField] protected List<IDisplay_location_helper> display_setup_list; // A list of all classes that need a display location
+    [SerializeField] public string location_highlight_hex = "FFF700";
 
+    
+
+    public static Manager get_instance()
+    {
+        if(instance == null)
+        {
+            Debug.LogError("Manager doesn't exist");
+        }
+        
+        return instance;
+        
+    }
 
     private void Awake()
     {
+        instance = this;
         init();
     }
 
@@ -266,6 +282,8 @@ public class Manager : MonoBehaviour
      */
     protected void change_sub_state(String sub_state_name)
     {
+        //Debug.Log("change_sub_state to: " + sub_state_name);
+
         if (current_sub_state != null)
         {
             current_sub_state.end_state();
@@ -502,6 +520,31 @@ public class Manager : MonoBehaviour
         qs.attempt_quest_clr( (Clearing) player.current_location, dice_attemps);
     }
 
+    protected void check_clearing_click()
+    {
+        if (location_click_active && Input.GetMouseButtonDown(0))
+        {
+            Vector2 mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            Collider2D[] results = Physics2D.OverlapPointAll(mouse_pos);
+
+            foreach(Collider2D col in results)
+            {
+                Clearing clear = col.GetComponent<Clearing>();
+
+                if(clear != null)
+                {
+                    location_click(clear);
+                }
+            }
+        }
+    }
+
+    public void set_active_loc_click(bool is_active)
+    {
+        location_click_active = is_active;
+    }
+
 
 
     /* For debugging
@@ -582,6 +625,7 @@ public class Manager : MonoBehaviour
     private void Update()
     {
         check_state();
+        check_clearing_click();
 
         if (Input.GetKeyDown("d"))
         {
