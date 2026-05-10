@@ -302,7 +302,9 @@ MonoBehaviour:
   location_highlighter: {fileID: 3920106808733206988}
   display_slot: []
   display_dict:
-    _serializedList: []
+    _serializedList:
+    - Key: Player
+      Value: {fileID: 2951338778523923432}
 --- !u!61 &6276612058272577236
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -569,3 +571,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2969024346095468324, guid: 1076b1f57052f2c4480a01fbae009411, type: 3}
   m_PrefabInstance: {fileID: 944346756974981569}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2951338778523923432 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2733610912262505001, guid: 1076b1f57052f2c4480a01fbae009411, type: 3}
+  m_PrefabInstance: {fileID: 944346756974981569}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06d18393cac16cf4d95592e1598ad4f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

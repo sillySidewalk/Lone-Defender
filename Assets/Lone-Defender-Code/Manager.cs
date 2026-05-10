@@ -33,7 +33,7 @@ public class Manager : MonoBehaviour
     [SerializeField] protected string next_sub_state = null;
     // public Enemy_manager e_man; // Can be access from game_states
     //public int dice_value = 10; // The type of dice
-    public int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
+    public int success_value { get; } = 8; // What value is considered a hit, base d10 dice
     protected int item_id = 0; // The id handed out to other objects that request it
     [SerializeField] protected TextMeshProUGUI action_point_ui;
     [SerializeField] public GameObject enemy_holder; // All enemy pawns will be put under this object for easy of visuals
@@ -45,6 +45,8 @@ public class Manager : MonoBehaviour
     [SerializeField] public float enemy_march_anim_time = .5f; // How long, in seconds, to wait between enemy march animation
 
     [SerializeField] public string location_highlight_hex = "FFF700";
+
+    [SerializeField] protected GameObject UI_buttons;
 
     
 
@@ -74,6 +76,7 @@ public class Manager : MonoBehaviour
         init_sub_states();
         init_player();
         init_quest_system();
+        init_UI_buttons();
 
         request_change_state("player_turn");
     }
@@ -110,7 +113,7 @@ public class Manager : MonoBehaviour
 
         foreach(int atk in attacks)
         {
-            if ((atk - def_mod) >= min_atk_val )
+            if ((atk - def_mod) >= success_value )
             {
                 hits++;
             }
@@ -244,6 +247,16 @@ public class Manager : MonoBehaviour
     protected void init_quest_system()
     {
         qs.init();
+    }
+
+    protected void init_UI_buttons()
+    {
+        List<Sub_state_btn> btn_scripts = new List<Sub_state_btn>(UI_buttons.GetComponentsInChildren<Sub_state_btn>());
+
+        foreach(Sub_state_btn btn in btn_scripts)
+        {
+            btn.init();
+        }
     }
 
     
@@ -543,6 +556,42 @@ public class Manager : MonoBehaviour
     public void set_active_loc_click(bool is_active)
     {
         location_click_active = is_active;
+    }
+
+    /// <summary>
+    ///  Add a dice mod to each dice. Changes the original and returns it. Helps to be clear why it's being happening.
+    /// </summary>
+    /// <param name="dice">A list of ints representing dice</param>
+    /// <param name="mod">The mod, positive or negative, that will be added to each dice</param>
+    /// <returns></returns>
+    public List<int> add_mod(List<int> dice, int mod)
+    {
+        for(int i = 0; i < dice.Count; i++)
+        {
+            dice[i] += mod;
+        }
+
+        return dice;
+    }
+
+    /// <summary>
+    /// Count how many dice are >= than the success value. Helps to clarify what and why is being done.
+    /// </summary>
+    /// <param name="dice"></param>
+    /// <returns></returns>
+    public int count_success(List<int> dice)
+    {
+        int success_count = 0;
+
+        foreach(int d in dice)
+        {
+            if(d >= success_value)
+            {
+                success_count++;
+            }
+        }
+
+        return success_count;
     }
 
 

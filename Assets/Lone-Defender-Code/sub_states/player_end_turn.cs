@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,12 +21,7 @@ public class player_end_turn : sub_state
 
     public override void call(string sub_state_name)
     {
-        Debug.LogError("player_end_turn should not be called");
-    }
-
-    public override void end_state()
-    {
-        on_end_sstate.Invoke();
+        //Debug.LogError("player_end_turn should not be called");
     }
 
     public override void init()
@@ -35,7 +31,7 @@ public class player_end_turn : sub_state
 
     public override void loc_click(Location loc)
     {
-        Debug.LogError("player_end_turn should not be clicked");
+        //Debug.LogError("player_end_turn should not be clicked");
     }
 
     public override void start_state()

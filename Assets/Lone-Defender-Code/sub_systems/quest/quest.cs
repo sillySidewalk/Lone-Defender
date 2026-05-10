@@ -51,7 +51,7 @@ public class quest : MonoBehaviour
 
         foreach(int attempt in attempts)
         {
-            if(attempt >= man.min_atk_val)
+            if(attempt >= man.success_value)
             {
                 successes++;
             }

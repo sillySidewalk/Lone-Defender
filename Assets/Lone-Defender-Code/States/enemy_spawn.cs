@@ -48,7 +48,7 @@ public class enemy_spawn : sub_state
 
     public override void loc_click(Location loc)
     {
-        Debug.LogError("Enemy sub_state shouldn't have click");
+        //Debug.LogError("Enemy sub_state shouldn't have click");
     }
 
     // To keep track of the flow of the state. Shows the order of the steps. We start at -1, so the first increment makes it 0 
