@@ -49,8 +49,6 @@ public class Clearing : Location
     {
         return p_atk_mods.Sum();
     }
-
-    
     
 
     public void activate_arrow(bool to_activate, List<Clearing> destination_clearings)

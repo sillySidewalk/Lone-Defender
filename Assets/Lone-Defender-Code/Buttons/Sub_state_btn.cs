@@ -7,6 +7,11 @@ public class Sub_state_btn : MonoBehaviour
     [SerializeField] Manager man;
     [SerializeField] string sub_state_name;
 
+    public void init()
+    {
+        man = Manager.get_instance();
+    }
+
     public void Call_sub_state()
     {
         man.call_sub_state(sub_state_name);

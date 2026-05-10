@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,9 @@ public abstract class  sub_state : MonoBehaviour
     [SerializeField] protected Enemy_manager e_man;
     [SerializeField] protected player_turn p_turn;
     [SerializeField] public game_state direct_man; // The game_state that directly manages this sub_state
-    [SerializeField] public UnityEvent on_end_sstate = new UnityEvent(); // For getting notified when a state ends
+#nullable enable
+    [SerializeField] public event EventHandler? on_end_sstate; // For getting notified when a state ends
+#nullable disable
     public abstract string called_next_state { get; } // The state to transition to when exiting automatically
     public abstract string sub_state_name { get; } // The name that will be used in the Manager's state dictionaries
     public abstract bool loc_click_sub { get; } // Whether the sub_state wants to recieve location_click
@@ -22,7 +25,10 @@ public abstract class  sub_state : MonoBehaviour
 
     public abstract void start_state();
 
-    public abstract void end_state();
+    public virtual void end_state()
+    {
+        on_end_sstate.Invoke(this, null);
+    }
 
     /*
      * If call is this, usually return to player_choose. If call is not us, change into that state

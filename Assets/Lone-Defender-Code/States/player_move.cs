@@ -23,6 +23,8 @@ public class player_move : sub_state
     public event EventHandler<p_move_event_args>? movement_e;
 #nullable disable
 
+    [SerializeField] Location next_loc;
+
     public override void init()
     {
         player_pawn = p_turn.player;
@@ -53,25 +55,32 @@ public class player_move : sub_state
     {
         p_move_event_args args = new()
         {
-            start_move = (Clearing)player_pawn.current_location,
-            end_move = (Clearing) loc,
+            start_move = player_pawn.current_location,
+            end_move = loc,
         };
 
         if(possible_moves.Contains(loc))
         {
-            bool check_deduct_val = man.player.ap_system.check_deduct_ap(ap_cost["clearing"]);
-            if (check_deduct_val)
-            {
-                player_pawn.move(loc);
+            next_loc = loc;
+            bool did_act = ap_process(ap_cost["clearing"]);
 
+            if(did_act)
+            {
                 p_move_evoke(args);
             }
-            else
-            {
-                Debug.Log("not enough Action Points");
-            }
         }
+
         update_pawn_moves();
+    }
+
+    protected override void ap_act()
+    {
+        base.ap_act();
+
+        player_pawn.move(next_loc);
+        next_loc = null;
+
+        
     }
 
     /*
