@@ -46,6 +46,8 @@ public class Manager : MonoBehaviour
 
     [SerializeField] public string location_highlight_hex = "FFF700";
 
+    [SerializeField] public UI_formatter ui_form;
+
     
 
     public static Manager get_instance()
@@ -544,7 +546,6 @@ public class Manager : MonoBehaviour
     {
         location_click_active = is_active;
     }
-
 
 
     /* For debugging

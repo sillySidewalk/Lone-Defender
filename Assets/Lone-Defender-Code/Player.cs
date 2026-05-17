@@ -22,6 +22,8 @@ public class Player : Pawn
     [SerializeField] protected int hp;
     [SerializeField] public int max_stealth = 10;
     [SerializeField] public int starting_stealth = 5;
+    [SerializeField] protected UI_formatter ui_form;
+    [SerializeField] protected TextMeshProUGUI hp_ui_numbers;
 
     
 
@@ -38,6 +40,9 @@ public class Player : Pawn
         hp = max_hp;
         init_action_point_system(action_point_max, action_points_per_round ,ap_ui);
         stealth_sys.init();
+
+        ui_form = man.ui_form;
+        update_hp_ui();
     }
 
     public void init_action_point_system(int _max_ap, int _ap_turn, TextMeshProUGUI _ap_ui)
@@ -126,6 +131,8 @@ public class Player : Pawn
     {
         hp += value;
         hp = Mathf.Clamp(hp, 0, max_hp);
+
+        update_hp_ui();
     }
 
     public List<int> quest_attempts()
@@ -133,4 +140,8 @@ public class Player : Pawn
         return man.ran_man.d10(atk_value, "quest attempts");
     }
 
+    protected void update_hp_ui()
+    {
+        hp_ui_numbers.text = ui_form.convert_to_ratio(hp, max_hp);
+    }
 }
