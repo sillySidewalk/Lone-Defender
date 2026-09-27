@@ -6,12 +6,12 @@ using System.Linq;
 using UnityEngine;
 
 
-// Because of the animations, this isn't an auto_exit_sub_state
-public class enemy_spawn : sub_state
+// Because of the animations, this isn't an auto_exit_state
+public class enemy_spawn : state
 {
     public override string called_next_state => throw new System.NotImplementedException();
 
-    public override string sub_state_name { get; } = "enemy_spawn";
+    public override string state_name { get; } = "enemy_spawn";
 
     public override bool loc_click_sub { get; } = false;
 
@@ -24,7 +24,7 @@ public class enemy_spawn : sub_state
     [SerializeField] protected int current_step = -1; // This way the first steps() call makes it 0
     
 
-    public override void call(string sub_state_name)
+    public override void call(string state_name)
     {
         //Debug.LogError("This state shouldn't be called");
     }
@@ -35,7 +35,7 @@ public class enemy_spawn : sub_state
     }
     public override void end_state()
     {
-
+        base.end_state();
     }
 
     public override void start_state()
@@ -48,7 +48,7 @@ public class enemy_spawn : sub_state
 
     public override void loc_click(Location loc)
     {
-        Debug.LogError("Enemy sub_state shouldn't have click");
+        Debug.LogError("Enemy state shouldn't have click");
     }
 
     // To keep track of the flow of the state. Shows the order of the steps. We start at -1, so the first increment makes it 0 
@@ -93,7 +93,7 @@ public class enemy_spawn : sub_state
 
         string next_state = e_man.get_next();
 
-        man.request_change_sub_state(next_state);
+        man.request_change_state(next_state);
     }
 
 

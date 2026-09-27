@@ -12,22 +12,19 @@ using UnityEngine;
  *      setting traps
  *      
  */
-public class enemy_scheme : auto_exit_sub_state
+public class enemy_scheme : auto_exit_state
 {
     public override string called_next_state => throw new System.NotImplementedException();
 
-    public override string sub_state_name => "enemy_scheme";
+    public override string state_name => "enemy_scheme";
 
     public override bool loc_click_sub => false;
 
     [SerializeField] List<scheme> scheme_list;
     [SerializeField] List<scheme> inactive_schemes;
     [SerializeField] List<scheme> active_schemes;
+    [SerializeField] protected GameObject scheme_ui_parent;
 
-    public override void end_state()
-    {
-        
-    }
 
     public override void init()
     {
@@ -44,7 +41,7 @@ public class enemy_scheme : auto_exit_sub_state
     /*
      * Let each scheme know a turn has passed, then start a new scheme
      */
-    protected override void sub_state_work()
+    protected override void state_work()
     {
         foreach(scheme s in active_schemes)
         {
@@ -66,6 +63,8 @@ public class enemy_scheme : auto_exit_sub_state
         active_schemes.Add(new_scheme);
         inactive_schemes.Remove(new_scheme);
 
+        add_scheme_to_ui(new_scheme);
+
     }
 
     protected void init_schemes()
@@ -76,6 +75,16 @@ public class enemy_scheme : auto_exit_sub_state
         }
 
         inactive_schemes = new(scheme_list);
+    }
+
+    protected void add_scheme_to_ui(scheme s)
+    {
+        GameObject prefab = man.prefabs["scheme_ui_obj"];
+        GameObject instance = Instantiate(prefab);
+        scheme_ui s_ui = instance.GetComponent<scheme_ui>();
+
+        instance.transform.SetParent(scheme_ui_parent.transform, false);
+        s_ui.init(s);
     }
 
     protected void fetch_schemes()

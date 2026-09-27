@@ -6,11 +6,13 @@ using UnityEngine;
 /*
  * Play a random event. Happens at start of player turn
  */
-public class LD_event_state : auto_exit_sub_state
+public class LD_event_state : auto_exit_state
 {
+    [SerializeField] protected GameObject event_ui_parent;
+
     public override string called_next_state => throw new System.NotImplementedException();
 
-    public override string sub_state_name => "LD_event_state";
+    public override string state_name => "LD_event_state";
 
     public override bool loc_click_sub => false;
 
@@ -34,7 +36,7 @@ public class LD_event_state : auto_exit_sub_state
 
     // End current event, then start next event
 
-    protected override void sub_state_work()
+    protected override void state_work()
     {
         
         if(current_event != null)
@@ -47,23 +49,29 @@ public class LD_event_state : auto_exit_sub_state
         current_event = event_list[random_event];
 
         current_event.start_event();
+
+        add_to_ui(current_event);
     }
 
-    public override void end_state()
-    {
-        
-    }
-
-    
 
     public override void loc_click(Location loc)
     {
         Debug.LogError("LD_event shouldn't have loc_click");
     }
 
-    public override void call(string sub_state_name)
+    public override void call(string state_name)
     {
-        Debug.LogError("Enemy sub_state shouldn't be called");
+        Debug.LogError("Enemy state shouldn't be called");
+    }
+
+    public void add_to_ui(LD_event e)
+    {
+        GameObject prefab = man.prefabs["event_ui_obj"];
+        GameObject instance = Instantiate(prefab);
+        event_ui e_ui = instance.GetComponent<event_ui>();
+
+        instance.transform.SetParent(event_ui_parent.transform, false);
+        e_ui.init(e);
     }
 
 }

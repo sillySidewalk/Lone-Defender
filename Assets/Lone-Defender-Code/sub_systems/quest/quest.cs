@@ -19,12 +19,38 @@ public class quest : MonoBehaviour
     [SerializeField] protected int difficulty = 0;
     [SerializeField] protected int success_reduction = 0;
     [SerializeField] protected int progress = 0; // how many successes they have
+    [SerializeField] protected quest_ui q_ui;
 
     public void init(Manager _man)
     {
         man = _man;
         qs = _man.qs;
         quest_token = _man.prefabs["quest_token"].GetComponent<quest_token>();
+    }
+
+    public void add_ui(quest_ui ui)
+    {
+        q_ui = ui;
+    }
+
+    public string get_q_name()
+    {
+        return q_name;
+    }
+
+    public int get_difficulty()
+    {
+        return difficulty;
+    }
+
+    public int get_success_reduction()
+    {
+        return success_reduction;
+    }
+
+    public int get_progress()
+    {
+        return progress;
     }
 
     // Add quest to map and any other setup necessary after init
@@ -61,6 +87,7 @@ public class quest : MonoBehaviour
         successes = Mathf.Max(0, successes);
         progress += successes;
 
+        q_ui.update_progress(progress);
 
         if(progress >= difficulty)
         {
@@ -80,5 +107,7 @@ public class quest : MonoBehaviour
         progress = 0;
         quest_token = null;
         loc = null;
+        q_ui.quest_completed();
+        q_ui = null;
     }
 }

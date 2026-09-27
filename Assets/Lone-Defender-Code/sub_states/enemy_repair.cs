@@ -7,18 +7,13 @@ using UnityEngine;
  * repairs damage to enemy spawn and factory
  */
 
-public class enemy_repair : auto_exit_sub_state
+public class enemy_repair : auto_exit_state
 {
     public override string called_next_state => throw new System.NotImplementedException();
 
-    public override string sub_state_name => "enemy_repair";
+    public override string state_name => "enemy_repair";
 
     public override bool loc_click_sub => false;
-
-    public override void end_state()
-    {
-        
-    }
 
     public override void init()
     {
@@ -30,7 +25,7 @@ public class enemy_repair : auto_exit_sub_state
         throw new System.NotImplementedException();
     }
 
-    protected override void sub_state_work()
+    protected override void state_work()
     {
         List<Building> buildings = e_man.get_buildings();
 

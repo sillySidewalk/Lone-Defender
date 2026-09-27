@@ -5,11 +5,11 @@ using UnityEngine;
 public class player_turn : game_state
 {
     public override string game_state_name { get; } = "player_turn";
-    public Player player; // The current Player pawn selected, mostly used by sub_states
+    public Player player; // The current Player pawn selected, mostly used by states
 
     public override void start_state()
     {
-        man.request_change_sub_state("player_start_state");
+        man.request_change_state("player_start_state");
     }
 
     public override void end_state()
@@ -24,7 +24,7 @@ public class player_turn : game_state
 
     public override string get_next()
     {
-        string current_state = man.current_sub_state.sub_state_name;
+        string current_state = man.current_state.state_name;
 
         if (current_state == "player_start_state")
         {

@@ -7,7 +7,7 @@ using UnityEngine;
  * Many LD_events involve adding token to several random locations, and then the tokens doing something, so I'll make a sub class
  */
 public class token_add_event : LD_event
-{
+{ 
     [SerializeField] protected string event_token_name; // The token used by the event
     [SerializeField] protected int min_locs; // The range of number of locations that tokens should be added
     [SerializeField] protected int max_locs; // max is inclusive

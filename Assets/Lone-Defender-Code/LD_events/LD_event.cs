@@ -10,8 +10,10 @@ using UnityEngine;
 public abstract class LD_event : MonoBehaviour
 {
     [SerializeField] protected Manager man;
-
+    [SerializeField] public string event_name;
     [SerializeField] protected List<int> loc_list;
+    [SerializeField] protected event_ui e_ui;
+    [SerializeField] protected string hover_text;
 
     // by default, nothing, but can be added
     public virtual void init()
@@ -48,5 +50,15 @@ public abstract class LD_event : MonoBehaviour
         }
 
         return token_objs;
+    }
+
+    public void add_ui(event_ui e)
+    {
+        e_ui = e;
+    }
+
+    public string get_hov_text()
+    {
+        return hover_text;
     }
 }

@@ -9,17 +9,17 @@ public class action_point_system: MonoBehaviour
     [SerializeField] protected int action_point_max;
     [SerializeField] protected int action_p_per_round; // how many player gets at the start of the round
     [SerializeField] protected int action_points_current;
-    public TextMeshProUGUI action_points_ui;
+    [SerializeField] public TextMeshProUGUI action_points_ui;
+    [SerializeField] protected UI_formatter ui_form;
     //protected List<action> available_actions;
 
-    public void init(int _ap_max, int _ap_turn, TextMeshProUGUI ap_ui)
+    public void init(int _ap_max, int _ap_turn)
     {
-        action_points_ui = ap_ui;
         action_p_per_round = _ap_turn;
         action_point_max = _ap_max;
         action_points_current = 0;
+        ui_form = Manager.get_instance().ui_form;
         update_ui();
-        //init_actions();
     }
 
     /* Probably not necessary
@@ -36,7 +36,7 @@ public class action_point_system: MonoBehaviour
 
 public void update_ui()
     {
-        string ui_string = action_points_current.ToString() + "/" + action_point_max.ToString();
+        string ui_string = ui_form.convert_to_ratio(action_points_current , action_point_max);
         action_points_ui.text = ui_string;
     }
 

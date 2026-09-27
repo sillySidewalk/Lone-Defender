@@ -6,20 +6,20 @@ using UnityEngine;
 /*
  * Enemies at Factories produce based on how many enemies there are
  */
-public class enemy_produce : auto_exit_sub_state
+public class enemy_produce : auto_exit_state
 {
     public override string called_next_state => "";
 
-    public override string sub_state_name { get; } = "enemy_produce";
+    public override string state_name { get; } = "enemy_produce";
 
     public override bool loc_click_sub { get; } = false;
 
-    public override void call(string sub_state_name)
+    public override void call(string state_name)
     {
         Debug.LogError("enemy_produce shouldn't be called");
     }
 
-    protected override void sub_state_work()
+    protected override void state_work()
     {
         Debug.LogWarning("Need to move factory produce to factory");
         factory_produce();
@@ -28,7 +28,7 @@ public class enemy_produce : auto_exit_sub_state
 
     public override void end_state()
     {
-
+        base.end_state();
     }
 
     public override void init()

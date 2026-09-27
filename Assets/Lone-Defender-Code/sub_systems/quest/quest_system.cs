@@ -20,13 +20,16 @@ public class quest_system : MonoBehaviour
     [SerializeField] protected List<quest> current_quests = new List<quest>();
     [SerializeField] protected int current_q_amnt = 3; // current quest amount
     [SerializeField] protected int vp = 0;
-    [SerializeField] protected int winning_vp = 30;
+    [SerializeField] protected vp_obj vp_ui;
+    [SerializeField] protected GameObject quest_ui_parent;
     
     /*
      * Get quests from this gameObject, randomize and add to draw bag. Init all quests
      */
     public void init()
     {
+        quest_ui_parent = man.quest_ui_parent;
+
         List<quest> init_quests = new List<quest>(gameObject.GetComponents<quest>());
 
         quest_draw_bag = new List<quest>(man.ran_man.randomize_list(init_quests));
@@ -37,8 +40,10 @@ public class quest_system : MonoBehaviour
         }
 
         init_quest_tokens();
+        get_vp_ui();
 
-        draw_current_quests();
+        draw_current_quests();     
+        
     }
 
     protected void init_quest_tokens()
@@ -52,6 +57,11 @@ public class quest_system : MonoBehaviour
 
             quest_tokens.Add(qt);
         }
+    }
+
+    protected void init_quest_ui()
+    {
+        quest_ui_parent = man.quest_ui_parent;
     }
 
     protected void draw_current_quests()
@@ -69,17 +79,35 @@ public class quest_system : MonoBehaviour
             Clearing c = man.clearings[random_locations.Dequeue()];
             next_quest.start_quest(c, quest_tokens.Dequeue());
             current_quests.Add(next_quest);
+            add_quest_to_ui(next_quest);
         }
 
     }
 
-    public void update_vp(int new_vp)
+    protected void add_quest_to_ui(quest q)
     {
-        vp += new_vp;
+        GameObject prefab = man.prefabs["quest_ui_obj"];
+        GameObject instance = Instantiate(prefab);
+        quest_ui q_ui = instance.GetComponent<quest_ui>();
+
+        instance.transform.SetParent(quest_ui_parent.transform, false);
+        q_ui.init(q);
+    }
+
+    protected void get_vp_ui()
+    {
+        vp_ui = man.get_vp_obj("player_vp");
+    }
+
+    public void inc_vp(int additiona_vp)
+    {
+        vp += additiona_vp;
 
         vp = Mathf.Max(vp, 0);
 
-        if(vp >= winning_vp)
+        vp_ui.set_text(vp);
+
+        if(vp >= man.winning_vp)
         {
             Debug.Log("YOU WIN!!");
         }
@@ -87,7 +115,7 @@ public class quest_system : MonoBehaviour
 
     public void quest_finished(quest q, LD_token quest_token)
     {
-        update_vp(q.vp_value);
+        inc_vp(q.vp_value);
 
         quest_discard_bag.Add(q);
         current_quests.Remove(q);

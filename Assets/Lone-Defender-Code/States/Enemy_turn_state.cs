@@ -10,7 +10,7 @@ using System.Linq;
 public class Enemy_turn_state : game_state
 {
     [SerializeField] protected Enemy_manager e_man;
-    [SerializeField] protected List<sub_state> sub_states; // The possible turn types
+    [SerializeField] protected List<state> states; // The possible turn types
     
 
     //[SerializeField] public List<Enemy> enemies = new();
@@ -32,7 +32,7 @@ public class Enemy_turn_state : game_state
         e_man.reset_turn_actions();
         string next = e_man.get_next();
 
-        man.request_change_sub_state(next);
+        man.request_change_state(next);
 
     }
 

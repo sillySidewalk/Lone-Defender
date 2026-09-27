@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   man: {fileID: 0}
-  sub_state_name: 
+  state_name: 
 --- !u!1 &7058158221220202584
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,8 +310,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3931937447342545303}
-        m_TargetAssemblyTypeName: Sub_state_btn, Assembly-CSharp
-        m_MethodName: Call_sub_state
+        m_TargetAssemblyTypeName: state_btn, Assembly-CSharp
+        m_MethodName: Call_state
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -38,7 +38,7 @@ public class poison_token : scheme_token
 
         if(is_real)
         {
-            ((player_move)man.sub_states["player_move"]).movement_e += check_poison_add;
+            ((player_move)man.states[nameof(player_move)]).movement_e += check_poison_add;
         }
     }
 
@@ -46,7 +46,7 @@ public class poison_token : scheme_token
     {
         if(is_real)
         {
-            ((player_move)man.sub_states["player_move"]).movement_e -= check_poison_add;
+            ((player_move)man.states[nameof(player_move)]).movement_e -= check_poison_add;
         }
 
         loc.remove_display_highlights(display_type);

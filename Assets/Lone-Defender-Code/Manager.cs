@@ -17,20 +17,20 @@ public class Manager : MonoBehaviour
     public List<Road> roads;
     public List<Forest> forests;
     [SerializeField] protected GameObject game_state_obj;
-    [SerializeField] protected GameObject sub_state_obj;
+    [SerializeField] protected GameObject state_obj;
     [SerializeField] public GameObject events_obj;
     public SerializedDictionary<string, game_state> game_states = new();
-    public SerializedDictionary<string, sub_state> sub_states = new();
+    public SerializedDictionary<string, state> states = new();
     public game_state current_game_state;
-    public sub_state current_sub_state;
-    [SerializeField] protected List<sub_state> loc_clk_sstage_subscription = new List<sub_state>(); // which substates want to be told about a Location click
+    public state current_state;
+    [SerializeField] protected List<state> loc_clk_stage_subscription = new List<state>(); // which substates want to be told about a Location click
     [SerializeField] protected bool location_click_active = false; // if the current state wants to check for location clicks right now
     public Player player;
     public Random_manager ran_man;
     public Enemy_manager enemy_man;
     public quest_system qs;
+    [SerializeField] protected string next_game_state = null;
     [SerializeField] protected string next_state = null;
-    [SerializeField] protected string next_sub_state = null;
     // public Enemy_manager e_man; // Can be access from game_states
     //public int dice_value = 10; // The type of dice
     public int min_atk_val { get; } = 8; // What value is considered a hit, base d10 dice
@@ -47,6 +47,10 @@ public class Manager : MonoBehaviour
     [SerializeField] public string location_highlight_hex = "FFF700";
 
     [SerializeField] public UI_formatter ui_form;
+
+    [SerializeField] public GameObject quest_ui_parent;
+    [SerializeField] protected SerializedDictionary<string, vp_obj> vp_ui_dict = new();
+    [SerializeField] public int winning_vp = 30;
 
     
 
@@ -71,29 +75,33 @@ public class Manager : MonoBehaviour
     public void init()
     {
         init_clearings();
-        init_enemy_man();
+        
         init_game_states();
-        init_sub_states();
+        init_ui_dict();
+        init_states();
+        init_enemy_man();
         init_player();
         init_quest_system();
-
-        request_change_state("player_turn");
+        init_ui_buttons();
+        
+        request_change_game_state("player_turn");
     }
 
     // Check if we need to update the current state after something happens
     protected void check_state()
     {
-        if (next_state != null)
+        if (next_game_state != null)
         {
-            string temp_next_state = next_state;
-            next_state = null;
+            string temp_next_state = next_game_state;
+            next_game_state = null;
             change_game_state(temp_next_state);
         }
-        else if (next_sub_state != null)
+        else if (next_state != null)
         {
-            string temp_next_sub_state = next_sub_state;
-            next_sub_state = null;
-            change_sub_state(temp_next_sub_state);
+            //Debug.Log("next_state != null: " + next_state);
+            string temp_next_state = next_state;
+            next_state = null;
+            change_state(temp_next_state);
         }
         
     }
@@ -189,22 +197,22 @@ public class Manager : MonoBehaviour
 
     
     /*
-     * For initializing, get the sub_state game object with all the sub_states, then add them to the list of sub_states
+     * For initializing, get the state game object with all the state, then add them to the list of states
      */
-    protected void init_sub_states()
+    protected void init_states()
     {
-        List<sub_state> sstates = sub_state_obj.GetComponents<sub_state>().ToList();
+        List<state> in_states = state_obj.GetComponents<state>().ToList();
 
-        foreach(sub_state sstate in sstates)
+        foreach(state in_state in in_states)
         {
-            sub_states.Add(sstate.sub_state_name, sstate);
-            sstate.init();
+            states.Add(in_state.GetType().Name, in_state);
+            in_state.init();
             
-            // TODO: move this to the init of each sub_state
+            // TODO: move this to the init of each state
             // If they want a location click event
-            if(sstate.loc_click_sub)
+            if(in_state.loc_click_sub)
             {
-                loc_clk_sstage_subscription.Add(sstate);
+                loc_clk_stage_subscription.Add(in_state);
             }
         }
 
@@ -217,7 +225,7 @@ public class Manager : MonoBehaviour
 
         foreach(game_state gstate in gstates)
         {
-            game_states.Add(gstate.game_state_name, gstate);
+            game_states.Add(gstate.GetType().Name, gstate);
             gstate.init();
         }
 
@@ -235,7 +243,7 @@ public class Manager : MonoBehaviour
 
     protected void init_player()
     {
-        player.init(request_id(), clearings[0], action_point_ui);
+        player.init(request_id(), clearings[0]);
     }
 
     protected void init_enemy_man()
@@ -248,15 +256,40 @@ public class Manager : MonoBehaviour
         qs.init();
     }
 
+    protected void init_ui_buttons()
+    {
+        List<state_btn> btns = new(GetComponentsInChildren<state_btn>());
+
+        foreach(state_btn btn in btns)
+        {
+            btn.init();
+        }
+    }
+
+    protected void init_ui_dict()
+    {
+        List<vp_obj> vp_uis = new(GetComponentsInChildren<vp_obj>());
+
+        foreach(vp_obj vp_ui in vp_uis)
+        {
+            vp_ui_dict.Add(vp_ui.type, vp_ui);
+        }
+    }
+
+    public vp_obj get_vp_obj(string _type)
+    {
+        return  vp_ui_dict[_type];
+    }
+
     
     /*
      * When a Location is clicked, it will call this. Then Manager will check if the current sub state wants to be notified, then send over the information
      */
     public void location_click(Location loc)
     {
-        if(loc_clk_sstage_subscription.Contains(current_sub_state))
+        if(loc_clk_stage_subscription.Contains(current_state))
         {
-            current_sub_state.loc_click(loc);
+            current_state.loc_click(loc);
         }
     }
 
@@ -264,42 +297,44 @@ public class Manager : MonoBehaviour
     /*
      * Pass to substate, mostly for changing state
      */
-    public void call_sub_state(String sub_state_name)
+    public void call_state(String state_name)
     {
-        current_sub_state.call(sub_state_name);
+        //Debug.Log("call_state: " + state_name);
+        current_state.call(state_name);
     }
 
-    public void request_change_state(string game_state_name)
+    public void request_change_game_state(string game_state_name)
     {
-        next_state = game_state_name;
+        //Debug.Log("request_change_game_state: " + game_state_name);
+        next_game_state = game_state_name;
     }
 
-    public void request_change_sub_state(string sub_state_name)
+    public void request_change_state(string state_name)
     {
-        next_sub_state = sub_state_name;
+        next_state = state_name;
     }
 
     /*
-     * End the previous sub_state and start the new one
+     * End the previous state and start the new one
      */
-    protected void change_sub_state(String sub_state_name)
+    protected void change_state(String state_name)
     {
-        //Debug.Log("change_sub_state to: " + sub_state_name);
+        //Debug.Log("change_state to: " + state_name);
 
-        if (current_sub_state != null)
+        if (current_state != null)
         {
-            current_sub_state.end_state();
+            current_state.end_state();
         }
 
-        if(!sub_states.ContainsKey(sub_state_name)) // prevent infinite loop
+        if(!states.ContainsKey(state_name)) // prevent infinite loop
         {
-            Debug.LogError("sub_state_name: " + sub_state_name + " is not in sub_states");
-            next_sub_state = null;
+            Debug.LogError("state_name: " + state_name + " is not in states");
+            next_state = null;
             return;
         }
 
-        current_sub_state = sub_states[sub_state_name];
-        current_sub_state.start_state();
+        current_state = states[state_name];
+        current_state.start_state();
     }
 
     protected void change_game_state(String game_state_name)
@@ -312,7 +347,7 @@ public class Manager : MonoBehaviour
         if (!game_states.ContainsKey(game_state_name)) // prevent infinite loop
         {
             Debug.LogError("game_state_name: " + game_state_name + " is not in game_states_states");
-            next_state = null;
+            next_game_state = null;
             return;
         }
 
@@ -547,6 +582,14 @@ public class Manager : MonoBehaviour
         location_click_active = is_active;
     }
 
+    /*
+     * Allows simple access to subscribing to an state's on_end_state event
+     */
+    public void subscribe_to_state_end()
+    {
+
+    }
+
 
     /* For debugging
      * 
@@ -606,20 +649,26 @@ public class Manager : MonoBehaviour
         }
         if(part == 1)
         {
-            request_change_sub_state("enemy_attack");
+            request_change_state("enemy_attack");
         }
     }
 
     /*
-     * Test auto_exit_sub_state and get_next
+     * Test auto_exit_state and get_next
      */
     public void test_auto_ex_and_get_next(int part)
     {
         // start Enemy_turn_state, which should automatically start it's action order. Should add debut logging at start of states for easy verification
         if(part == 0)
         {
-            request_change_state("Enemy_turn_state");
+            request_change_game_state("Enemy_turn_state");
         }
+    }
+
+
+    public void test_highlight_state_display()
+    {
+        //enemy_man.state_display.highlight(5);
     }
 
 
@@ -630,18 +679,18 @@ public class Manager : MonoBehaviour
 
         if (Input.GetKeyDown("d"))
         {
-            enemy_man.debug_bag_fill("enemy_scoring", 10);
+            test_highlight_state_display();
         }
 
         if (Input.GetKeyDown("e"))
         {
-            change_sub_state("enemy_event");
+            change_state("enemy_event");
         }
 
         if (Input.GetKeyDown("r"))
         {
             //change_game_state("Enemy_manager_state");
-            //change_sub_state("enemy_spawn");
+            //change_state("enemy_spawn");
 
             enemy_man.create_enemies();
             

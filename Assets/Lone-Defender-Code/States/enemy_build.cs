@@ -7,15 +7,15 @@ using UnityEngine;
 /*
  * Enemy will remove all current buildings and move them put them somewhere else. The number of building will remain static. P can damage buildings, which will reduce their effeciency, but they won't be removed
  */
-public class enemy_build : auto_exit_sub_state
+public class enemy_build : auto_exit_state
 {
     public override string called_next_state => throw new System.NotImplementedException();
 
-    public override string sub_state_name { get; } = "enemy_build";
+    public override string state_name { get; } = "enemy_build";
 
     public override bool loc_click_sub { get; } = false;
 
-    public override void call(string sub_state_name)
+    public override void call(string state_name)
     {
         Debug.LogError("This state shouldn't be called");
     }
@@ -30,7 +30,7 @@ public class enemy_build : auto_exit_sub_state
         
     }
 
-    protected override void sub_state_work()
+    protected override void state_work()
     {
         e_man.remove_enemy_buildings();
 
@@ -41,7 +41,7 @@ public class enemy_build : auto_exit_sub_state
 
     public override void end_state()
     {
-        
+        base.end_state();
     }
   
 }

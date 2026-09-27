@@ -34,20 +34,20 @@ public class Player : Pawn
 
     
 
-    public void init(int given_id, Location _loc, TextMeshProUGUI ap_ui)
+    public override void init(int given_id, Location _loc)
     {
         base.init(given_id, _loc);
         hp = max_hp;
-        init_action_point_system(action_point_max, action_points_per_round ,ap_ui);
+        init_action_point_system(action_point_max, action_points_per_round);
         stealth_sys.init();
 
         ui_form = man.ui_form;
         update_hp_ui();
     }
 
-    public void init_action_point_system(int _max_ap, int _ap_turn, TextMeshProUGUI _ap_ui)
+    public void init_action_point_system(int _max_ap, int _ap_turn)
     {
-        ap_system.init(_max_ap, _ap_turn, _ap_ui);
+        ap_system.init(_max_ap, _ap_turn);
     }
 
 

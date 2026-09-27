@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class player_attack : sub_state
+public class player_attack : state
 {
     [SerializeField] protected TextMeshProUGUI btn_text;
     List<string> button_texts = new() { "Attack", "End Atk" };
@@ -14,7 +14,7 @@ public class player_attack : sub_state
 
     public override string called_next_state { get; } = "player_choose";
 
-    public override string sub_state_name { get; } = "player_attack";
+    public override string state_name { get; } = "player_attack";
 
     public override bool loc_click_sub { get; } = true;
 
@@ -33,6 +33,9 @@ public class player_attack : sub_state
 
     public override void end_state()
     {
+        base.end_state();
+
+
         btn_text.text = button_texts[0];
         man.remove_all_highlights();
         man.set_active_loc_click(false);

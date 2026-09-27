@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
-public class enemy_scoring : auto_exit_sub_state
+public class enemy_scoring : auto_exit_state
 {
     public override string called_next_state { get; } = "";
 
-    public override string sub_state_name { get; } = "enemy_scoring";
+    public override string state_name { get; } = "enemy_scoring";
 
     public override bool loc_click_sub { get; } = false;
 
     // Shouldn't be called
-    public override void call(string sub_state_name)
+    public override void call(string state_name)
     {
-        Debug.LogError("Enemy sub_state shouldn't be called");
+        Debug.LogError("Enemy state shouldn't be called");
     }
 
     /*
@@ -24,7 +24,7 @@ public class enemy_scoring : auto_exit_sub_state
      *      2-3: 1 point
      * Then remove corruption tokens
      */
-    protected override void sub_state_work()
+    protected override void state_work()
     {
         foreach(Clearing c in man.clearings)
         {
@@ -37,15 +37,15 @@ public class enemy_scoring : auto_exit_sub_state
 
             if(corruption_count >= 6)
             {
-                man.enemy_man.inc_score(7);
+                man.enemy_man.inc_vp(7);
             }
             else if(corruption_count >= 4)
             {
-                man.enemy_man.inc_score(3);
+                man.enemy_man.inc_vp(3);
             }
             else if(corruption_count >= 2)
             {
-                man.enemy_man.inc_score(1);
+                man.enemy_man.inc_vp(1);
             }
 
             // Now remove all tokens
@@ -66,11 +66,6 @@ public class enemy_scoring : auto_exit_sub_state
     }
 
 
-    public override void end_state()
-    {
-        
-    }
-
     public override void init()
     {
         
@@ -78,7 +73,7 @@ public class enemy_scoring : auto_exit_sub_state
 
     public override void loc_click(Location loc)
     {
-        Debug.LogError("Enemy sub_state shouldn't have loc_click");
+        Debug.LogError("Enemy state shouldn't have loc_click");
     }
 
     

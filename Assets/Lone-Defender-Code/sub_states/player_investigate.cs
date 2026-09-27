@@ -9,12 +9,12 @@ using UnityEngine;
  * 
  * Currently only scheme_tokens are investigatable. I had thought that there might be others, which is why I originally made it with other options in mind. Currently, I'm going to just keep it as only checking scheme_tokens. If I decide to make it more, I'll make an Interface for Investigatables
  */
-public class player_investigate : sub_state
+public class player_investigate : state
 {
 
     public override string called_next_state => "player_choose";
 
-    public override string sub_state_name => "player_investigate";
+    public override string state_name => "player_investigate";
 
     public override bool loc_click_sub => false;
 
@@ -33,6 +33,8 @@ public class player_investigate : sub_state
 
     public override void end_state()
     {
+        base.end_state();
+
         btn_text.text = button_texts[0];
         remove_interactibles_highlights();
         check_update = false;
@@ -63,6 +65,7 @@ public class player_investigate : sub_state
 
     }
 
+    // called by ap_process
     protected override void ap_act()
     {
         current_investigation_st.investigate();

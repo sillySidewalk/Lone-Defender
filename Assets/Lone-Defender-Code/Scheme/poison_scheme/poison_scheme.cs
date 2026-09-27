@@ -127,8 +127,10 @@ public class poison_scheme : scheme
     /*
      * Remove both tokens, reset poison, tell enemy_scheme that scheme is finished
      */
-    protected void end_scheme()
+    protected override void end_scheme()
     {
+        base.end_scheme();
+
         p_token.end_token();
         if(fake_p_token != null)
         {

@@ -2,6 +2,7 @@ using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
@@ -22,15 +23,17 @@ public class Enemy_manager : MonoBehaviour
     [SerializeField] protected int spawn_factory_amount = 1; // How many spawns and factories to make
     [SerializeField] protected List<int> spawn_starting_clearing = new List<int>() { 1 }; // Which clearing the given spawn should start in 
     [SerializeField] protected List<int> factory_starting_clearing = new List<int> { 10 };
-    [SerializeField] protected List<sub_state> sub_states; // The possible turn types
-    [SerializeField] protected List<string> sstate_bag_mandatory = new List<string>(); // what enemy actions must always happen each cycle (from enemy_scoring to enemy_scoring)
-    [SerializeField] protected List<string> sstate_bag_optional = new List<string>(); // The bag other actions can occur
-    [SerializeField] protected  List<string> sstate_order; // The order that turn types will occur
+    [SerializeField] protected List<state> states; // The possible turn types
+    [SerializeField] protected List<string> state_bag_mandatory = new List<string>(); // what enemy actions must always happen each cycle (from enemy_scoring to enemy_scoring)
+    [SerializeField] protected List<string> state_bag_optional = new List<string>(); // The bag other actions can occur
+    [SerializeField] protected  List<string> state_order; // The order that turn types will occur
     [SerializeField] protected int actions_this_turn = 0;
     [SerializeField] protected int actions_per_turn = 2; // how many actions the enemy gets per player turn
-    [SerializeField] protected int score; // how many victory points the enemy has, which leads to their victorys
+    [SerializeField] protected int vp; // how many victory points the enemy has, which leads to their victorys
     [SerializeField] public retaliation_system retal_system;
     [SerializeField] public int enemy_atk_dice = 2; // how many dice per enemy in attack or retaliation
+    [SerializeField] protected state_display_controller state_display;
+    [SerializeField] protected vp_obj vp_ui;
 
     public int spawn_const_amount { get; } = 1; // When spawning, the amount of enemies is: spawn_const_amount + (spawn_dice_amount)d4
     public int spawn_dice_amount { get; } = 1;
@@ -38,8 +41,11 @@ public class Enemy_manager : MonoBehaviour
     public void init()
     {
         init_buildings();
-        init_substate_bag();
-        fill_sstate_order();
+        init_state_bag();
+        init_state_display();
+        fill_state_order();
+        init_vp_ui();
+        
     }
 
     protected void init_buildings()
@@ -65,23 +71,37 @@ public class Enemy_manager : MonoBehaviour
         }
     }
 
-    protected void init_substate_bag()
+    protected void init_state_bag()
     {
+        /* State_bag_mandatory
+         * 
+         * enemy_repair
+         * enemy_scheme
+         * enemy_produce
+         * 
+         */
+
+        /* State_bag_optional
+         * 
+         * 
+         * 
+         */
+
         // Since I will probably populate this in the inspector, this will check if bag is null
-        if(sstate_bag_optional.Count == 0)
+        if(state_bag_optional.Count == 0)
         {
-            Debug.LogError("Enemy_manager sub_state bag is empty");
+            Debug.LogError("Enemy_manager state bag is empty");
         }
 
     }
 
     /*
-     * Fill sstate_order from sstate_bag, doesn't change sstate_bag
+     * Fill state_order from state_bag, doesn't change state_bag
      */
-    protected void fill_sstate_order()
+    protected void fill_state_order()
     {
-        List<string> temp_sstate_optional = man.ran_man.randomize_list<string>(new List<string>(sstate_bag_optional));
-        List<string> temp_sstate_mandatory = new List<string>(sstate_bag_mandatory);
+        List<string> temp_state_optional = man.ran_man.randomize_list<string>(new List<string>(state_bag_optional));
+        List<string> temp_state_mandatory = new List<string>(state_bag_mandatory);
         
 
         // Add the scoring every 5 - 7 turns, because turns consist of 2 enemy actions and I want scoring to be the second action of the turn, it's (turn_number * 2) -1
@@ -93,24 +113,39 @@ public class Enemy_manager : MonoBehaviour
 
         for(int i = 0; i < num_enemy_spawns; i++)
         {
-            temp_sstate_mandatory.Add("enemy_spawn");
+            temp_state_mandatory.Add("enemy_spawn");
         }
 
         // how many optional actions to grab
-        int num_optional_actions = actions_till_scoring - temp_sstate_mandatory.Count;
+        int num_optional_actions = actions_till_scoring - temp_state_mandatory.Count;
 
-        temp_sstate_mandatory.AddRange(temp_sstate_optional.GetRange(0, num_optional_actions));
+        temp_state_mandatory.AddRange(temp_state_optional.GetRange(0, num_optional_actions));
 
-        // Add to current sstate_order, in case it's not empty
-        sstate_order.AddRange(man.ran_man.randomize_list<string>(temp_sstate_mandatory));
+        // Add to current state_order, in case it's not empty
+        state_order.AddRange(man.ran_man.randomize_list<string>(temp_state_mandatory));
 
 
         // TODO: add enemy_scoring to the end
-        sstate_order.Add("enemy_scoring");
+        state_order.Add("enemy_scoring");
+
+        state_display.fill_state_display(state_order);
+    }
+
+    protected void init_state_display()
+    {
+        state_display = GetComponentInChildren<state_display_controller>();
+
+        state_display.init();
+
+    }
+
+    protected void init_vp_ui()
+    {
+        vp_ui = man.get_vp_obj("enemy");
     }
 
     /*
-     * Get the next state and remove it from sstate_order
+     * Get the next state and remove it from state_order
      */
     public string get_next()
     {
@@ -123,12 +158,17 @@ public class Enemy_manager : MonoBehaviour
         actions_this_turn++;
 
         // refill the bag
-        if (sstate_order.Count == 0)
+        if (state_order.Count == 0)
         {
-            fill_sstate_order();
+            fill_state_order();
         }
 
-        return sstate_order.Dequeue();
+        return state_order.Dequeue();
+    }
+
+    public int get_state_count()
+    {
+        return state_order.Count;
     }
 
 
@@ -333,9 +373,17 @@ public class Enemy_manager : MonoBehaviour
         }
     }
 
-    public void inc_score(int x)
+    public void inc_vp(int x)
     {
-        score += x;
+        vp += x;
+
+        vp_ui.set_text(vp);
+
+
+        if(vp >= man.winning_vp)
+        {
+            Debug.Log("Enemy Wins");
+        }
     }
 
     public void reset_turn_actions()
@@ -343,14 +391,14 @@ public class Enemy_manager : MonoBehaviour
         actions_this_turn = 0;
     }
 
-    // For debugging, fill sstate_order with sstate_fill up to amount
-    public void debug_bag_fill(string sstate_fill, int amount)
+    // For debugging, fill state_order with state_fill up to amount
+    public void debug_bag_fill(string state_fill, int amount)
     {
-        sstate_order = new();
+        state_order = new();
 
         for (int i = 0; i < amount; i++)
         {
-            sstate_order.Add(sstate_fill);
+            state_order.Add(state_fill);
         }
     }
 
@@ -363,4 +411,8 @@ public class Enemy_manager : MonoBehaviour
 
         return return_buildings;
     }
+
+    
+
+    
 }

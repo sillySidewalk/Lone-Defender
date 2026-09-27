@@ -8,10 +8,10 @@ using UnityEngine;
 /*
  * Gets the possible move, shows the highlight circle, makes the possible locations into buttons
  */
-public class player_move : sub_state
+public class player_move : state
 {
     public override string called_next_state { get; } = "player_choose";
-    public override string sub_state_name { get; } = "player_move";
+    public override string state_name { get; } = "player_move";
     [SerializeField] Player player_pawn;
     [SerializeField] List<Location> possible_moves;
     [SerializeField] protected TextMeshProUGUI move_btn_text;
@@ -38,6 +38,8 @@ public class player_move : sub_state
 
     public override void end_state()
     {
+        base.end_state();
+
         move_btn_text.text = button_texts[0];
         man.remove_all_highlights();
         man.set_active_loc_click(false);
