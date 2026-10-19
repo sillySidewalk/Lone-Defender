@@ -52,6 +52,8 @@ public class Manager : MonoBehaviour
     [SerializeField] protected SerializedDictionary<string, vp_obj> vp_ui_dict = new();
     [SerializeField] public int winning_vp = 30;
 
+    [SerializeField] protected results_ui r_ui;
+
     
 
     public static Manager get_instance()
@@ -275,7 +277,6 @@ public class Manager : MonoBehaviour
             vp_ui_dict.Add(vp_ui.type, vp_ui);
         }
     }
-
     public vp_obj get_vp_obj(string _type)
     {
         return  vp_ui_dict[_type];

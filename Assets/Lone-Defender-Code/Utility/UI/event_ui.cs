@@ -28,4 +28,9 @@ public class event_ui : MonoBehaviour
         Debug.Log(e.get_hov_text());
         hov_text.add_text(e.get_hov_text());
     }
+
+    public void end_event_ui()
+    {
+        Destroy(gameObject);
+    }
 }

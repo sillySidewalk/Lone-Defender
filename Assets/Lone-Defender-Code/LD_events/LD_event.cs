@@ -23,7 +23,10 @@ public abstract class LD_event : MonoBehaviour
 
     public abstract void start_event();
 
-    public abstract void end_event();
+    public virtual void end_event()
+    {
+        e_ui.end_event_ui();
+    }
 
     public List<LD_token> add_token_to_locs(int min_locs, int max_locs, string token_name)
     {

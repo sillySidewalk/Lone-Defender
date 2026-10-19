@@ -22,10 +22,14 @@ public class token_add_event : LD_event
 
     public override void end_event()
     {
+        base.end_event();
+
         foreach (LD_token t in tokens)
         {
             t.loc.remove_token(t, "event");
         }
+
+
     }
 
     
