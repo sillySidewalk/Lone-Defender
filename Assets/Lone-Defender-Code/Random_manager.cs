@@ -10,7 +10,13 @@ using UnityEngine;
 public class Random_manager : MonoBehaviour
 {
     [SerializeField] Manager man;
+    [SerializeField] results_ui r_ui;
     public System.Random rnd = new System.Random();
+
+    public void init(results_ui ui)
+    {
+        r_ui = ui;
+    }
 
     /*
      * Roll the dice n times
@@ -24,7 +30,12 @@ public class Random_manager : MonoBehaviour
             return_dice.Add(rnd.Next(1, 10 + 1)); // Max is exclusive, so plus 1
         }
 
-        Debug.Log("d10 rolls (" + return_dice.Count + ") '" + context + "': " + return_dice.List_to_string());
+        return_dice.Sort();
+        return_dice.Reverse();
+
+        display_dice("d10 rolls(" + return_dice.Count + ") '" + context + "': " + return_dice.List_to_string());
+
+        
 
         return return_dice;
 
@@ -39,7 +50,7 @@ public class Random_manager : MonoBehaviour
             return_dice.Add(rnd.Next(1, 4 + 1)); // Max is exclusive, so plus 1
         }
 
-        Debug.Log("d4 rolls (" + return_dice.Count + ") '" + context + "':" + return_dice.List_to_string());
+        display_dice("d4 rolls (" + return_dice.Count + ") '" + context + "':" + return_dice.List_to_string());
 
         return return_dice;
 
@@ -88,5 +99,11 @@ public class Random_manager : MonoBehaviour
 
         clearings = randomize_list(clearings);
         return clearings.GetRange(0, num_clearings);
+    }
+
+    protected void display_dice(string output)
+    {
+        Debug.Log(output);
+        r_ui.add_item(output);
     }
 }

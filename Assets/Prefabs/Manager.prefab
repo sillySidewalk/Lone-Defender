@@ -224,6 +224,8 @@ MonoBehaviour:
       Value: {fileID: 5712728620666942471, guid: 4877e311c23d73e45b7923d5be8b61ef, type: 3}
     - Key: event_ui_obj
       Value: {fileID: 8302624039326354709, guid: d2ce236c72355054fb119dd2268f2fcb, type: 3}
+    - Key: results_ui_obj
+      Value: {fileID: 5583304904257903665, guid: b6858d48e839bff42b105b4850997093, type: 3}
   enemy_march_anim_time: 0.5
   location_highlight_hex: FFF700
   ui_form: {fileID: 3658440785755386606}
@@ -1419,6 +1421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Content: {fileID: 7506161234165613382}
+  ui_obj: {fileID: 0}
 --- !u!1 &5870850407519860255
 GameObject:
   m_ObjectHideFlags: 0
@@ -1928,7 +1931,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5349058725904294069}
   m_HandleRect: {fileID: 4864458889504155190}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

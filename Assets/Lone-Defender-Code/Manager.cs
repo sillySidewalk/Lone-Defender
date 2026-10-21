@@ -85,6 +85,8 @@ public class Manager : MonoBehaviour
         init_player();
         init_quest_system();
         init_ui_buttons();
+        init_results_ui();
+        init_random_manager();
         
         request_change_game_state("player_turn");
     }
@@ -277,12 +279,29 @@ public class Manager : MonoBehaviour
             vp_ui_dict.Add(vp_ui.type, vp_ui);
         }
     }
+
+
+    protected void init_results_ui()
+    {
+        r_ui.init(prefabs["results_ui_obj"]);
+    }
+
+    protected void init_random_manager()
+    {
+        ran_man.init(r_ui);
+    }
+
     public vp_obj get_vp_obj(string _type)
     {
         return  vp_ui_dict[_type];
     }
 
-    
+    public results_ui get_results_ui()
+    {
+        return r_ui;
+    }
+
+
     /*
      * When a Location is clicked, it will call this. Then Manager will check if the current sub state wants to be notified, then send over the information
      */
